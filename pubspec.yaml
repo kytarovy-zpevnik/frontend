@@ -1,0 +1,6 @@
+name: kz
+dependencies:
+  browser: any
+  angular: any
+  crypto: any
+  shadow_dom: any

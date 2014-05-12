@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html ng-app lang="cs">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Kytarový zpěvník</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="build/css/screen.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body sign-in>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Navigace</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Kytarový zpěvník</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Hlavní stránka</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Písně <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Rodné údolí</a></li>
+                        <li><a href="#">Okoř</a></li>
+                        <li><a href="#">Chodím po Brodwayi</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Zobrazit všechny písně</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Zpěvníky <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">K táboráku</a></li>
+                        <li><a href="#">Do klubovny</a></li>
+                        <li><a href="#">Moje</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Zobrazit všechny zpěvníky</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Má přání</a></li>
+            </ul>
+
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" id="search-query" name="search-query" class="form-control" placeholder="Hledat písně a zpěvníky">
+                </div>
+                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Přihlásit se</a></li>
+                <!--<li><a href="#">Upozornění <span class="badge">42</span></a></li>-->
+                <!--<li class="dropdown">-->
+                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <b class="caret"></b></a>-->
+                    <!--<ul class="dropdown-menu">-->
+                        <!--<li><a href="#">Profil</a></li>-->
+                        <!--<li><a href="#">Nastavení</a></li>-->
+                        <!--<li><a href="#">Nápověda</a></li>-->
+                        <!--<li class="divider"></li>-->
+                        <!--<li><a href="#">Odhlásit se</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="container">
+    <div class="content">
+        <div ng-repeat="message in ctrl.messages">
+            <div class="alert alert-{{message.type}}">{{message.text}}</div>
+        </div>
+        <h1>Přihlášení uživatele</h1>
+        <form class="sign-in" role="form">
+            <div class="form-group">
+                <label for="input-email">Emailová adresa</label>
+                <input type="email" class="form-control" id="input-email" ng-model="ctrl.email">
+            </div>
+            <div class="form-group">
+                <label for="input-password">Heslo</label>
+                <input type="password" class="form-control" id="input-password" ng-model="ctrl.password">
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="ctrl.longLife"> Trvalé přihlášení
+                </label>
+            </div>
+            <button type="submit" class="btn btn-success" ng-click="ctrl.signIn()">Přihlásit se</button>
+        </form>
+        <p class="help-block">Zapomněli jste své heslo?</p>
+        <a href="#">Nastavit nové heslo</a>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-select.min.js"></script>
+<script>
+    $('select').selectpicker();
+</script>
+
+<script src="packages/shadow_dom/shadow_dom.min.js"></script>
+<script type="application/dart" src="main.dart"></script>
+<script type="text/javascript" src="packages/browser/dart.js"></script>
+
+</body>
