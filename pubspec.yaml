@@ -4,3 +4,4 @@ dependencies:
   angular: any
   crypto: any
   shadow_dom: any
+  route: any
