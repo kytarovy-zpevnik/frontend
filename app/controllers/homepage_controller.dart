@@ -1,6 +1,6 @@
-import 'package:angular/angular.dart';
+part of app;
 
-@NgController(selector: '[homepage]', publishAs: 'ctrl')
+@Controller(selector: '[homepage]', publishAs: 'ctrl')
 class HomepageController {
   final Router _router;
 
@@ -9,5 +9,4 @@ class HomepageController {
   void signIn() {
     _router.go('sign', {});
   }
-
 }

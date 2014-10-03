@@ -1,0 +1,33 @@
+part of app;
+
+@Injectable()
+class SessionResource {
+  final Api _api;
+
+  SessionResource(this._api);
+
+  /**
+   * Creates new session.
+   */
+  Future<Session> create(String identifier, String password, bool longLife) {
+    return _api.post('sessions', data: {
+        'user': {
+            'identifier': identifier,
+            'password': password
+        },
+        'longLife': longLife
+    }).then((HttpResponse response) {
+      var user = new User(response.data.user.username, response.data.user.email);
+      return new Session(response.data.token, longLife, user);
+    });
+  }
+
+  /**
+   * Deletes given session.
+   */
+  Future delete(Session session) {
+    return _api.delete('sessions', data: {
+        'token': session.token,
+    });
+  }
+}

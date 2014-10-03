@@ -1,7 +1,7 @@
 name: kz
 dependencies:
   browser: any
-  angular: any
+  angular: 0.14.0
   crypto: any
   shadow_dom: any
   route: any
