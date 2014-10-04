@@ -19,6 +19,7 @@ class SessionService {
 
     return _sessionResource.create(identifier, password, longLife).then((Session session) {
       _session = session;
+      return new Future.value();
     });
   }
 
@@ -32,6 +33,7 @@ class SessionService {
 
     return _sessionResource.delete(_session).then((_) {
       _session = null;
+      return new Future.value();
     });
   }
 }

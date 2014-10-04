@@ -17,8 +17,8 @@ class SessionResource {
         },
         'longLife': longLife
     }).then((HttpResponse response) {
-      var user = new User(response.data.user.username, response.data.user.email);
-      return new Session(response.data.token, longLife, user);
+      var user = new User(response.data['user']['username'], response.data['user']['email']);
+      return new Future.value(new Session(response.data['token'], longLife, user));
     });
   }
 
@@ -28,6 +28,8 @@ class SessionResource {
   Future delete(Session session) {
     return _api.delete('sessions', data: {
         'token': session.token,
+    }).then((_) {
+      return new Future.value();
     });
   }
 }

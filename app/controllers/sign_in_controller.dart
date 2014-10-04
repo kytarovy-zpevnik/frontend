@@ -4,21 +4,28 @@ part of app;
 class SignInController {
   final SessionService _sessionService;
   final Router _router;
+  final MessageService _messageService;
 
-  List messages = [];
+  String identifier;
+  String password;
+  bool longLife = false;
 
-  SignInController(this._sessionService, this._router);
+  SignInController(this._sessionService, this._router, this._messageService);
 
-  void signIn(String identifier, String password, bool longLife) {
+  void signIn() {
     _sessionService.establish(identifier, password, longLife).then((_) {
-      addMessage('success', 'Přihlášení proběhlo úspěšně.');
+      _messageService.addSuccess('Přihlášen!', 'Přihlášení proběhlo úspěšně.');
       _router.go('homepage', {});
-    }).catchError((ServerException e) {
-      print(e.toString());
-    });
-  }
+    }).catchError((ApiError e) {
+      switch (e.error) {
+        case 'UNKNOWN_IDENTIFIER':
+          _messageService.addError('Neznámý uživatel!', 'Bohužel neznáme žádného uživatele, který by měl zadaný email nebo uživatelské jméno.');
+          break;
 
-  void addMessage(String type, String text) {
-    messages.add({'type': type, 'text': text});
+        case 'INVALID_CREDENTIAL':
+          _messageService.addError('Chybné heslo!', 'Zkuste to prosím znovu.');
+        break;
+      }
+    });
   }
 }
