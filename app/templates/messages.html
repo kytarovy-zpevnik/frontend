@@ -1,4 +1,7 @@
 <div ng-repeat="message in cmp.messages" class="alert alert-{{message.type}}" role="alert">
+    <button type="button" class="close">
+        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+    </button>
     <strong>{{message.title}}</strong>
     {{message.text}}
 </div>

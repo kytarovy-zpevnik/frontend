@@ -17,7 +17,7 @@ class SessionResource {
         },
         'longLife': longLife
     }).then((HttpResponse response) {
-      var user = new User(response.data['user']['username'], response.data['user']['email']);
+      var user = new User(response.data['user']['email'], response.data['user']['username']);
       return new Future.value(new Session(response.data['token'], longLife, user));
     });
   }

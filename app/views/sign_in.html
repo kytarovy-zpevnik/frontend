@@ -1,20 +1,20 @@
 <div sign-in>
     <h1>Přihlášení uživatele</h1>
-    <form class="sign-in" role="form">
+    <form class="sign-in" role="form" ng-submit="ctrl.signIn()">
         <div class="form-group">
-            <label for="input-identifier">Emailová adresa</label>
-            <input type="text" class="form-control" id="input-identifier" ng-model="ctrl.identifier">
+            <label for="input-identifier">Uživatelské jméno nebo e&ndash;mailová adresa</label>
+            <input type="text" required class="form-control" id="input-identifier" ng-model="ctrl.identifier">
         </div>
         <div class="form-group">
             <label for="input-password">Heslo</label>
-            <input type="password" class="form-control" id="input-password" ng-model="ctrl.password">
+            <input type="password" required class="form-control" id="input-password" ng-model="ctrl.password">
         </div>
         <div class="checkbox">
             <label>
                 <input type="checkbox" ng-model="ctrl.longLife"> Trvalé přihlášení
             </label>
         </div>
-        <button type="submit" class="btn btn-success" ng-click="ctrl.signIn()">Přihlásit se</button>
+        <button type="submit" class="btn btn-success">Přihlásit se</button>
     </form>
     <p class="help-block">Zapomněli jste své heslo?</p>
     <a href="#">Nastavit nové heslo</a>

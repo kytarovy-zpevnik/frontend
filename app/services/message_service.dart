@@ -4,6 +4,13 @@ part of app;
 class MessageService {
   List<Message> _messages = [];
 
+  MessageService(Router router) {
+    router.root.onPreEnter.listen((_) {
+      print('bar');
+      _messages.clear();
+    });
+  }
+
   void addSuccess(String title, String text) {
     _messages.add(new Message('success', title, text));
   }

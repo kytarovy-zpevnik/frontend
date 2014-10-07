@@ -7,6 +7,7 @@ import 'dart:convert';
 
 part 'components/messages_component.dart';
 part 'controllers/homepage_controller.dart';
+part 'controllers/register_controller.dart';
 part 'controllers/sign_in_controller.dart';
 part 'models/api_error.dart';
 part 'models/message.dart';
@@ -14,6 +15,7 @@ part 'models/server_error.dart';
 part 'models/session.dart';
 part 'models/user.dart';
 part 'resources/session_resource.dart';
+part 'resources/user_resource.dart';
 part 'services/api.dart';
 part 'services/message_service.dart';
 part 'services/session_service.dart';
@@ -23,9 +25,11 @@ part 'values.dart';
 class AppModule extends Module {
   AppModule() {
     bind(MessagesComponent);
+    bind(RegisterController);
     bind(HomepageController);
     bind(SignInController);
     bind(SessionResource);
+    bind(UserResource);
     bind(Api);
     bind(MessageService);
     bind(SessionService);
