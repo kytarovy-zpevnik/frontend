@@ -8,6 +8,12 @@ void appRouteInitializer(Router router, RouteViewFactory view) {
       'register': ngRoute(
           path: '/register',
           view: 'app/views/register.html'),
+      'users': ngRoute(
+          path: '/users',
+          view: 'app/views/users.html'),
+      'admin': ngRoute(
+          path: '/admin',
+          view: 'app/views/admin.html'),
       'homepage': ngRoute(
           defaultRoute: true,
           path: '/',

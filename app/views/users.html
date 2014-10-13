@@ -1,0 +1,30 @@
+<div user>
+    <h1>Registrovaní uživatelé</h1>
+    <table class="table table-striped">
+        <tbody>
+            <tr ng-repeat="user in ctrl.users">
+                <td>{{user.id}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.role.name}}</td>
+                <td>{{user.lastLogin}}</td>
+                <td ng-if="user.role.slug == 'admin'">
+                    <button class="btn btn-danger" ng-click="ctrl.toRegistered($index)">Odebrat admin práva</button>
+                </td>
+                <td ng-if="user.role.slug == 'registered'">
+                    <button class="btn btn-success" ng-click="ctrl.toAdmin($index)">Udělit admin práva</button>
+                </td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Uživatelské jméno</th>
+                <th>E&ndash;mail</th>
+                <th>Role</th>
+                <th>Poslední přihlášení</th>
+                <th>Akce</th>
+            </tr>
+        </thead>
+    </table>
+</div>

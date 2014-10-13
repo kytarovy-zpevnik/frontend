@@ -10,8 +10,10 @@ part 'components/messages_component.dart';
 part 'controllers/homepage_controller.dart';
 part 'controllers/register_controller.dart';
 part 'controllers/sign_in_controller.dart';
+part 'controllers/user_controller.dart';
 part 'models/api_error.dart';
 part 'models/message.dart';
+part 'models/role.dart';
 part 'models/server_error.dart';
 part 'models/session.dart';
 part 'models/user.dart';
@@ -29,6 +31,7 @@ class AppModule extends Module {
     bind(MessagesComponent);
     bind(RegisterController);
     bind(HomepageController);
+    bind(UserController);
     bind(SignInController);
     bind(SessionResource);
     bind(UserResource);
