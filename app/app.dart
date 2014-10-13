@@ -5,6 +5,7 @@ import 'package:angular/routing/module.dart';
 import 'dart:async';
 import 'dart:convert';
 
+part 'components/bar_component.dart';
 part 'components/messages_component.dart';
 part 'controllers/homepage_controller.dart';
 part 'controllers/register_controller.dart';
@@ -24,6 +25,7 @@ part 'values.dart';
 
 class AppModule extends Module {
   AppModule() {
+    bind(BarComponent);
     bind(MessagesComponent);
     bind(RegisterController);
     bind(HomepageController);
