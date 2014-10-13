@@ -10,41 +10,56 @@ class Api {
 
   final Http _http;
   final ApiHost _apiHost;
+  final SessionToken _sessionToken;
 
-  Api(this._http, this._apiHost);
+  Api(this._http, this._apiHost, this._sessionToken);
 
   /**
    * Sends a http get request to given resource.
    */
   Future get(String resource, {
     Map<String, dynamic> params, Map<String, dynamic> headers
-  }) => _http.get(_getResourceUrl(resource), params: params, headers: headers).then(_success).catchError(_error);
+  }) => _http.get(_getResourceUrl(resource), params: params, headers: _addSessionTokenHeader(headers)).then(_success).catchError(_error);
 
   /**
    * Sends a http post request to given resource.
    */
   Future post(String resource, {
     Map<String, dynamic> data, Map<String, dynamic> params, Map<String, dynamic> headers
-  }) => _http.post(_getResourceUrl(resource), JSON.encode(data), params: params, headers: headers).then(_success).catchError(_error);
+  }) => _http.post(_getResourceUrl(resource), JSON.encode(data), params: params, headers: _addSessionTokenHeader(headers)).then(_success).catchError(_error);
 
   /**
    * Sends a http put request to given resource.
    */
   Future put(String resource, {
   Map<String, dynamic> data, Map<String, dynamic> params, Map<String, dynamic> headers
-  }) => _http.put(_getResourceUrl(resource), JSON.encode(data), params: params, headers: headers).then(_success).catchError(_error);
+  }) => _http.put(_getResourceUrl(resource), JSON.encode(data), params: params, headers: _addSessionTokenHeader(headers)).then(_success).catchError(_error);
 
   /**
    * Sends a http delete request to given resource.
    */
   Future delete(String resource, {
     Map<String, dynamic> data, Map<String, dynamic> params, Map<String, dynamic> headers
-  }) => _http.delete(_getResourceUrl(resource), data: JSON.encode(data), params: params, headers: headers).then(_success).catchError(_error);
+  }) => _http.delete(_getResourceUrl(resource), data: JSON.encode(data), params: params, headers: _addSessionTokenHeader(headers)).then(_success).catchError(_error);
 
   /**
    * Returns resource's url.
    */
   String _getResourceUrl(String resource) => _apiHost.apiHost + '/' + resource;
+
+  /**
+   * Adds session token to headers.
+   */
+  Map<String, dynamic> _addSessionTokenHeader(Map<String, dynamic> headers) {
+    if (headers == null) {
+      headers = {};
+    }
+
+    if (_sessionToken.sessionToken != null) {
+      headers['X-Session-Token'] = _sessionToken.sessionToken;
+    }
+    return headers;
+  }
 
   /**
    * Converts response body to JSON.

@@ -3,9 +3,11 @@ part of app;
 @Injectable()
 class SessionService {
   final SessionResource _sessionResource;
+  final SessionToken _sessionToken;
+
   Session _session;
 
-  SessionService(this._sessionResource);
+  SessionService(this._sessionResource, this._sessionToken);
 
   Session get session => _session;
 
@@ -19,6 +21,7 @@ class SessionService {
 
     return _sessionResource.create(identifier, password, longLife).then((Session session) {
       _session = session;
+      _sessionToken.sessionToken = session.token;
       return new Future.value();
     });
   }
@@ -31,7 +34,7 @@ class SessionService {
       throw new StateError('No active session to terminate.');
     }
 
-    return _sessionResource.delete(_session).then((_) {
+    return _sessionResource.deleteActive(_session).then((_) {
       _session = null;
       return new Future.value();
     });

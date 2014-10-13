@@ -39,5 +39,6 @@ class AppModule extends Module {
     bind(RouteInitializerFn, toValue: appRouteInitializer);
     bind(NgRoutingUsePushState, toValue: new NgRoutingUsePushState.value(false));
     bind(ApiHost, toValue: new ApiHost('api/frontend/1'));
+    bind(SessionToken);
   }
 }
