@@ -27,5 +27,9 @@ class MessageService {
     _messages.add(new Message('danger', title, text));
   }
 
+  void removeMessage(int index) {
+    _messages.removeAt(index);
+  }
+
   List<Message> get messages => _messages;
 }

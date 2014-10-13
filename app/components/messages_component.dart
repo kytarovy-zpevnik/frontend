@@ -11,4 +11,8 @@ class MessagesComponent {
   MessagesComponent(this._messagesService);
 
   List<Message> get messages => _messagesService.messages;
+
+  dismiss(int index) {
+    _messagesService.removeMessage(index);
+  }
 }
