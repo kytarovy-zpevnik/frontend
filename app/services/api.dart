@@ -11,8 +11,9 @@ class Api {
   final Http _http;
   final ApiHost _apiHost;
   final SessionToken _sessionToken;
+  final Router _router;
 
-  Api(this._http, this._apiHost, this._sessionToken);
+  Api(this._http, this._apiHost, this._sessionToken, this._router);
 
   /**
    * Sends a http get request to given resource.
@@ -71,8 +72,13 @@ class Api {
    * Returns error object.
    */
   Future<ServerError> _error(HttpResponse response) {
-    if (response.data.length == 0) {
+    if (response.status == 401) {
+      _router.go('sign', {});
+      return null;
+
+    } else if (response.data.length == 0) {
       return new Future.error(new ServerError(response.status));
+
     } else {
       var data = JSON.decode(response.data);
       return new Future.error(new ApiError(data['error'], data['message'], response.status));
