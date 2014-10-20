@@ -5,6 +5,9 @@ void appRouteInitializer(Router router, RouteViewFactory view) {
       'songs': ngRoute(
           path: '/songs',
           view: 'app/views/songs.html'),
+      'songbooks': ngRoute(
+          path: '/songbooks',
+          view: 'app/views/songbooks.html'),
       'sign': ngRoute(
          path: '/sign',
          view: 'app/views/sign_in.html'),
