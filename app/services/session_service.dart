@@ -7,7 +7,13 @@ class SessionService {
 
   Session _session;
 
-  SessionService(this._sessionResource, this._sessionToken);
+  SessionService(this._sessionResource, this._sessionToken) {
+    if (_sessionToken.sessionToken != null) {
+      _sessionResource.get(_sessionToken.sessionToken).then((Session session) {
+        _session = session;
+      });
+    }
+  }
 
   Session get session => _session;
 

@@ -19,7 +19,15 @@ class SessionResource {
     }).then((HttpResponse response) {
       var role = new Role(response.data['user']['role']['id'], response.data['user']['role']['slug'], response.data['user']['role']['name']);
       var user = new User(response.data['user']['id'], response.data['user']['username'], response.data['user']['email'], role, response.data['user']['lastLogin']);
-      return new Future.value(new Session(response.data['token'], longLife, user));
+      return new Future.value(new Session(response.data['token'], response.data['longLife'], user));
+    });
+  }
+
+  Future<Session> get(String token) {
+    return _api.get('sessions/active').then((HttpResponse response) {
+      var role = new Role(response.data['user']['role']['id'], response.data['user']['role']['slug'], response.data['user']['role']['name']);
+      var user = new User(response.data['user']['id'], response.data['user']['username'], response.data['user']['email'], role, response.data['user']['lastLogin']);
+      return new Future.value(new Session(response.data['token'], response.data['longLife'], user));
     });
   }
 
