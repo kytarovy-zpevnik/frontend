@@ -8,6 +8,19 @@ void appRouteInitializer(Router router, RouteViewFactory view) {
       'sign': ngRoute(
          path: '/sign',
          view: 'app/views/sign_in.html'),
+      'resetPassword': ngRoute(
+          path: '/reset-password',
+          mount: {
+            'step1': ngRoute(
+              path: '/step1',
+              view: 'app/views/reset_password.html'
+            ),
+            'step2': ngRoute(
+              path: '/step2/:token',
+              view: 'app/views/set_new_password.html'
+            )
+          }
+      ),
       'register': ngRoute(
           path: '/register',
           view: 'app/views/register.html'),
