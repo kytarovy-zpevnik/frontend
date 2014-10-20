@@ -1,8 +1,12 @@
-<div song>
+<div songs>
+    <div class="btn-group pull-right">
+        <a href="#/song/create" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Nová píseň</a>
+    </div>
+
     <h1>Písně</h1>
         <div class="row" ng-repeat="row in ctrl.songs">
             <div class="col-md-3" ng-repeat="song in row">
-                <h3><a href="">{{song.title}}</a></h3>
+                <h3><a href="#/song/{{song.id}}/view">{{song.title}}</a></h3>
                 <span ng-if="song.author != null"><b>Autor</b>
                 {{song.author}}<br></span>
                 <span ng-if="song.originalAuthor != null"><b>Původní autor</b>

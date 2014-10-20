@@ -1,0 +1,25 @@
+<div song>
+    <div class="btn-group pull-right">
+        <a href="#/song/{{ctrl.song.id}}/edit" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span> Editovat</a>
+    </div>
+    <h1>{{ctrl.song.title}}</h1>
+
+    <div class="meta">
+    <span ng-if="ctrl.song.author != null"><b>Autor:</b>
+    {{ctrl.song.author}}<br></span>
+    <span ng-if="ctrl.song.originalAuthor != null"><b>Původní autor:</b>
+    {{ctrl.song.originalAuthor}}<br></span>
+    <span ng-if="ctrl.song.album != null"><b>Album:</b>
+    {{ctrl.song.album}}<br></span>
+    <span ng-if="ctrl.song.year != null"><b>Rok:</b>
+    {{ctrl.song.year}}<br></span>
+    </div>
+
+    <section ng-repeat="section in ctrl.lyrics">
+        <span class="title">{{section['title']}}&nbsp;</span>
+
+        <p ng-repeat="line in section['lines']">
+            <chpos ng-repeat="char in line" offset="char['offset']" ctrl="ctrl" char="char['char']" chord="ctrl.song.chords[char['offset'].toString()]" editable="false"></chpos>
+        </p>
+    </section>
+</div>

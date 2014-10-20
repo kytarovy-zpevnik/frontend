@@ -6,12 +6,14 @@ import 'dart:async';
 import 'dart:convert';
 
 part 'components/bar_component.dart';
+part 'components/chord_position.dart';
 part 'components/messages_component.dart';
 part 'controllers/homepage_controller.dart';
 part 'controllers/register_controller.dart';
 part 'controllers/reset_password_controller.dart';
 part 'controllers/sign_in_controller.dart';
 part 'controllers/songbooks_controller.dart';
+part 'controllers/song_controller.dart';
 part 'controllers/songs_controller.dart';
 part 'controllers/user_controller.dart';
 part 'models/api_error.dart';
@@ -36,12 +38,14 @@ part 'values.dart';
 class AppModule extends Module {
   AppModule() {
     bind(BarComponent);
+    bind(ChordPosition);
     bind(MessagesComponent);
     bind(HomepageController);
     bind(RegisterController);
     bind(ResetPasswordController);
     bind(SignInController);
     bind(SongbooksController);
+    bind(SongController);
     bind(SongsController);
     bind(UserController);
     bind(ResetPasswordResource);

@@ -4,9 +4,7 @@ part of app;
 class HomepageController {
   final Router _router;
 
-  HomepageController(this._router, MessageService messageService) {
-    messageService.addInfo('Vítejte!', 'Toto je alfa verze kytarového zpěvníku.');
-  }
+  HomepageController(this._router);
 
   void signIn() {
     _router.go('sign', {});

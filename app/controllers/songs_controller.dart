@@ -1,14 +1,12 @@
 part of app;
 
-@Controller(selector: '[song]', publishAs: 'ctrl')
+@Controller(selector: '[songs]', publishAs: 'ctrl')
 class SongsController {
 
   final SongsResource _songResource;
   final MessageService _messageService;
 
   List songs = [];
-
-
 
   SongsController(this._songResource, this._messageService) {
     _songResource.readAll().then((List<Song> songs) {

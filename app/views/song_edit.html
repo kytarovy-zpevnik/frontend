@@ -1,0 +1,61 @@
+<div song edit>
+    <div class="btn-group pull-right">
+        <a href="#/song/{{ctrl.song.id}}/view" class="btn btn-default">Zpět</a>
+    </div>
+
+    <h1>
+        <span ng-if="ctrl.create">Nová píseň</span>
+        <span ng-if="!ctrl.create">Editace písně</span>
+        <span ng-if="ctrl.song.title != ''" class="text-muted"> {{ctrl.song.title}}</span>
+    </h1>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li ng-class="{active: ctrl.tab == 0}"><a ng-click="ctrl.tab = 0" role="tab">Informace</a></li>
+        <li ng-class="{active: ctrl.tab == 1}"><a ng-click="ctrl.tab = 1" role="tab">Text</a></li>
+        <li ng-class="{active: ctrl.tab == 2}"><a ng-click="ctrl.tab = 2; ctrl.computeLyrics()" role="tab">Akordy</a></li>
+    </ul>
+
+    <form class="song" role="form" ng-submit="ctrl.save()">
+        <div ng-if="ctrl.tab == 0">
+            <div class="form-group">
+                <label for="input-title">Název</label>
+                <input type="text" required class="form-control" id="input-title" ng-model="ctrl.song.title">
+            </div>
+            <div class="form-group">
+                <label for="input-album">Album</label>
+                <input type="text" class="form-control" id="input-album" ng-model="ctrl.song.album">
+            </div>
+            <div class="form-group">
+                <label for="input-author">Autor</label>
+                <input type="text" class="form-control" id="input-author" ng-model="ctrl.song.author">
+            </div>
+            <div class="form-group">
+                <label for="input-originalAuthor">Původní autor</label>
+                <input type="text" class="form-control" id="input-originalAuthor" ng-model="ctrl.song.originalAuthor">
+            </div>
+            <div class="form-group">
+                <label for="input-year">Rok</label>
+                <input type="text" class="form-control" id="input-year" ng-model="ctrl.song.year">
+            </div>
+        </div>
+
+        <div ng-if="ctrl.tab == 1">
+            <div class="form-group">
+                <textarea type="text" required class="form-control" id="input-lyrics" ng-model="ctrl.song.lyrics"></textarea>
+            </div>
+        </div>
+
+        <div class="tab-chords" ng-if="ctrl.tab == 2">
+            <section ng-repeat="section in ctrl.lyrics">
+                <span class="title">{{section['title']}}&nbsp;</span>
+
+                <p ng-repeat="line in section['lines']">
+                    <chpos ng-repeat="char in line" offset="char['offset']" ctrl="ctrl" char="char['char']" chord="ctrl.song.chords[char['offset'].toString()]"></chpos>
+                </p>
+            </section>
+        </div>
+
+        <button type="submit" class="btn btn-success">Uložit</button>
+    </form>
+
+</div>
