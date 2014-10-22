@@ -8,8 +8,9 @@ part of app;
 class BarComponent {
   final SessionService _sessionService;
   final MessageService _messageService;
+  final Router _router;
 
-  BarComponent(this._sessionService, this._messageService);
+  BarComponent(this._sessionService, this._messageService, this._router);
 
   bool get loggedIn => _sessionService.session != null;
 
@@ -17,7 +18,8 @@ class BarComponent {
 
   void signOut() {
     _sessionService.terminate().then((_) {
-      _messageService.addSuccess('Odhlášen.', 'Ušpěšně odhlášen.');
+      _messageService.addSuccess('Odhlášen.', 'Úšpěšně odhlášen.');
+      _router.go('homepage', {});
     });
   }
 }
