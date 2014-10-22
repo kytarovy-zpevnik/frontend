@@ -12,8 +12,9 @@ class Api {
   final ApiHost _apiHost;
   final SessionToken _sessionToken;
   final Router _router;
+  final MessageService _messageService;
 
-  Api(this._http, this._apiHost, this._sessionToken, this._router);
+  Api(this._http, this._apiHost, this._sessionToken, this._router, this._messageService);
 
   /**
    * Sends a http get request to given resource.
@@ -73,6 +74,7 @@ class Api {
    */
   Future<ServerError> _error(HttpResponse response) {
     if (response.status == 401) {
+      _messageService.addInfo('Nepřihlášen.', 'Přihlaste se prosím a opakujte akci znovu.');
       _router.go('sign', {});
       return null;
 

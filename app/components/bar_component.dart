@@ -3,8 +3,8 @@ part of app;
 @Component(
     selector: 'bar',
     templateUrl: 'app/templates/bar.html',
-    cssUrl: 'css/bootstrap.min.css',
-    publishAs: 'cmp')
+    publishAs: 'cmp',
+    useShadowDom: false)
 class BarComponent {
   final SessionService _sessionService;
   final MessageService _messageService;

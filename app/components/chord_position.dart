@@ -4,8 +4,7 @@ part of app;
     selector: 'chpos',
     templateUrl: 'app/templates/chord_position.html',
     publishAs: 'cmp',
-    useShadowDom: false
-    )
+    useShadowDom: false)
 class ChordPosition {
   @NgOneWay('offset')
   int offset;
