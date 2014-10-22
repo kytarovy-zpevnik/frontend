@@ -12,6 +12,7 @@ part 'controllers/homepage_controller.dart';
 part 'controllers/register_controller.dart';
 part 'controllers/reset_password_controller.dart';
 part 'controllers/sign_in_controller.dart';
+part 'controllers/songbook_controller.dart';
 part 'controllers/songbooks_controller.dart';
 part 'controllers/song_controller.dart';
 part 'controllers/songs_controller.dart';
@@ -44,6 +45,7 @@ class AppModule extends Module {
     bind(RegisterController);
     bind(ResetPasswordController);
     bind(SignInController);
+    bind(SongbookController);
     bind(SongbooksController);
     bind(SongController);
     bind(SongsController);

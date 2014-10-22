@@ -34,6 +34,13 @@ void appRouteInitializer(Router router, RouteViewFactory view) {
                   path: '/edit',
                   view: 'app/views/song_edit.html')
           }),
+      'songbook': ngRoute(
+          path: '/songbook/:id',
+          mount: {
+              'view': ngRoute(
+                  path: '/view',
+                  view: 'app/views/songbook_view.html'),
+          }),
       'register': ngRoute(
           path: '/register',
           view: 'app/views/register.html'),

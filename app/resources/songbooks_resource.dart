@@ -17,5 +17,10 @@ class SongbooksResource {
     });
   }
 
+  Future<Songbook> read(int id) {
+    return _api.get('songbooks/' + id.toString()).then((HttpResponse response) {
+      return new Songbook(response.data['id'], response.data['name'], songs: response.data['songs']);
+    });
+  }
 
 }

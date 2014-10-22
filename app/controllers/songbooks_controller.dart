@@ -1,6 +1,6 @@
 part of app;
 
-@Controller(selector: '[songbook]', publishAs: 'ctrl')
+@Controller(selector: '[songbooks]', publishAs: 'ctrl')
 class SongbooksController {
 
   final SongbooksResource _songbookResource;

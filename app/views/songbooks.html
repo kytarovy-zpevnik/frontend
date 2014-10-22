@@ -1,8 +1,8 @@
-<div songbook>
+<div songbooks>
     <h1>Zpěvníky</h1>
     <div class="row" ng-repeat="songbook in ctrl.songbooks">
         <div class="col-md-12">
-            <h3><a href="">{{songbook.name}}</a></h3>
+            <h3><a href="#/songbook/{{songbook.id}}/view">{{songbook.name}}</a></h3>
         </div>
     </div>
 </div>
