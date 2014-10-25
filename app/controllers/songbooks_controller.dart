@@ -8,15 +8,23 @@ class SongbooksController {
 
   List songbooks = [];
 
+  String _search = '';
 
+  String get search => _search;
 
-  SongbooksController(this._songbookResource, this._messageService) {
-    _songbookResource.readAll().then((List<Songbook> songbooks) {
-      songbooks.forEach((Songbook songbook) {
-          this.songbooks.add(songbook);
-      });
-    });
+  set search(String search) {
+    _songbookResource.readAll(search).then(_processSongbooks);
   }
 
+  SongbooksController(this._songbookResource, this._messageService) {
+    _songbookResource.readAll().then(_processSongbooks);
+  }
+
+  void _processSongbooks(List<Songbook> songbooks) {
+    this.songbooks.clear();
+    songbooks.forEach((Songbook songbook) {
+      this.songbooks.add(songbook);
+    });
+  }
 
 }

@@ -16,8 +16,8 @@ class SongbooksResource {
     });
   }
 
-  Future<List<Songbook>> readAll() {
-    return _api.get('songbooks').then((HttpResponse response) {
+  Future<List<Songbook>> readAll([String search]) {
+    return _api.get('songbooks', params: {'search': search}).then((HttpResponse response) {
       var songbooks = response.data.map((data) {
         return new Songbook(data['id'], data['name']);
       });
