@@ -6,8 +6,8 @@ class SongsResource {
 
   SongsResource(this._api);
 
-  Future<List<Song>> readAll() {
-    return _api.get('songs').then((HttpResponse response) {
+  Future<List<Song>> readAll([String search]) {
+    return _api.get('songs', params: {'search': search}).then((HttpResponse response) {
       var songs = response.data.map((data) {
         return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'], id: data['id']);
       });
