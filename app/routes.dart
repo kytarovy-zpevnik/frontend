@@ -35,7 +35,7 @@ void appRouteInitializer(Router router, RouteViewFactory view) {
                   view: 'app/views/song_edit.html')
           }),
       'editSongbook': ngRoute(
-        path: '/songbook/edit',
+        path: '/songbook/create',
         view: 'app/views/songbook_edit.html'
       ),
       'songbook': ngRoute(
