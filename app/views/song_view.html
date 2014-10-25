@@ -1,6 +1,17 @@
 <div song>
-    <div class="btn-group pull-right">
+    <div class="pull-right">
         <a href="#/song/{{ctrl.song.id}}/edit" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span> Editovat</a>
+        <span style="position: relative">
+            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                Zařadit do zpěvníku <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="item in ctrl.items">
+                    <a ng-if="item.included" ng-click="ctrl.removeFromSongbook($index)"><i class="glyphicon glyphicon-ok"></i> <span class="toggle-on-label">{{item.songbook.name}}</span></a>
+                    <a ng-if="!item.included" ng-click="ctrl.addToSongbook($index)"><span class="toggle-off-label">{{item.songbook.name}}</span></a>
+                </li>
+            </ul>
+        </span>
     </div>
     <h1>{{ctrl.song.title}}</h1>
 

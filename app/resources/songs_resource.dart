@@ -18,6 +18,14 @@ class SongsResource {
 
   Future create(Song song) {
     _normalize(song);
+
+    var songbooks = [];
+    song.songbooks.forEach((songbook) {
+      songbooks.add({
+          'id': songbook.id
+      });
+    });
+
     return _api.post('songs', data: {
         'title': song.title,
         'album': song.album,
@@ -25,7 +33,8 @@ class SongsResource {
         'originalAuthor': song.originalAuthor,
         'year': song.year,
         'lyrics': song.lyrics,
-        'chords': JSON.encode(song.chords)
+        'chords': JSON.encode(song.chords),
+        'songbooks': songbooks
     }).then((HttpResponse response) {
       song.id = response.data['id'];
       return new Future.value(song);
@@ -34,6 +43,14 @@ class SongsResource {
 
   Future update(Song song) {
     _normalize(song);
+
+    var songbooks = [];
+    song.songbooks.forEach((songbook) {
+      songbooks.add({
+        'id': songbook.id
+      });
+    });
+
     return _api.put('songs/' + song.id.toString(), data: {
         'title': song.title,
         'album': song.album,
@@ -41,7 +58,8 @@ class SongsResource {
         'originalAuthor': song.originalAuthor,
         'year': song.year,
         'lyrics': song.lyrics,
-        'chords': JSON.encode(song.chords)
+        'chords': JSON.encode(song.chords),
+        'songbooks': songbooks
     }).then((HttpResponse response) {
       return new Future.value(song);
     });
@@ -53,7 +71,11 @@ class SongsResource {
       if (chords == null) {
         chords = {};
       }
-      return new Song(response.data['title'], response.data['album'], response.data['author'], response.data['originalAuthor'], response.data['year'], lyrics: response.data['lyrics'], chords: chords, id: response.data['id']);
+      var songbooks = [];
+      for (var i = 0; i < response.data['songbooks'].length; i++) {
+        songbooks.add(new Songbook(response.data['songbooks'][i]['id'], response.data['songbooks'][i]['name']));
+      }
+      return new Song(response.data['title'], response.data['album'], response.data['author'], response.data['originalAuthor'], response.data['year'], lyrics: response.data['lyrics'], chords: chords, id: response.data['id'], songbooks: songbooks);
     });
   }
 

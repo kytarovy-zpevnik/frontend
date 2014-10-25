@@ -11,8 +11,13 @@ class Song {
   String originalAuthor = '';
   String year = '';
 
-  String lyrics = '';
-  Map<int, String> chords = {};
+  String lyrics;
+  Map<int, String> chords;
 
-  Song(this.title, this.album, this.author, this.originalAuthor, this.year, {this.id, this.lyrics, this.chords});
+  List<Songbook> songbooks;
+
+  Song(this.title, this.album, this.author, this.originalAuthor, this.year, {this.id, this.lyrics: '', this.chords, this.songbooks}) {
+    if (chords == null) chords = {};
+    if (songbooks == null) songbooks = [];
+  }
 }

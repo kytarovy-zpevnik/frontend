@@ -24,6 +24,9 @@ void appRouteInitializer(Router router, RouteViewFactory view) {
       'createSong': ngRoute(
           path: '/song/create',
           view: 'app/views/song_edit.html'),
+      'createSongInSongbook': ngRoute(
+          path: '/song/create/songbook/:songbookId',
+          view: 'app/views/song_edit.html'),
       'song': ngRoute(
           path: '/song/:id',
           mount: {

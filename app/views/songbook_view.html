@@ -1,7 +1,13 @@
 <div songbook>
-    <div class="btn-group pull-right">
+    <div class="pull-right">
         <a href="#/songbook/{{ctrl.songbook.id}}/edit" class="btn btn-info">
             <span class="glyphicon glyphicon-pencil"></span> Upravit zpěvník
+        </a>
+        <a href="#/song/create/songbook/{{ctrl.songbook.id}}" class="btn btn-success">
+            <span class="glyphicon glyphicon-plus"></span> Vytvořit píseň
+        </a>
+        <a href="#/songs" class="btn btn-default">
+            <span class="glyphicon glyphicon-book"></span> Zařadit píseň
         </a>
     </div>
     <h1>{{ctrl.songbook.name}}</h1>
