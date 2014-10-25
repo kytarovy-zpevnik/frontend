@@ -1,0 +1,24 @@
+<div songbook edit>
+
+    <div class="btn-group pull-right">
+        <a href="#/songbook/{{ctrl.songbook.id}}/view" class="btn btn-default">Zpět</a>
+    </div>
+
+    <h1>
+        <span ng-if="ctrl.create">Nový zpěvník</span>
+        <span ng-if="!ctrl.create">Editace zpěvníku</span>
+        <span ng-if="ctrl.songbook.name != ''" class="text-muted"> {{ctrl.songbook.name}}</span>
+    </h1>
+
+    <form class="songbook" role="form" ng-submit="ctrl.save()">
+        <div class="form-group">
+            <label for="input-title">Název</label>
+            <input type="text" required class="form-control" id="input-title" ng-model="ctrl.songbook.name">
+        </div>
+
+        <button type="submit" class="btn btn-success">Uložit</button>
+    </form>
+
+</div>
+
+

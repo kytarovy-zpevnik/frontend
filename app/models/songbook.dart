@@ -4,7 +4,7 @@ part of app;
  * Songbook model.
  */
 class Songbook {
-  final int id;
+  int id;
   String name;
   List songs = [];
 
