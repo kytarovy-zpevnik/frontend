@@ -65,13 +65,13 @@ class SongController {
     if (create) {
       _songsResource.create(song).then((_) {
         _messageService.addSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
+        _router.go('song.view', {'id': song.id});
       });
     } else {
       _songsResource.update(song).then((_) {
         _messageService.addSuccess('Uloženo.', 'Píseň byla úspěšně uložena.');
+        _router.go('song.view', {'id': song.id});
       });
     }
-
-    _router.go('song.view', {'id': song.id});
   }
 }
