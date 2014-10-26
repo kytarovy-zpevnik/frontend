@@ -17,7 +17,7 @@ class Song {
 
   List<Songbook> songbooks;
 
-  Song(this.title, this.album, this.author, this.originalAuthor, this.year, {this.id, this.lyrics: '', this.chords, this.songbooks}) {
+  Song(this.title, this.album, this.author, this.originalAuthor, this.year, this.note, {this.id, this.lyrics: '', this.chords, this.songbooks}) {
     if (chords == null) chords = {
     };
     if (songbooks == null) songbooks = [];

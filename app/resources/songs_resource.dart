@@ -84,13 +84,15 @@ class SongsResource {
     return _api.get('songs/' + id.toString()).then((HttpResponse response) {
       var chords = JSON.decode(response.data['chords']);
       if (chords == null) {
-        chords = {};
+        chords = {
+        };
       }
       var songbooks = [];
       for (var i = 0; i < response.data['songbooks'].length; i++) {
         songbooks.add(new Songbook(response.data['songbooks'][i]['id'], response.data['songbooks'][i]['name']));
       }
       return new Song(response.data['title'], response.data['album'], response.data['author'], response.data['originalAuthor'], response.data['year'], response.data['note'], lyrics: response.data['lyrics'], chords: chords, id: response.data['id'], songbooks: songbooks);
+    });
   }
 
   /**
