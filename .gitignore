@@ -3,3 +3,8 @@ api/*
 nbproject/
 packages/*
 build/*
+css/screen.css
+app.js
+app.js.deps
+app.js.map
+app.precompiled.js

@@ -11,7 +11,12 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-select.min.css" rel="stylesheet">
+
+    <!-- dev -->
     <link href="less/screen.less" rel="stylesheet/less">
+
+    <!-- build -->
+    <!--<link href="css/screen.css" rel="stylesheet/css">-->
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -37,15 +42,13 @@
     $('select').selectpicker();
 </script>
 
-<!-- tohle je tu zatím dočasně, než začneme kompilovat less styly -->
+<!-- dev -->
 <script src="js/less-1.7.0.min.js" type="text/javascript"></script>
-
-<!--pokud pouštím zkompilovanou aplikaci-->
-<!--<script src="build/app.js"></script>-->
-
-<!--pokud pouštím nezkompilovanou aplikaci přes Dartium-->
 <script src="packages/shadow_dom/shadow_dom.min.js"></script>
 <script type="application/dart" src="main.dart"></script>
 <script type="text/javascript" src="packages/browser/dart.js"></script>
+
+<!-- build -->
+<!--<script src="js/app.js"></script>-->
 
 </body>
