@@ -2,7 +2,7 @@ part of app;
 
 @Component(
     selector: 'bar',
-    templateUrl: 'app/templates/bar.html',
+    templateUrl: 'html/templates/bar.html',
     publishAs: 'cmp',
     useShadowDom: false)
 class BarComponent {

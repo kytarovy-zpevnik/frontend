@@ -2,7 +2,7 @@ part of app;
 
 @Component(
     selector: 'messages',
-    templateUrl: 'app/templates/messages.html',
+    templateUrl: 'html/templates/messages.html',
     cssUrl: 'css/bootstrap.min.css',
     publishAs: 'cmp')
 class MessagesComponent {

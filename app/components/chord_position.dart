@@ -2,7 +2,7 @@ part of app;
 
 @Component(
     selector: 'chpos',
-    templateUrl: 'app/templates/chord_position.html',
+    templateUrl: 'html/templates/chord_position.html',
     publishAs: 'cmp',
     useShadowDom: false)
 class ChordPosition {
