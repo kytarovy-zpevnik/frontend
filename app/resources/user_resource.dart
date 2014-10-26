@@ -6,6 +6,9 @@ class UserResource {
 
   UserResource(this._api);
 
+  /**
+   * Creates new user.
+   */
   Future<User> create(String username, String email, String password) {
     return _api.post('users', data: {
       'username': username,
@@ -18,6 +21,9 @@ class UserResource {
     });
   }
 
+  /**
+   * Reads all users.
+   */
   Future<List<User>> readAll() {
     return _api.get('users').then((HttpResponse response) {
       var users = response.data.map((data) {
@@ -30,6 +36,9 @@ class UserResource {
     });
   }
 
+  /**
+   * Updates user.
+   */
   Future update(User user) {
     return _api.put('users/' + user.id.toString(), data: {
       'role': {

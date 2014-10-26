@@ -6,6 +6,9 @@ class SongbooksResource {
 
   SongbooksResource(this._api);
 
+  /**
+   * Creates new songbook.
+   */
   Future create(Songbook songbook) {
     _normalize(songbook);
     return _api.post('songbooks', data: {
@@ -16,6 +19,9 @@ class SongbooksResource {
     });
   }
 
+  /**
+   * Read's all songbooks.
+   */
   Future<List<Songbook>> readAll([String search]) {
     return _api.get('songbooks', params: {'search': search}).then((HttpResponse response) {
       var songbooks = response.data.map((data) {
@@ -26,12 +32,18 @@ class SongbooksResource {
     });
   }
 
+  /**
+   * Reads songbook by id.
+   */
   Future<Songbook> read(int id) {
     return _api.get('songbooks/' + id.toString()).then((HttpResponse response) {
       return new Songbook(response.data['id'], response.data['name'], songs: response.data['songs']);
     });
   }
 
+  /**
+   * Updates songbook.
+   */
   Future edit(Songbook songbook) {
     _normalize(songbook);
     return _api.put('songbooks/' + songbook.id.toString(), data: {
@@ -41,6 +53,9 @@ class SongbooksResource {
     });
   }
 
+  /**
+   * Sets empty values to null.
+   */
   void _normalize(Songbook songbook) {
     //nothing to normalize for now
   }

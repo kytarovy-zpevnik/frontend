@@ -6,6 +6,9 @@ class SongsResource {
 
   SongsResource(this._api);
 
+  /**
+   * Read's all songs.
+   */
   Future<List<Song>> readAll([String search]) {
     return _api.get('songs', params: {'search': search}).then((HttpResponse response) {
       var songs = response.data.map((data) {
@@ -16,6 +19,9 @@ class SongsResource {
     });
   }
 
+  /**
+   * Creates new song.
+   */
   Future create(Song song) {
     _normalize(song);
 
@@ -41,6 +47,9 @@ class SongsResource {
     });
   }
 
+  /**
+   * Updates song.
+   */
   Future update(Song song) {
     _normalize(song);
 
@@ -65,6 +74,9 @@ class SongsResource {
     });
   }
 
+  /**
+   * Reads song by id.
+   */
   Future<Song> read(int id) {
     return _api.get('songs/' + id.toString()).then((HttpResponse response) {
       var chords = JSON.decode(response.data['chords']);
@@ -79,6 +91,9 @@ class SongsResource {
     });
   }
 
+  /**
+   * Sets empty values to null.
+   */
   void _normalize(Song song) {
     if (song.album == '') song.album = null;
     if (song.author == '') song.author = null;
