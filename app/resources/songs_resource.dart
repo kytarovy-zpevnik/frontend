@@ -12,7 +12,7 @@ class SongsResource {
   Future<List<Song>> readAll([String search]) {
     return _api.get('songs', params: {'search': search}).then((HttpResponse response) {
       var songs = response.data.map((data) {
-        return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'], id: data['id']);
+        return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'], data['note'], id: data['id']);
       });
 
       return new Future.value(songs);
@@ -38,11 +38,13 @@ class SongsResource {
         'author': song.author,
         'originalAuthor': song.originalAuthor,
         'year': song.year,
+        'note': song.note,
         'lyrics': song.lyrics,
         'chords': JSON.encode(song.chords),
         'songbooks': songbooks
     }).then((HttpResponse response) {
       song.id = response.data['id'];
+      print(song.id);
       return new Future.value(song);
     });
   }
@@ -66,6 +68,7 @@ class SongsResource {
         'author': song.author,
         'originalAuthor': song.originalAuthor,
         'year': song.year,
+        'note': song.note,
         'lyrics': song.lyrics,
         'chords': JSON.encode(song.chords),
         'songbooks': songbooks
@@ -87,8 +90,7 @@ class SongsResource {
       for (var i = 0; i < response.data['songbooks'].length; i++) {
         songbooks.add(new Songbook(response.data['songbooks'][i]['id'], response.data['songbooks'][i]['name']));
       }
-      return new Song(response.data['title'], response.data['album'], response.data['author'], response.data['originalAuthor'], response.data['year'], lyrics: response.data['lyrics'], chords: chords, id: response.data['id'], songbooks: songbooks);
-    });
+      return new Song(response.data['title'], response.data['album'], response.data['author'], response.data['originalAuthor'], response.data['year'], response.data['note'], lyrics: response.data['lyrics'], chords: chords, id: response.data['id'], songbooks: songbooks);
   }
 
   /**
@@ -99,6 +101,7 @@ class SongsResource {
     if (song.author == '') song.author = null;
     if (song.originalAuthor == '') song.originalAuthor = null;
     if (song.year == '') song.year = null;
+    if (song.note == '') song.note = null;
   }
 
 }

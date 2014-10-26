@@ -10,6 +10,7 @@ class Song {
   String author = '';
   String originalAuthor = '';
   String year = '';
+  String note = '';
 
   String lyrics;
   Map<int, String> chords;
@@ -17,7 +18,8 @@ class Song {
   List<Songbook> songbooks;
 
   Song(this.title, this.album, this.author, this.originalAuthor, this.year, {this.id, this.lyrics: '', this.chords, this.songbooks}) {
-    if (chords == null) chords = {};
+    if (chords == null) chords = {
+    };
     if (songbooks == null) songbooks = [];
   }
 }
