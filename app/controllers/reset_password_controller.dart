@@ -15,15 +15,15 @@ class ResetPasswordController {
   
   void reset() {
     _resetPasswordResource.reset(identifier).then((_) {
-      _messageService.addSuccess('Úspěch.', 'Zaslali jsme Vám email pro nastavení hesla.');
+      _messageService.showSuccess('Úspěch.', 'Zaslali jsme Vám email pro nastavení hesla.');
     }).catchError((ApiError e){
       switch(e.error) {
         case 'UNKNOWN_IDENTIFIER':
-          _messageService.addError('Nespech.', 'Uživatel ' + identifier + ' nenalezen');
+          _messageService.showError('Nespech.', 'Uživatel ' + identifier + ' nenalezen');
           break;
 
         case 'ALREADY_SENT':
-          _messageService.addError('Neúspěch.', 'V posledních 24 hodinách byl již požadavek na změnu hesla zaslán. Zkuste to prosím později.');
+          _messageService.showError('Neúspěch.', 'V posledních 24 hodinách byl již požadavek na změnu hesla zaslán. Zkuste to prosím později.');
           break;
       }
     });
@@ -33,17 +33,17 @@ class ResetPasswordController {
     String token = _routeProvider.parameters['token'];
     if(password == passwordCheck) {
       _resetPasswordResource.setNewPassword(token, password).then((_) {
-        _messageService.addSuccess('Úspěch.', 'Heslo bylo úspěšně změněno.');
+        _messageService.prepareSuccess('Úspěch.', 'Heslo bylo úspěšně změněno.');
         _router.go('homepage', {});
       }).catchError((ApiError e) {
         if (e.error == 'TOKEN_EXPIRATED') {
-          _messageService.addError('Chyba.', 'Platnost tokenu vypršela, zažádejte o obnovu hesla znovu.');
+          _messageService.showError('Chyba.', 'Platnost tokenu vypršela, zažádejte o obnovu hesla znovu.');
           return new Future.value();
         }
       });
     }
     else {
-      _messageService.addError('Překlep.', 'Zadaná hesla se neshodují.');
+      _messageService.showError('Překlep.', 'Zadaná hesla se neshodují.');
       password = passwordCheck = '';
     }
   }

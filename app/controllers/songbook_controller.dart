@@ -42,13 +42,13 @@ class SongbookController {
   void save() {
     if (create) {
       _songbooksResource.create(songbook).then((_){
-        _messageService.addSuccess('Vytvořeno.', 'Nový zpěvník byl úspěšně vytvořen.');
+        _messageService.prepareSuccess('Vytvořeno.', 'Nový zpěvník byl úspěšně vytvořen.');
         _router.go('songbook.view', {'id': songbook.id});
       });
     }
     else {
       _songbooksResource.edit(songbook).then((_){
-        _messageService.addSuccess('Uloženo.', 'Zpěvník byl úspěšně uložen.');
+        _messageService.prepareSuccess('Uloženo.', 'Zpěvník byl úspěšně uložen.');
         _router.go('songbook.view', {'id': songbook.id});
       });
     }

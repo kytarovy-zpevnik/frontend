@@ -74,7 +74,7 @@ class Api {
    */
   Future<ServerError> _error(HttpResponse response) {
     if (response.status == 401) {
-      _messageService.addInfo('Nepřihlášen.', 'Přihlaste se prosím a opakujte akci znovu.');
+      _messageService.prepareInfo('Nepřihlášen.', 'Přihlaste se prosím a opakujte akci znovu.');
       _router.go('sign', {});
       return null;
 

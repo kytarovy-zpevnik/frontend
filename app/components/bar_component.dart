@@ -18,7 +18,7 @@ class BarComponent {
 
   void signOut() {
     _sessionService.terminate().then((_) {
-      _messageService.addSuccess('Odhlášen.', 'Úšpěšně odhlášen.');
+      _messageService.prepareSuccess('Odhlášen.', 'Úšpěšně odhlášen.');
       _router.go('homepage', {});
     });
   }
