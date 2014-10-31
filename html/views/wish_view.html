@@ -1,0 +1,30 @@
+<div wish>
+    <div class="pull-right">
+        <div class="pokus">
+            <a href="#/wish/{{ctrl.wish.id}}/edit" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span> Editovat</a>
+            <br><br>
+            <form class="wish-mark" role="form" ng-submit="ctrl.mark()">
+                <span ng-if="!ctrl.wish.meet">
+                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Označit jako splněné</button>
+                </span>
+                <span ng-if="ctrl.wish.meet">
+                    <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Označit jako nesplněné</button>
+                </span>
+            </form>
+        </div>
+    </div>
+    <h1>{{ctrl.wish.name}}</h1>
+
+    <div class="meta">
+        <b>Přání:</b>
+        {{ctrl.wish.name}}<br>
+        <span ng-if="ctrl.wish.note != null"><b>Poznámka:</b>
+        {{ctrl.wish.note}}<br></span>
+        <span ng-if="ctrl.wish.meet"><b>Splněno: Ano</b><br></span>
+        <span ng-if="!ctrl.wish.meet"><b>Splněno: Ne</b><br></span>
+        <b>Vytvořeno:</b>
+        {{ctrl.wish.created}}<br>
+        <span ng-if="ctrl.wish.modified != ctrl.wish.created"><b>Změněno:</b>
+        {{ctrl.wish.modified}}<br></span>
+    </div>
+</div>

@@ -8,6 +8,22 @@ class Routes {
 
   void call(Router router, RouteViewFactory view) {
     view.configure({
+        'wishes': appRoute(
+            path: '/wishes',
+            view: 'html/views/wishes.html'),
+        'wish': appRoute(
+            path: '/wish/:id',
+            mount: {
+                'view': appRoute(
+                    path: '/view',
+                    view: 'html/views/wish_view.html'),
+                'edit': appRoute(
+                    path: '/edit',
+                    view: 'html/views/wish_edit.html')
+            }),
+        'createWish': appRoute(
+            path: '/wish/create',
+            view: 'html/views/wish_edit.html'),
         'songs': appRoute(
             path: '/songs',
             view: 'html/views/songs.html'),
@@ -74,12 +90,15 @@ class Routes {
   }
 
   NgRouteCfg appRoute({String path, String view, String viewHtml,
-      Map<String, NgRouteCfg> mount, modules(), bool defaultRoute: false,
-      RoutePreEnterEventHandler preEnter, RouteEnterEventHandler enter,
-      RoutePreLeaveEventHandler preLeave, RouteLeaveEventHandler leave,
-      dontLeaveOnParamChanges: false}) =>
-          ngRoute(path: path, view: view, viewHtml: viewHtml, mount: mount,
-          modules: modules, defaultRoute: defaultRoute, preEnter: preEnter, preLeave: preLeave,
-          enter: (e) { _messageService.showStacked(); enter(e); }, leave: leave,
-          dontLeaveOnParamChanges: dontLeaveOnParamChanges);
+                      Map<String, NgRouteCfg> mount, modules(), bool defaultRoute: false,
+                      RoutePreEnterEventHandler preEnter, RouteEnterEventHandler enter,
+                      RoutePreLeaveEventHandler preLeave, RouteLeaveEventHandler leave,
+                      dontLeaveOnParamChanges: false}) =>
+  ngRoute(path: path, view: view, viewHtml: viewHtml, mount: mount,
+  modules: modules, defaultRoute: defaultRoute, preEnter: preEnter, preLeave: preLeave,
+  enter: (e) {
+    _messageService.showStacked();
+    enter(e);
+  }, leave: leave,
+  dontLeaveOnParamChanges: dontLeaveOnParamChanges);
 }

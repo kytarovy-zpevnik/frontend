@@ -1,0 +1,26 @@
+<div wishes>
+    <div class="pull-right">
+        <form class="form-inline" role="search">
+            <a href="#/wish/create" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Nové přání</a>
+        </form>
+    </div>
+    <h1>Má přání</h1>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li ng-class="{active: ctrl.tab == 0}"><a ng-click="ctrl.tab = 0" role="tab">Nesplněná přání</a></li>
+        <li ng-class="{active: ctrl.tab == 1}"><a ng-click="ctrl.tab = 1" role="tab">Splněná přání</a></li>
+    </ul>
+
+    <div ng-if="ctrl.tab == 0">
+        <div class="row" ng-repeat="wish in ctrl.wishes">
+            <span ng-if="!wish.meet"><h3><a href="#/wish/{{wish.id}}/view">{{wish.name}}</a></h3></span>
+        </div>
+    </div>
+
+    <div ng-if="ctrl.tab == 1">
+        <div class="row" ng-repeat="wish in ctrl.wishes">
+            <span ng-if="wish.meet"><h3><a href="#/wish/{{wish.id}}/view">{{wish.name}}</a></h3></span>
+        </div>
+    </div>
+
+</div>
