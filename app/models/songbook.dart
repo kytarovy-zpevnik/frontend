@@ -6,9 +6,10 @@ part of app;
 class Songbook {
   int id;
   String name;
+  String note = '';
   List songs = [];
 
-  Songbook(this.id, this.name, {this.songs});
+  Songbook(this.id, this.name, this.note, {this.songs});
 
 
 }
