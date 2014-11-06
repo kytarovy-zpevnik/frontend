@@ -56,7 +56,7 @@ class SongController {
     create = !_routeProvider.parameters.containsKey('id');
 
     if (create) {
-      song = new Song('', '', '', '', '', '');
+      song = new Song('', '', '', '', '', '', false);
 
       if (_routeProvider.parameters.containsKey('songbookId')) {
         _songbooksResource.read(_routeProvider.parameters['songbookId']).then((Songbook songbook) {

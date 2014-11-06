@@ -41,6 +41,11 @@
                 <label for="input-note">Poznámka</label>
                 <input type="text" class="form-control" id="input-note" ng-model="ctrl.song.note">
             </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" required id="input-public" ng-model="ctrl.song.public"> Veřejná píseň
+                </label>
+            </div>
         </div>
 
         <div ng-if="ctrl.tab == 1">
