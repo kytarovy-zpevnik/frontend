@@ -1,6 +1,7 @@
 <span class="offset"><span ng-if="cmp.chordEditor" class="editor">
+        <script>$('input.chord').focus();</script>
         <form ng-submit="cmp.setChord()">
-            Zadejte akord: <input ng-model="cmp.input" type="text"> <input type="submit" value="Ok">
+            Zadejte akord: <input class="chord" ng-model="cmp.input" type="text"> <input type="submit" value="Ok">
         </form>
     </span><span ng-if="cmp.chord != ''" class="chord">
     {{cmp.chord}}
