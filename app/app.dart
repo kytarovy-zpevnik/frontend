@@ -29,7 +29,7 @@ part 'models/songbook.dart';
 part 'models/user.dart';
 part 'models/wish.dart';
 part 'models/rating.dart';
-part 'resources/reset_password_resource';
+part 'resources/reset_password_resource.dart';
 part 'resources/session_resource.dart';
 part 'resources/songbooks_resource.dart';
 part 'resources/songs_resource.dart';
