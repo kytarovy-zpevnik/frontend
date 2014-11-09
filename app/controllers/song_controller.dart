@@ -25,8 +25,16 @@ class SongController {
 
     if (song != null) {
       song.lyrics.split('\n\n').forEach((String section) {
-        var rowOffset = section.indexOf(':') + 1;
-        var title = section.substring(0, rowOffset);
+        var rowOffset = section.indexOf('))');
+        var title = '';
+
+        if (section.indexOf('((') == 0 && rowOffset != -1) {
+          print(rowOffset);
+          title = section.substring(2, rowOffset) + ':';
+          rowOffset += 2;
+        } else {
+          rowOffset = 0;
+        }
 
         var lines = [];
         section.substring(rowOffset).trim().split('\n').forEach((String line) {
