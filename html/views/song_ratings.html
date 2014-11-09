@@ -1,0 +1,17 @@
+<div song_ratings song-ratings>
+
+    <div class="pull-right">
+        <form class="form-inline" role="search">
+            <a href="#/song/{{ctrl.song.id}}/rating/edit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Ohodnotit</a>
+            <a href="#/song/{{ctrl.song.id}}/view" class="btn btn-default">Zpět</a>
+        </form>
+    </div>
+
+    <h1>Hodnocení písně {{ctrl.song.title}}</h1>
+    <div class="meta" ng-repeat="rating in ctrl.ratings">
+        <span><b>Hodnocení: </b>{{rating.rating}}</br></span>
+        <span><b>Komentář: </b>{{rating.comment}}</br></span>
+        </br>
+    </div>
+
+</div>

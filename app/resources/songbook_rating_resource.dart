@@ -9,9 +9,9 @@ class SongbookRatingResource {
   /**
    * Creates new songbook rating.
    */
-  Future createRating(Rating rating, int songbookId) {
+  Future createRating( int songbookId, Rating rating) {
     _normalize(rating);
-    return _api.post('songbooks' + songbookId.toString(), data: {
+    return _api.post('songbooks/' + songbookId.toString()  + "/rating", data: {
         'comment': rating.comment,
         'rating': rating.rating
     }).then((HttpResponse response) {
@@ -24,9 +24,9 @@ class SongbookRatingResource {
    * Reads all songbook ratings.
    */
   Future<List<Rating>> readAllRating(int songbookId) {
-    return _api.get('songbooks'  + songbookId.toString()).then((HttpResponse response) {
+    return _api.get('songbooks/' + songbookId.toString() + "/rating").then((HttpResponse response) {
       var ratings = response.data.map((data) {
-        return new Rating(id: data['id'], comment: data['comment'], created: data['created'], modified: data['modified']);
+        return new Rating(id: data['id'], comment: data['comment'], rating: data['rating'], created: data['created'], modified: data['modified']);
       });
 
       return new Future.value(ratings);
@@ -36,20 +36,32 @@ class SongbookRatingResource {
   /**
    * Reads songbook rating by id.
    */
-  Future<Rating> readRating(int id) {
-    return _api.get('songbooks/' + id.toString()).then((HttpResponse response) {
+  Future<Rating> readRating(int songbookId, int id) {
+    return _api.get('songbooks/' + songbookId.toString()  + "/rating" + id.toString()).then((HttpResponse response) {
       return new Rating(id: response.data['id'], comment: response.data['comment'], rating: response.data['rating'], created: response.data['created'], modified: response.data['modified']);
+    });
+  }
+
+  /**
+   * Reads songbook rating by id.
+   */
+  Future<Rating> editAllRating(int songbookId) {
+    return _api.get('songbooks/' + songbookId.toString() + "/rating").then((HttpResponse response) {
+      if (response.data['message'] == "content") {
+        return response.data['id'];
+      }
+      return 0;
     });
   }
 
   /**
    * Updates songbook rating by id.
    */
-  Future editRating(Rating rating) {
+  Future editRating(int songbookId, Rating rating) {
     _normalize(rating);
-    return _api.put('songbooks/' + rating.id.toString(), data: {
+    return _api.put('songbooks/' + songbookId.toString()  + "/rating" + rating.id.toString()  , data: {
         'comment': rating.comment,
-        'rating': rating.rati,
+        'rating': rating.rating
     }).then((_){
     });
   }
@@ -57,8 +69,8 @@ class SongbookRatingResource {
   /**
    * Deletes songbook rating by id.
    */
-  Future deleteRating(Rating rating) {
-    return _api.put('songbooks/' + rating.id.toString()).then((_){
+  Future deleteRating(int songbookId, Rating rating) {
+    return _api.put('songbooks/' + songbookId.toString()  + '/rating' + rating.id.toString()).then((_){
     });
   }
 

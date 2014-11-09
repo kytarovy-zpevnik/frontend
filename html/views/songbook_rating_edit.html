@@ -1,0 +1,28 @@
+<div songbook_rating songbook-rating>
+
+    <div class="btn-group pull-right">
+        <a href="#/songbook/{{ctrl.songbook.id}}/ratings" class="btn btn-default">Zpět</a>
+    </div>
+
+    <h1>
+        <span ng-if="ctrl.create">Nové hodnocení</span>
+        <span ng-if="!ctrl.create">Editace hodnocení</span>
+        <span ng-if="ctrl.songbook.name != ''" class="text-muted"> {{ctrl.songbook.name}}</span>
+    </h1>
+
+    <form class="songbook_rating" role="form" ng-submit="ctrl.save()">
+        <div class="form-group">
+            <label for="input-title">Hodnocení</label>
+            <input type="text" required class="form-control" id="input-title" ng-model="ctrl.rating.rating">
+        </div>
+        <div class="form-group">
+            <label for="input-note">Komentář</label>
+            <input type="text" required class="form-control" id="input-note" ng-model="ctrl.rating.comment">
+        </div>
+
+        <button type="submit" class="btn btn-success">Uložit</button>
+    </form>
+
+</div>
+
+

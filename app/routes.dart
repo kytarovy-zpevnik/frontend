@@ -57,7 +57,13 @@ class Routes {
                     view: 'html/views/song_view.html'),
                 'edit': appRoute(
                     path: '/edit',
-                    view: 'html/views/song_edit.html')
+                    view: 'html/views/song_edit.html'),
+                'ratings': appRoute(
+                    path: '/ratings',
+                    view: 'html/views/song_ratings.html'),
+                'rating': appRoute(
+                    path: '/rating/edit',
+                    view: 'html/views/song_rating_edit.html')
             }),
         'editSongbook': appRoute(
             path: '/songbook/create',
@@ -71,7 +77,13 @@ class Routes {
                     view: 'html/views/songbook_view.html'),
                 'edit': appRoute(
                     path: '/edit',
-                    view: 'html/views/songbook_edit.html')
+                    view: 'html/views/songbook_edit.html'),
+                'ratings': appRoute(
+                    path: '/ratings',
+                    view: 'html/views/songbook_ratings.html'),
+                'rating': appRoute(
+                    path: '/rating/edit',
+                    view: 'html/views/songbook_rating_edit.html')
             }),
         'register': appRoute(
             path: '/register',
