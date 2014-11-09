@@ -13,7 +13,8 @@ class SongbooksResource {
     _normalize(songbook);
     return _api.post('songbooks', data: {
       'name': songbook.name,
-      'note': songbook.note
+      'note': songbook.note,
+      'public': songbook.public
     }).then((HttpResponse response) {
       songbook.id = response.data['id'];
       return new Future.value(songbook);
@@ -26,7 +27,7 @@ class SongbooksResource {
   Future<List<Songbook>> readAll([String search]) {
     return _api.get('songbooks', params: {'search': search}).then((HttpResponse response) {
       var songbooks = response.data.map((data) {
-        return new Songbook(data['id'], data['name'], data['note']);
+        return new Songbook(data['id'], data['name'], data['note'], data['public']);
       });
 
       return new Future.value(songbooks);
@@ -38,7 +39,7 @@ class SongbooksResource {
    */
   Future<Songbook> read(int id) {
     return _api.get('songbooks/' + id.toString()).then((HttpResponse response) {
-      return new Songbook(response.data['id'], response.data['name'], response.data['note'], songs: response.data['songs']);
+      return new Songbook(response.data['id'], response.data['name'], response.data['note'], response.data['public'], songs: response.data['songs']);
     });
   }
 
@@ -49,7 +50,8 @@ class SongbooksResource {
     _normalize(songbook);
     return _api.put('songbooks/' + songbook.id.toString(), data: {
       'name': songbook.name,
-      'note': songbook.note
+      'note': songbook.note,
+      'public' : songbook.public
     }).then((_){
 
     });
