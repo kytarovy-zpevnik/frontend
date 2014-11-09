@@ -82,6 +82,9 @@ class Routes {
         'admin': appRoute(
             path: '/admin',
             view: 'html/views/admin.html'),
+        'notifications': appRoute(
+            path: '/notifications',
+            view: 'html/views/notifications.html'),
         'homepage': appRoute(
             defaultRoute: true,
             path: '/',
@@ -98,7 +101,7 @@ class Routes {
   modules: modules, defaultRoute: defaultRoute, preEnter: preEnter, preLeave: preLeave,
   enter: (e) {
     _messageService.showStacked();
-    enter(e);
+//    enter(e);
   }, leave: leave,
   dontLeaveOnParamChanges: dontLeaveOnParamChanges);
 }

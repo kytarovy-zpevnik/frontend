@@ -1,0 +1,10 @@
+<div notifications>
+    <h1>Upozornění</h1>
+    <div class="row" ng-repeat="notification in ctrl.notifications">
+        <div class="notification">
+            <p><b>{{ctrl.formatter.format(notification.created)}}</b></p>
+            <p><span ng-if="notification.targetName.isNotEmpty" class="label label-primary">{{notification.targetName}}</span> {{notification.text}}</p>
+            <a ng-if="notification.targetType.isNotEmpty" href="#{{notification.url}}">Přejít na {{notification.targetType}}</a>
+        </div>
+    </div>
+</div>

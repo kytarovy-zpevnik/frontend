@@ -11,7 +11,7 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Hlavní stránka</a></li>
+                <li><a href="#">Hlavní stránka</a></li>
                 <li><a href="#/songs">Písně</a></li>
                 <li><a href="#/songbooks">Zpěvníky</a></li>
                 <li ng-if="cmp.loggedIn"><a href="#/wishes">Má přání</a></li>
@@ -45,6 +45,18 @@
                 <!--<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>-->
             <!--</form>-->
             <ul class="nav navbar-nav navbar-right">
+                <li ng-if="cmp.loggedIn">
+                    <a ng-click="cmp.readNotifications()" title="Upozornění" data-toggle="dropdown">Upozornění <span ng-if="cmp.unread != 0" class="badge">{{cmp.unread}} </span><b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="notification in cmp.notifications">
+                            <a ng-if="notification.url.isNotEmpty" href="#{{notification.url}}">{{notification.text}}</a>
+                            <span ng-if="notification.url.isEmpty" class="no-link">{{notification.text}}</span>
+                        </li>
+                        <li ng-if="cmp.notifications.isEmpty"><span class="no-link">Žádné nepřečtené</span></li>
+                        <li class="divider"></li>
+                        <li><a href="#/notifications">Zobrazit všechny</a></li>
+                    </ul>
+                </li>
                 <li ng-if="!cmp.loggedIn"><a href="#/register"><span class="glyphicon glyphicon-plus"></span> Registrovat</a></li>
                 <li ng-if="!cmp.loggedIn"><a href="#/sign"><span class="glyphicon glyphicon-user"></span> Přihlásit se</a></li>
                 <li ng-if="cmp.admin"><a href="#/admin"><span class="glyphicon glyphicon-user"></span> Administrace</a></li>
