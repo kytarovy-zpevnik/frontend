@@ -9,7 +9,12 @@
 
     <h1>Hodnocení zpěvníku {{ctrl.songbook.name}}</h1>
     <div class="meta" ng-repeat="rating in ctrl.ratings">
-        <span><b>Hodnocení: </b>{{rating.rating}}</br></span>
+        <img ng-if="rating.rating >= 1" src="img/star.png" width="20" height="20">
+        <img ng-if="rating.rating >= 2" src="img/star.png" width="20" height="20">
+        <img ng-if="rating.rating >= 3" src="img/star.png" width="20" height="20">
+        <img ng-if="rating.rating >= 4" src="img/star.png" width="20" height="20">
+        <img ng-if="rating.rating >= 5" src="img/star.png" width="20" height="20">
+        </br>
         <span><b>Komentář: </b>{{rating.comment}}</br></span>
         </br>
     </div>
