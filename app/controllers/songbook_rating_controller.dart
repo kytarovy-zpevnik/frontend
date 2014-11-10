@@ -20,6 +20,7 @@ class SongbookRatingController {
         if (ratings.isEmpty) {
           create = true;
           this.rating = new Rating();
+          this.rating.rating = 1;
         }
         else {
           int id;
