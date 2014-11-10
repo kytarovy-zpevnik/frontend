@@ -39,8 +39,8 @@ class SongRatingResource {
   /**
    * Reads song rating by id.
    */
-  Future<Rating> readRating(int songId, int id) {
-    return _api.get('songs/' + songId.toString()  + "/rating/" + id.toString()).then((HttpResponse response) {
+  Future<Rating> readRating(int id, int ratingId) {
+    return _api.get('songs/' + id.toString()  + "/rating/" + ratingId.toString()).then((HttpResponse response) {
       return new Rating(id: response.data['id'], comment: response.data['comment'], rating: response.data['rating'], created: response.data['created'], modified: response.data['modified']);
     });
   }
@@ -48,9 +48,10 @@ class SongRatingResource {
   /**
    * Updates song rating by id.
    */
-  Future editRating(int songId, Rating rating) {
+  Future editRating(int id, Rating rating) {
     _normalize(rating);
-    return _api.put('songs/' + songId.toString()  + "/rating/" + rating.id.toString()  , data: {
+    int ratingId = rating.id;
+    return _api.put('songs/' + id.toString()  + "/rating/" + ratingId.toString()  , data: {
         'comment': rating.comment,
         'rating': rating.rating
     }).then((_){
