@@ -109,7 +109,10 @@ class SongController {
   void addToSongbook(int index) {
     items[index]['included'] = true;
     song.songbooks.add(items[index]['songbook']);
-    _songsResource.update(song);
+    _songsResource.update(song).then((_){
+      _messageService.showSuccess("Přidána", "Písnička byla úspěšně přidána do zpěvníku.");
+      _router.go('songs.view', {'id': song.id});
+    });
   }
 
   void removeFromSongbook(int index) {
@@ -123,7 +126,9 @@ class SongController {
     });
 
     song.songbooks.remove(toRemove);
-    _songsResource.update(song);
+    _songsResource.update(song).then((_){
+      _messageService.showSuccess('Odebrána','Píseň byla úspěšně odebrána ze zpěvníku.');
+    });
   }
 
   void save() {

@@ -91,7 +91,7 @@ class SongsResource {
       }
       var songbooks = [];
       for (var i = 0; i < response.data['songbooks'].length; i++) {
-        songbooks.add(new Songbook(response.data['songbooks'][i]['id'], response.data['songbooks'][i]['name'], response.data['songbooks'][i]['note']));
+        songbooks.add(new Songbook(response.data['songbooks'][i]['id'], response.data['songbooks'][i]['name'], response.data['songbooks'][i]['note'], response.data['songbooks'][i]['public']));
       }
       return new Song(response.data['title'], response.data['album'], response.data['author'], response.data['originalAuthor'], response.data['year'], response.data['note'], response.data['public'], lyrics: response.data['lyrics'], chords: chords, id: response.data['id'], songbooks: songbooks);
     });
