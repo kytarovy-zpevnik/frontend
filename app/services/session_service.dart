@@ -4,6 +4,9 @@ part of app;
 class SessionService {
   final SessionResource _sessionResource;
   final SessionToken _sessionToken;
+  Completer _completer = new Completer();
+
+  Future get initialized => _completer.future;
 
   Session _session;
 
@@ -11,6 +14,7 @@ class SessionService {
     if (_sessionToken.sessionToken != null) {
       _sessionResource.get(_sessionToken.sessionToken).then((Session session) {
         _session = session;
+        _completer.complete();
       });
     }
   }

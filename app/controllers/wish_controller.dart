@@ -39,6 +39,9 @@ class WishController {
 
   void mark() {
     wish.meet = !wish.meet;
-    save();
+    _wishesResource.edit(wish).then((_){
+      _messageService.showSuccess('Uloženo.', 'Přání bylo úspěšně uloženo.');
+      _router.go('wish.view', {'id': wish.id});
+    });
   }
 }
