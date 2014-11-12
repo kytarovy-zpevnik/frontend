@@ -1,4 +1,4 @@
-<div song>
+<div song song-comments>
     <div class="pull-right">
         <a href="#/song/{{ctrl.song.id}}/edit" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span> Editovat</a>
         <span style="position: relative">
@@ -38,4 +38,33 @@
             <chpos ng-repeat="char in line" offset="char['offset']" ctrl="ctrl" char="char['char']" chord="ctrl.song.chords[char['offset'].toString()]" editable="false"></chpos>
         </p>
     </section>
+
+    <h3>Komentáře</h3>
+
+    <form role="form" ng-submit="ctrl2.save()">
+        <textarea placeholder="Přidejte komentář" class="comment" required id="input-comment" ng-model="ctrl2.comment.comment">
+        </textarea>
+        </br>
+        <button type="submit" class="btn btn-success">Uložit</button>
+    </form>
+
+    <div class="comment" ng-repeat="comment in ctrl2.comments">
+        <span><b>Uživatel: </b>{{comment.username}}</span>
+        <span><b>Vytvořeno: </b>{{comment.created}}<br></span>
+        <span><b>Komentář: </b>{{comment.comment}}<br></span>
+        <span ng-if="ctrl2.user.username == comment.username"><span ng-if="ctrl2.editId != comment.id"
+                ng-click="ctrl2.prepareEdit(comment.id)"><a>Upravit</a></span></span>
+        <form ng-if="ctrl2.editId == comment.id" class="comment" role="form" ng-submit="ctrl2.commentEdit()">
+            <textarea class="comment" required id="edit-comment-{{comment.id}}" ng-model="ctrl2.editComment.comment">
+            </textarea>
+            </br>
+            <button type="submit" class="btn btn-success">Uložit</button>
+        </form>
+    </div>
 </div>
+
+
+
+
+
+
