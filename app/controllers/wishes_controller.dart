@@ -7,8 +7,6 @@ class WishesController {
 
   List wishes = [];
 
-  int tab = 0;
-
   WishesController(this._wishesResource) {
     _wishesResource.readAll().then(_processWishes);
   }

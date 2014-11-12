@@ -13,6 +13,7 @@ class WishesResource {
     _normalize(wish);
     return _api.post('wishes', data: {
         'name': wish.name,
+        'interpret': wish.interpret,
         'note': wish.note
     }).then((HttpResponse response) {
       wish.id = response.data['id'];
@@ -26,7 +27,7 @@ class WishesResource {
   Future<List<Wish>> readAll() {
     return _api.get('wishes').then((HttpResponse response) {
       var wishes = response.data.map((data) {
-        return new Wish(id: data['id'], name: data['name'], note: data['note'], meet: data['meet'], created: data['created'], modified: data['modified']);
+        return new Wish(id: data['id'], name: data['name'], interpret: data['interpret'], note: data['note'], created: data['created'], modified: data['modified']);
       });
 
       return new Future.value(wishes);
@@ -38,7 +39,7 @@ class WishesResource {
    */
   Future<Wish> read(int id) {
     return _api.get('wishes/' + id.toString()).then((HttpResponse response) {
-      return new Wish(id: response.data['id'], name: response.data['name'], note: response.data['note'], meet: response.data['meet'], created: response.data['created'], modified: response.data['modified']);
+      return new Wish(id: response.data['id'], name: response.data['name'], interpret: response.data['interpret'], note: response.data['note'], created: response.data['created'], modified: response.data['modified']);
     });
   }
 
@@ -49,8 +50,8 @@ class WishesResource {
     _normalize(wish);
     return _api.put('wishes/' + wish.id.toString(), data: {
         'name': wish.name,
-        'note': wish.note,
-        'meet': wish.meet
+        'interpret': wish.interpret,
+        'note': wish.note
     }).then((_){
     });
   }

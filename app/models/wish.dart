@@ -6,10 +6,10 @@ part of app;
 class Wish {
   int id;
   String name = '';
+  String interpret = '';
   String note = '';
-  bool meet = '';
   String created = '';
   String modified = '';
 
-  Wish({this.id, this.name, this.note, this.meet, this.created, this.modified});
+  Wish({this.id, this.name, this.interpret, this.note, this.created, this.modified});
 }
