@@ -54,11 +54,12 @@
     </form>
 
     <div class="comment" ng-repeat="comment in ctrl2.comments">
-        <span><b>Uživatel: </b>{{comment.username}}</span>
-        <span><b>Vytvořeno: </b>{{comment.created}}<br></span>
-        <span><b>Komentář: </b>{{comment.comment}}<br></span>
-        <span ng-if="ctrl2.user.username == comment.username"><span ng-if="ctrl2.editId != comment.id"
-                                                                    ng-click="ctrl2.prepareEdit(comment.id)"><a>Upravit</a></span></span>
+        <span><b>{{comment.username}} napsal: </b><p class="comment">{{comment.comment}}<p></span>
+        <span><b>Vytvořeno: </b>{{comment.created}}</span>
+        <span ng-if="ctrl2.user.username == comment.username">
+            <span ng-if="ctrl2.editId != comment.id" ng-click="ctrl2.prepareEdit(comment.id)"><a>Upravit</a>
+            </span>
+        </span>
         <form ng-if="ctrl2.editId == comment.id" class="comment" role="form" ng-submit="ctrl2.commentEdit()">
             <textarea class="comment" required id="edit-comment-{{comment.id}}" ng-model="ctrl2.editComment.comment">
             </textarea>
