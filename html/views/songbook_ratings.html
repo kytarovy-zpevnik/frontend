@@ -2,7 +2,7 @@
 
     <div class="pull-right">
         <form class="form-inline" role="search">
-            <a href="#/songbook/{{ctrl.songbook.id}}/rating/edit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Ohodnotit</a>
+            <a ng-if="ctrl.user.username != ctrl.songbook.username" href="#/songbook/{{ctrl.songbook.id}}/rating/edit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Ohodnotit</a>
             <a href="#/songbook/{{ctrl.songbook.id}}/view" class="btn btn-default">Zpět</a>
         </form>
     </div>
