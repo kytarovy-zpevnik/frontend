@@ -12,7 +12,7 @@ class SongsResource {
   Future<List<Song>> readAll([String search]) {
     return _api.get('songs', params: {'search': search}).then((HttpResponse response) {
       var songs = response.data.map((data) {
-        return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'], data['note'], data['public'], id: data['id']);
+        return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'], data['note'], data['public'], id: data['id'], username: data['username']);
       });
 
       return new Future.value(songs);
@@ -93,7 +93,7 @@ class SongsResource {
       for (var i = 0; i < response.data['songbooks'].length; i++) {
         songbooks.add(new Songbook(response.data['songbooks'][i]['id'], response.data['songbooks'][i]['name'], response.data['songbooks'][i]['note'], response.data['songbooks'][i]['public']));
       }
-      return new Song(response.data['title'], response.data['album'], response.data['author'], response.data['originalAuthor'], response.data['year'], response.data['note'], response.data['public'], lyrics: response.data['lyrics'], chords: chords, id: response.data['id'], songbooks: songbooks);
+      return new Song(response.data['title'], response.data['album'], response.data['author'], response.data['originalAuthor'], response.data['year'], response.data['note'], response.data['public'], lyrics: response.data['lyrics'], chords: chords, id: response.data['id'], username: response.data['username'], songbooks: songbooks);
     });
   }
 

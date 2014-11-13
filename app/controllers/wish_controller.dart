@@ -5,11 +5,13 @@ class WishController {
   WishesResource _wishesResource;
   final SongsResource _songResource;
   MessageService _messageService;
+  SessionService _sessionService;
   RouteProvider _routeProvider;
   Router _router;
 
   Wish wish;
   bool create;
+  User user;
 
   Set songs = [];
   String _searchByName = '';
@@ -30,19 +32,21 @@ class WishController {
   _processSongs(Set<Song> songs) {
     var add = true;
     songs.forEach((Song song) {
-      this.songs.forEach((Song songInSet) {
-        if (song.id == songInSet.id) {
-          add = false;
+      if (song.username != this.user.username) {
+        this.songs.forEach((Song songInSet) {
+          if (song.id == songInSet.id) {
+            add = false;
+          }
+        });
+        if (add) {
+          this.songs.add(song);
         }
-      });
-      if (add) {
-        this.songs.add(song);
       }
     });
   }
 
 
-  WishController(this._wishesResource, this._songResource, this._messageService, this._routeProvider, this._router) {
+  WishController(this._sessionService, this._wishesResource, this._songResource, this._messageService, this._routeProvider, this._router) {
     create = !_routeProvider.parameters.containsKey('id');
     if(create) {
       this.wish = new Wish();
@@ -50,7 +54,11 @@ class WishController {
     else {
       _wishesResource.read(_routeProvider.parameters['id']).then((Wish wish) {
         this.wish = new Wish(id: wish.id, name: wish.name, interpret: wish.interpret, note: wish.note, created: wish.created, modified: wish.modified);
-        refresh();
+        _sessionService.initialized.then((_) {
+          user = _sessionService.session.user;
+          this.user = new User(user.id, user.username, user.email, user.role, user.lastLogin);
+          refresh();
+        });
       });
     }
   }
