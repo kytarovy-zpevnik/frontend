@@ -75,11 +75,12 @@ div[song] {
   }
   section {
     position: relative;
+    margin-bottom: 3em;
   }
 
   span.title {
     position: absolute;
-    top: 0;
+    top: 1.5em;
     left: 0;
     width: 6em;
     display: block;
@@ -87,23 +88,30 @@ div[song] {
     margin-bottom: 3em;
   }
 
+  // chord editor begin
+
   span.offset {
-    position: relative;
-    padding: 0.5em 0;
+    float: left;
+    padding-top: 1.5em;
   }
 
   span.chord {
     color: #3c763d;
     font-weight: bold;
-    position: absolute;
-    top: -1.5em;
+    float: left;
+    margin-top: -1.5em;
+  }
+
+  p.line {
+    overflow: hidden;
+    margin-bottom: 0.5em;
   }
 
   span.editor {
     font-size: 0.66em;
     display: block;
     position: absolute;
-    top: 3em;
+    top: 4.5em;
     width: 16.2em;
     height: 6em;
     padding: 1em;
@@ -111,6 +119,27 @@ div[song] {
     border: 1px solid #888;
     font-weight: normal;
     z-index: 99;
+  }
+
+  span.char {
+    display: block;
+
+    position: relative;
+    z-index: 1;
+
+    &.hypen:before {
+      border-top: 2px solid #ccc;
+      content:"";
+      margin: 0 auto; /* this centers the line to the full width specified */
+      position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+      top: 50%; left: 0; right: 0; bottom: 0;
+      width: 95%;
+      z-index: -1;
+    }
+
+    span {
+      background: #fff;
+    }
   }
 
   &[edit] {
@@ -122,9 +151,13 @@ div[song] {
       font-weight: bold;
       background-color: #ffff88;
       cursor: pointer;
-      padding: 0.5em 0.5em;
+      span {
+        background-color: #ffff88;
+      }
     }
   }
+
+  // chord editor end
 
   span.toggle-on-label {
     margin-left: 1em;

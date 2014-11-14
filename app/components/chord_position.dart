@@ -25,6 +25,9 @@ class ChordPosition {
   @NgOneWay('editable')
   bool editable = true;
 
+  @NgOneWay('hypen')
+  bool hypen = true;
+
   SongController _songCtrl;
 
   ChordPosition(this._songCtrl) {

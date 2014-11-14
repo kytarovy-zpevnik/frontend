@@ -34,8 +34,8 @@
     <section ng-repeat="section in ctrl.lyrics">
         <span class="title">{{section['title']}}&nbsp;</span>
 
-        <p ng-repeat="line in section['lines']">
-            <chpos ng-repeat="char in line" offset="char['offset']" ctrl="ctrl" char="char['char']" chord="ctrl.song.chords[char['offset'].toString()]" editable="false"></chpos>
+        <p ng-repeat="line in section['lines']" class="line">
+            <chpos ng-repeat="char in line track by $index" offset="char['offset']" ctrl="ctrl" char="char['char']" hypen="$index + 1 < line.length && line[$index + 1]['char'] != ' '" chord="ctrl.song.chords[char['offset'].toString()]" editable="false">{{index}}</chpos>
         </p>
     </section>
 

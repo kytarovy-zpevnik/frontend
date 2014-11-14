@@ -5,4 +5,4 @@
         </form>
     </span><span ng-if="cmp.chord != ''" class="chord">
     {{cmp.chord}}
-</span><span ng-click="cmp.showChordEditor()" class="char">{{cmp.char}}</span></span>
+</span><span ng-if="cmp.char != ' '" ng-click="cmp.showChordEditor()" class="char{{cmp.hypen ? ' hypen' : ''}}"><span>{{cmp.char}}</span></span><span ng-if="cmp.char == ' '" ng-click="cmp.showChordEditor()" class="char space">&nbsp;&nbsp;</span></span>
