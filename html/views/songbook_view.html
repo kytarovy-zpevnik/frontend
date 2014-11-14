@@ -47,7 +47,7 @@
     <h3>Komentáře</h3>
 
     <form role="form" ng-submit="ctrl2.save()">
-        <textarea placeholder="Přidejte komentář" class="comment" required id="input-comment" ng-model="ctrl2.comment.comment">
+        <textarea placeholder="Přidejte komentář" class="form-control comment" required id="input-comment" ng-model="ctrl2.comment.comment">
         </textarea>
         </br>
         <button type="submit" class="btn btn-success">Uložit</button>
@@ -61,7 +61,7 @@
             </span>
         </span>
         <form ng-if="ctrl2.editId == comment.id" class="comment" role="form" ng-submit="ctrl2.commentEdit()">
-            <textarea class="comment" required id="edit-comment-{{comment.id}}" ng-model="ctrl2.editComment.comment">
+            <textarea class="form-control comment" required id="edit-comment-{{comment.id}}" ng-model="ctrl2.editComment.comment">
             </textarea>
             </br>
             <button type="submit" class="btn btn-success">Uložit</button>
