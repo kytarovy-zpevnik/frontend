@@ -18,6 +18,8 @@ class SongController {
 
   List items = [];
 
+  List<ChordPosition> chpos = [];
+
   void computeLyrics() {
     var offset = 0;
 
@@ -144,4 +146,15 @@ class SongController {
       });
     }
   }
+
+  void addChpos(ChordPosition chpos) {
+    this.chpos.add(chpos);
+  }
+
+  void hideChordEditors() {
+    this.chpos.forEach((chpos) {
+      chpos.hideChordEditor();
+    });
+  }
+
 }

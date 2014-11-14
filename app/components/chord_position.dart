@@ -25,8 +25,16 @@ class ChordPosition {
   @NgOneWay('editable')
   bool editable = true;
 
+  SongController _songCtrl;
+
+  ChordPosition(this._songCtrl) {
+    _songCtrl.addChpos(this);
+  }
+
   void showChordEditor() {
     if (editable) {
+      _songCtrl.hideChordEditors();
+
       if (ctrl.song.chords.containsKey(offset.toString())) {
         input = ctrl.song.chords[offset.toString()];
       }
@@ -44,6 +52,10 @@ class ChordPosition {
     }
 
     chord = input;
+    chordEditor = false;
+  }
+
+  void hideChordEditor() {
     chordEditor = false;
   }
 }
