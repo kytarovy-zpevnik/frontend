@@ -14,7 +14,7 @@ class SongbookController {
 
       create = !_routeProvider.parameters.containsKey('id');
       if(create) {
-        this.songbook = new Songbook('','','', false);
+        this.songbook = new Songbook('','','', public: false);
       }
 
       else {
@@ -34,7 +34,7 @@ class SongbookController {
             index++;
           });
 
-          this.songbook = new Songbook(songbook.id, songbook.name, songbook.note, songbook.public, songs: songs);
+          this.songbook = new Songbook(songbook.id, songbook.name, songbook.note, public: songbook.public, songs: songs);
         });
       }
   }

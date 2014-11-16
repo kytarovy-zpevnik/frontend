@@ -11,7 +11,5 @@ class Songbook {
   bool public = false;
   List songs = [];
 
-  Songbook(this.id, this.name, this.note, this.public, {this.songs, this.username});
-
-
+  Songbook(this.id, this.name, this.note, {this.public, this.songs, this.username});
 }

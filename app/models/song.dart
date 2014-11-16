@@ -19,9 +19,33 @@ class Song {
 
   List<Songbook> songbooks;
 
-  Song(this.title, this.album, this.author, this.originalAuthor, this.year, this.note, this.public, {this.username, this.id, this.lyrics: '', this.chords, this.songbooks}) {
-    if (chords == null) chords = {
-    };
+  String tagsStr = '';
+
+  List<Tag> get tags {
+    if(tagsStr == '')
+      return [];
+    List<Tag> res = new List<Tag>();
+    var tagSet = tagsStr.split(",").toSet();
+    for(var tag in tagSet) {
+      res.add(new Tag(tag));
+    }
+    return res;
+  }
+
+  set tags(List<Tag> tags){
+    tagsStr = "";
+    if(tags != null && !tags.isEmpty) {
+      tagsStr = tags[0].toString();
+      for(var i = 1; i < tags.length; i++) {
+        tagsStr += "," + tags[i].toString();
+      }
+    }
+  }
+
+  Song(this.title, this.album, this.author, this.originalAuthor, this.year, this.note, this.public, {this.username, this.id, this.lyrics: '', this.chords, this.songbooks, tags}) {
+    this.tags = tags;
+    if (chords == null) chords = {};
     if (songbooks == null) songbooks = [];
+    if (tags == null) tags = [];
   }
 }
