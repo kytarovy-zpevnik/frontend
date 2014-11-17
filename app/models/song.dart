@@ -24,7 +24,7 @@ class Song {
   List<SongTag> get tags {
     if(tagsStr == '')
       return [];
-    List<Tag> res = new List<Tag>();
+    List<SongTag> res = new List<SongTag>();
     var tagSet = tagsStr.split(",").toSet();
     for(var tag in tagSet) {
       res.add(new SongTag(tag));
@@ -46,6 +46,5 @@ class Song {
     this.tags = tags;
     if (chords == null) chords = {};
     if (songbooks == null) songbooks = [];
-    if (tags == null) tags = [];
   }
 }
