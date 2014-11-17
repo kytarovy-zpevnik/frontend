@@ -34,7 +34,7 @@ class SongbookController {
             index++;
           });
 
-          this.songbook = new Songbook(songbook.id, songbook.name, songbook.note, public: songbook.public, songs: songs);
+          this.songbook = new Songbook(songbook.id, songbook.name, songbook.note, public: songbook.public, songs: songs, tags: songbook.tags);
         });
       }
   }

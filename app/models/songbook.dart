@@ -10,6 +10,30 @@ class Songbook {
   String username = '';
   bool public = false;
   List songs = [];
+  String tagsStr = '';
 
-  Songbook(this.id, this.name, this.note, {this.public, this.songs, this.username});
+  List<SongbookTag> get tags {
+    if(tagsStr == '')
+      return [];
+    List<SongbookTag> res = new List<SongbookTag>();
+    var tagSet = tagsStr.split(",").toSet();
+    for(var tag in tagSet) {
+      res.add(new SongbookTag(tag));
+    }
+    return res;
+  }
+
+  set tags(List<SongbookTag> tags){
+    tagsStr = "";
+    if(tags != null && !tags.isEmpty) {
+      tagsStr = tags[0].toString();
+      for(var i = 1; i < tags.length; i++) {
+        tagsStr += "," + tags[i].toString();
+      }
+    }
+  }
+
+  Songbook(this.id, this.name, this.note, {this.public, this.songs, this.username, tags}) {
+    this.tags = tags;
+  }
 }

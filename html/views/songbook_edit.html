@@ -19,6 +19,10 @@
             <label for="input-note">Poznámka</label>
             <input type="text" class="form-control" id="input-note" ng-model="ctrl.songbook.note">
         </div>
+        <div class="form-group">
+            <label for="input-tags">Tagy (oddělené čárkami)</label>
+            <input type="text" class="form-control" id="input-tags" ng-model="ctrl.songbook.tagsStr">
+        </div>
         <div class="checkbox">
             <label>
                 <input type="checkbox" id="input-public" ng-model="ctrl.songbook.public">Veřejný zpěvník

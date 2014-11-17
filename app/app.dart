@@ -35,6 +35,7 @@ part 'models/server_error.dart';
 part 'models/session.dart';
 part 'models/song.dart';
 part 'models/songbook.dart';
+part 'models/songbookTag.dart';
 part 'models/songTag.dart';
 part 'models/user.dart';
 part 'models/wish.dart';
