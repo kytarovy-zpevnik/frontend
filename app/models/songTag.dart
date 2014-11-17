@@ -1,12 +1,12 @@
 part of app;
 
 /**
- * Tag model.
+ * SongTag model.
  */
-class Tag {
+class SongTag {
   string tag;
 
-  Tag(this.tag) {
+  SongTag(this.tag) {
   }
 
   toString() => tag;

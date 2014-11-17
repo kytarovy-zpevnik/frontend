@@ -21,18 +21,18 @@ class Song {
 
   String tagsStr = '';
 
-  List<Tag> get tags {
+  List<SongTag> get tags {
     if(tagsStr == '')
       return [];
     List<Tag> res = new List<Tag>();
     var tagSet = tagsStr.split(",").toSet();
     for(var tag in tagSet) {
-      res.add(new Tag(tag));
+      res.add(new SongTag(tag));
     }
     return res;
   }
 
-  set tags(List<Tag> tags){
+  set tags(List<SongTag> tags){
     tagsStr = "";
     if(tags != null && !tags.isEmpty) {
       tagsStr = tags[0].toString();

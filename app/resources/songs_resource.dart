@@ -111,7 +111,7 @@ class SongsResource {
       }
       var tags = [];
       for (var i = 0; i < response.data['tags'].length; i++) {
-        tags.add(new Tag(response.data['tags'][i]['tag']));
+        tags.add(new SongTag(response.data['tags'][i]['tag']));
       }
       return new Song(response.data['title'], response.data['album'], response.data['author'], response.data['originalAuthor'], response.data['year'], response.data['note'], response.data['public'], lyrics: response.data['lyrics'], chords: chords, id: response.data['id'], username: response.data['username'], songbooks: songbooks, tags: tags);
     });
