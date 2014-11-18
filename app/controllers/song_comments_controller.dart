@@ -4,7 +4,7 @@ part of app;
 class SongCommentsController {
 
   SongCommentsResource _commentsResource;
-  SessionService _sessionService;
+  SessionService _sessionService = null;
   MessageService _messageService;
   Router _router;
   RouteProvider _routeProvider;
@@ -33,6 +33,7 @@ class SongCommentsController {
     _commentsResource.createComment(songId, this.comment).then((_) {
       _messageService.showSuccess('Vytvořeno.', 'Nový komentář byla úspěšně přidán.');
       refresh();
+      _router.go('song.view', {'id': this.songId});
     });
   }
 
@@ -40,6 +41,7 @@ class SongCommentsController {
     _commentsResource.editComment(songId, editComment).then((_) {
       _messageService.showSuccess('Změněno.', 'Komentář byl úspěšně změněn.');
       refresh();
+      _router.go('song.view', {'id': this.songId});
     });
   }
 
@@ -51,14 +53,14 @@ class SongCommentsController {
   }
 
   void refresh() {
-    _sessionService.initialized.then((_) {
-      this.comment = new Comment();
-      this.editComment = new Comment();
-      User currentUser = _sessionService.session.user;
-      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
-      songId = _routeProvider.parameters['id'];
-      editId = 0;
-      _commentsResource.readAllComments(songId).then(_processComments);
-    });
+    User currentUser = null;
+    currentUser = _sessionService.session.user;
+    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    this.comment = new Comment();
+    this.editComment = new Comment();
+    songId = _routeProvider.parameters['id'];
+    editId = 0;
+    _commentsResource.readAllComments(songId).then(_processComments);
+
   }
 }
