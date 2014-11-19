@@ -24,12 +24,15 @@ class Song {
   List<SongTag> get tags {
     if(tagsStr == '')
       return [];
-    List<SongTag> res = new List<SongTag>();
-    var tagSet = tagsStr.split(",").toSet();
-    for(var tag in tagSet) {
-      res.add(new SongTag(tag));
-    }
-    return res;
+    var tagsSet = new Set<String>();
+    var songTags = [];
+    tagsStr.split(",").forEach((tag) {
+      tagsSet.add(tag.trim());
+    });
+    tagsSet.forEach((tag) {
+      songTags.add(new SongTag(tag));
+    });
+    return songTags;
   }
 
   set tags(List<SongTag> tags){
@@ -37,7 +40,7 @@ class Song {
     if(tags != null && !tags.isEmpty) {
       tagsStr = tags[0].toString();
       for(var i = 1; i < tags.length; i++) {
-        tagsStr += "," + tags[i].toString();
+        tagsStr += ", " + tags[i].toString();
       }
     }
   }

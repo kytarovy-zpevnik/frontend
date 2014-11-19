@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 part 'components/bar_component.dart';
 part 'components/chord_position.dart';
 part 'components/messages_component.dart';
+part 'components/song_search.dart';
 part 'controllers/homepage_controller.dart';
 part 'controllers/notifications_controller.dart';
 part 'controllers/register_controller.dart';
@@ -81,6 +82,7 @@ class AppModule extends Module {
     bind(SongbookRatingController);
     bind(SongCommentsController);
     bind(SongbookCommentsController);
+    bind(SongSearch);
     bind(NotificationsResource);
     bind(ResetPasswordResource);
     bind(SessionResource);

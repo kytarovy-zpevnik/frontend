@@ -7,14 +7,22 @@ class SongsController {
   final MessageService _messageService;
 
   List songs = [];
-
   String _search = '';
-
   String get search => _search;
+  bool advSearchVisible = false;
+  Map<String, String> filters = {};
 
   set search(String search) {
     _search = search;
-    _songResource.readAll(search).then(_processSongs);
+    _songResource.readAll(search: search).then(_processSongs);
+  }
+
+  toggleAdvSearch() {
+    advSearchVisible = !(advSearchVisible);
+  }
+
+  advSearch() {
+    _songResource.readAll(filters: filters).then(_processSongs);
   }
 
   SongsController(this._songResource, this._messageService) {

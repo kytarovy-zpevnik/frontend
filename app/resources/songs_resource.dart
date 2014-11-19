@@ -9,8 +9,13 @@ class SongsResource {
   /**
    * Read's all songs.
    */
-  Future<List<Song>> readAll([String search]) {
-    return _api.get('songs', params: {'search': search}).then((HttpResponse response) {
+  Future<List<Song>> readAll({String search, Map<String, String> filters}) {
+    var params;
+    if (filters != null)
+      params = filters;
+    else
+      params = {'search': search};
+    return _api.get('songs', params: params).then((HttpResponse response) {
       var songs = response.data.map((data) {
         return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'], data['note'], data['public'], id: data['id'], username: data['username']);
       });
