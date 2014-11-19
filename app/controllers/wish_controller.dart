@@ -21,12 +21,12 @@ class WishController {
 
   set searchByName(String search) {
     _searchByName = search;
-    _songResource.readAll(search).then(_processSongs);
+    _songResource.readAll(searchPublic: search).then(_processSongs);
   }
 
   set searchByInterpret(String search) {
     _searchByInterpret = search;
-    _songResource.readAll(search).then(_processSongs);
+    _songResource.readAll(searchPublic: search).then(_processSongs);
   }
 
   _processSongs(Set<Song> songs) {
@@ -54,11 +54,11 @@ class WishController {
     else {
       _wishesResource.read(_routeProvider.parameters['id']).then((Wish wish) {
         this.wish = new Wish(id: wish.id, name: wish.name, interpret: wish.interpret, note: wish.note, created: wish.created, modified: wish.modified);
-        _sessionService.initialized.then((_) {
+        //_sessionService.initialized.then((_) {
           user = _sessionService.session.user;
           this.user = new User(user.id, user.username, user.email, user.role, user.lastLogin);
           refresh();
-        });
+        //});
       });
     }
   }
