@@ -37,6 +37,14 @@ class SongCommentsController {
     });
   }
 
+  void delete(int id) {
+    _commentsResource.deleteComment(songId, id).then((_) {
+      _messageService.showSuccess('Odstraněno.', 'Komentář byla úspěšně odebrán.');
+      refresh();
+      _router.go('song.view', {'id': this.songId});
+    });
+  }
+
   void commentEdit() {
     _commentsResource.editComment(songId, editComment).then((_) {
       _messageService.showSuccess('Změněno.', 'Komentář byl úspěšně změněn.');

@@ -53,6 +53,14 @@ class SongCommentsResource {
   }
 
   /**
+   * Deletes song comment by id.
+   */
+  Future deleteComment(int songId, int commentId) {
+    return _api.delete('songs/' + songId.toString()  + '/comment/' + commentId.toString()).then((_){
+    });
+  }
+
+  /**
    * Sets empty values to null.
    */
   void _normalize(Comment comment) {
