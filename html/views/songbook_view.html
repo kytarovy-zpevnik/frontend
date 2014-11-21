@@ -2,15 +2,17 @@
     <div class="pull-right">
         <a href="#/songbook/{{ctrl.songbook.id}}/ratings" class="btn btn-default">Hodnocení zpěvníku</a>
 
-        <a href="#/songbook/{{ctrl.songbook.id}}/edit" class="btn btn-info">
-            <span class="glyphicon glyphicon-pencil"></span> Upravit zpěvník
-        </a>
-        <a href="#/song/create/songbook/{{ctrl.songbook.id}}" class="btn btn-success">
-            <span class="glyphicon glyphicon-plus"></span> Vytvořit píseň
-        </a>
-        <a href="#/songs" class="btn btn-default">
-            <span class="glyphicon glyphicon-book"></span> Zařadit píseň
-        </a>
+        <span ng-if="ctrl.user.username == ctrl.songbook.username">
+            <a href="#/songbook/{{ctrl.songbook.id}}/edit" class="btn btn-info">
+                <span class="glyphicon glyphicon-pencil"></span> Upravit zpěvník
+            </a>
+            <a href="#/song/create/songbook/{{ctrl.songbook.id}}" class="btn btn-success">
+                <span class="glyphicon glyphicon-plus"></span> Vytvořit píseň
+            </a>
+            <a href="#/songs" class="btn btn-default">
+                <span class="glyphicon glyphicon-book"></span> Zařadit píseň
+            </a>
+        </span>
     </div>
     <h1>{{ctrl.songbook.name}}</h1>
     <span ng-if="ctrl.songbook.note != null"><b>Poznámka:</b>

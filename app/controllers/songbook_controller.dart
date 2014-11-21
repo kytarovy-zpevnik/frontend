@@ -4,15 +4,19 @@ part of app;
 class SongbookController {
   SongbooksResource _songbooksResource;
   MessageService _messageService;
+  final SessionService _sessionService;
   RouteProvider _routeProvider;
   Router _router;
 
   Songbook songbook;
+  User user;
   bool create;
 
-  SongbookController(this._songbooksResource, this._messageService, this._routeProvider, this._router) {
+  SongbookController(this._sessionService, this._songbooksResource, this._messageService, this._routeProvider, this._router) {
 
       create = !_routeProvider.parameters.containsKey('id');
+      User currentUser = _sessionService.session.user;
+      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
       if(create) {
         this.songbook = new Songbook('','','', public: false);
       }
@@ -34,7 +38,7 @@ class SongbookController {
             index++;
           });
 
-          this.songbook = new Songbook(songbook.id, songbook.name, songbook.note, public: songbook.public, songs: songs, tags: songbook.tags);
+          this.songbook = new Songbook(songbook.id, songbook.name, songbook.note, username: songbook.username, public: songbook.public, songs: songs, tags: songbook.tags);
         });
       }
   }

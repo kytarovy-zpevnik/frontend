@@ -5,10 +5,13 @@ class SongController {
   final SongsResource _songsResource;
   final SongbooksResource _songbooksResource;
   final MessageService _messageService;
+  final SessionService _sessionService;
   final RouteProvider _routeProvider;
   final Router _router;
 
   Song song;
+
+  User user;
 
   bool create;
 
@@ -62,9 +65,10 @@ class SongController {
 
 
 
-  SongController(this._songsResource, this._songbooksResource, this._messageService, this._routeProvider, this._router) {
+  SongController(this._sessionService, this._songsResource, this._songbooksResource, this._messageService, this._routeProvider, this._router) {
     create = !_routeProvider.parameters.containsKey('id');
-
+    User currentUser = _sessionService.session.user;
+    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
     if (create) {
       song = new Song('', '', '', '', '', '', false);
 
