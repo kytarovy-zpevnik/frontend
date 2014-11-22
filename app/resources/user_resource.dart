@@ -51,4 +51,14 @@ class UserResource {
       return new Future.value(user);
     });
   }
+
+  /**
+   * Reads user by username.
+   */
+  Future<User> read(String userName) {
+    return _api.get('users?username=' + userName).then((HttpResponse response) {
+      var role = new Role(response.data['role']['id'], response.data['role']['slug'], response.data['role']['name']);
+      return new User(response.data['id'], response.data['username'], response.data['email'], role, response.data['lastLogin']);
+    });
+  }
 }

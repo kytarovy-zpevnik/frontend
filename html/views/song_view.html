@@ -7,6 +7,7 @@
 
             <a href="#/song/{{ctrl.song.id}}/ratings" class="btn btn-default">Hodnocení písně</a>
 
+
             <span ng-if="ctrl.user.username == ctrl.song.username">
                 <a class="btn btn-default" data-toggle="dropdown">
                     Zařadit do zpěvníku <span class="caret"></span>
@@ -18,6 +19,9 @@
                     </li>
                 </ul>
             </span>
+        </span>
+        <span ng-if="ctrl.user.username == ctrl.song.username">
+            <a href="#/song/{{ctrl.song.id}}/sharing" class="btn btn-default">Sdílet</a>
         </span>
     </div>
     <h1>{{ctrl.song.title}}</h1>
