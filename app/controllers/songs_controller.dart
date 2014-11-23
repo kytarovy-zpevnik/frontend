@@ -5,8 +5,11 @@ class SongsController {
 
   final SongsResource _songResource;
   final MessageService _messageService;
+  SessionService _sessionService;
+  final UserResource _userResource;
 
   List songs = [];
+  List sharedSongs = [];
   String _search = '';
   String get search => _search;
   bool advSearchVisible = false;
@@ -25,8 +28,10 @@ class SongsController {
     _songResource.readAll(filters: filters).then(_processSongs);
   }
 
-  SongsController(this._songResource, this._messageService) {
+  SongsController(this._sessionService, this._songResource, this._messageService, this._userResource) {
     _songResource.readAll().then(_processSongs);
+    var user = _sessionService.session.user;
+    _userResource.readAllSharedSongs(user.id).then(_processSharedSongs);
   }
 
   _processSongs(List<Song> songs) {
@@ -38,6 +43,23 @@ class SongsController {
         row = [];
         row.add(song);
         this.songs.add(row);
+      }
+      else{
+        row.add(song);
+      }
+      index++;
+    });
+  }
+
+  _processSharedSongs(List<Song> songs) {
+    this.sharedSongs.clear();
+    List row;
+    var index = 0;
+    songs.forEach((Song song) {
+      if(index % 4 == 0){
+        row = [];
+        row.add(song);
+        this.sharedSongs.add(row);
       }
       else{
         row.add(song);

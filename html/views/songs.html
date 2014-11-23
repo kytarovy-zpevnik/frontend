@@ -10,6 +10,7 @@
     </div>
 
     <h1>Písně</h1>
+    <h2>Vlastní</h2>
     <song_search visible="ctrl.advSearchVisible" ctrl="ctrl" filters="ctrl.filters"></song_search>
         <div class="row" ng-repeat="row in ctrl.songs">
             <div class="col-md-3" ng-repeat="song in row">
@@ -26,4 +27,20 @@
                 {{song.note}}<br></span>
             </div>
         </div>
+    <h2>Sdílené</h2>
+    <div class="row" ng-repeat="row in ctrl.sharedSongs">
+        <div class="col-md-3" ng-repeat="song in row">
+            <h3><a href="#/song/{{song.id}}/view">{{song.title}}</a></h3>
+                <span ng-if="song.author != null"><b>Autor</b>
+                {{song.author}}<br></span>
+                <span ng-if="song.originalAuthor != null"><b>Původní autor</b>
+                {{song.originalAuthor}}<br></span>
+                <span ng-if="song.album != null"><b>Album</b>
+                {{song.album}}<br></span>
+                <span ng-if="song.year != null"><b>Rok</b>
+                {{song.year}}<br></span>
+                <span ng-if="song.note != null"><b>Poznámka</b>
+                {{song.note}}<br></span>
+        </div>
+    </div>
 </div>

@@ -31,7 +31,7 @@ class SongbooksResource {
   }
 
   /**
-   * Read's all songbooks.
+   * Reads all songbooks.
    */
   Future<List<Songbook>> readAll([String search]) {
     return _api.get('songbooks', params: {'search': search}).then((HttpResponse response) {
