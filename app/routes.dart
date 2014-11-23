@@ -86,7 +86,10 @@ class Routes {
                     view: 'html/views/songbook_ratings.html'),
                 'rating': appRoute(
                     path: '/rating/edit',
-                    view: 'html/views/songbook_rating_edit.html')
+                    view: 'html/views/songbook_rating_edit.html'),
+                'share': appRoute(
+                    path: '/sharing',
+                    view: 'html/views/songbook_sharing.html')
             }),
         'register': appRoute(
             path: '/register',
