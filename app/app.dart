@@ -19,6 +19,7 @@ part 'controllers/songbook_controller.dart';
 part 'controllers/songbooks_controller.dart';
 part 'controllers/song_controller.dart';
 part 'controllers/songs_controller.dart';
+part 'controllers/public_songs_controller.dart';
 part 'controllers/user_controller.dart';
 part 'controllers/wish_controller.dart';
 part 'controllers/wishes_controller.dart';
@@ -83,6 +84,7 @@ class AppModule extends Module {
     bind(SongRatingsController);
     bind(SongRatingController);
     bind(SongSharingController);
+    bind(PublicSongsController);
     bind(SongbookRatingsController);
     bind(SongbookRatingController);
     bind(SongbookSharingController);

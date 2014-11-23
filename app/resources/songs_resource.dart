@@ -9,13 +9,16 @@ class SongsResource {
   /**
    * Read's all songs.
    */
-  Future<List<Song>> readAll({String searchPublic, String search, Map<String, String> filters}) {
+  Future<List<Song>> readAll({bool searchAllPublic, String searchPublic, String search, Map<String, String> filters}) {
     var params;
     if (filters != null) {
       params = filters;
     }
     else if (search != null) {
       params = {'search': search};
+    }
+    else if (searchAllPublic != null) {
+      params = {'searchAllPublic': searchAllPublic};
     }
     else {
       params = {'searchPublic': searchPublic};
