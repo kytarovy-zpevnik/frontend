@@ -25,7 +25,11 @@ class SongsResource {
     }
     return _api.get('songs', params: params).then((HttpResponse response) {
       var songs = response.data.map((data) {
-        return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'], data['note'], data['public'], id: data['id'], username: data['username']);
+        var tags = [];
+        for (var i = 0; i < data['tags'].length; i++) {
+          tags.add(new SongTag(data['tags'][i]['tag']));
+        }
+        return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'], data['note'], data['public'], id: data['id'], username: data['username'], tags: tags);
       });
 
       return new Future.value(songs);
