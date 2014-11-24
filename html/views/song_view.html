@@ -1,5 +1,8 @@
 <div song song-comments>
     <div class="pull-right">
+        <span ng-if="ctrl.user.username != ctrl.song.username">
+            <a ng-click="ctrl.takeSong()" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span> Převzít píseň</a>
+        </span>
         <span ng-if="ctrl.user.username == ctrl.song.username">
             <a href="#/song/{{ctrl.song.id}}/edit" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span> Editovat</a>
         </span>
