@@ -40,7 +40,7 @@ class SongsResource {
   /**
    * Creates new song which is taken from other user.
    */
-  Future takeSong(Song song) {
+  Future takeSong(Song song, String username) {
     _normalize(song);
 
     var songbooks = [];
@@ -53,7 +53,7 @@ class SongsResource {
     });
 
     var params;
-    params = {'taken': false};
+    params = {'takenFrom': username};
 
     return _api.post('songs', params: params, data: {
         'title': song.title,
