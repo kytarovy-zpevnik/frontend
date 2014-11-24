@@ -36,6 +36,44 @@ class SongsResource {
     });
   }
 
+
+  /**
+   * Creates new song which is taken from other user.
+   */
+  Future takeSong(Song song) {
+    _normalize(song);
+
+    var songbooks = [];
+
+    var tags = [];
+    song.tags.forEach((tag) {
+      tags.add({
+          'tag': tag.tag
+      });
+    });
+
+    var params;
+    params = {'taken': false};
+
+    return _api.post('songs', params: params, data: {
+        'title': song.title,
+        'album': song.album,
+        'author': song.author,
+        'originalAuthor': song.originalAuthor,
+        'year': song.year,
+        'note': song.note,
+        'public': song.public,
+        'lyrics': song.lyrics,
+        'chords': JSON.encode(song.chords),
+        'songbooks': songbooks,
+        'tags': tags
+    }).then((HttpResponse response) {
+      song.id = response.data['id'];
+      print(song.id);
+      return new Future.value(song);
+    });
+  }
+
   /**
    * Creates new song.
    */
