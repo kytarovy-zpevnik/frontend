@@ -164,7 +164,7 @@ class SongController {
   }
 
   void takeSong() {
-    _songsResource.takeSong(song, song.username).then((_) {
+    _songsResource.takeSong(song).then((_) {
       _messageService.prepareSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
       _router.go('song.view', {'id': song.id});
     });
