@@ -42,6 +42,8 @@
     {{ctrl.song.tagsStr}}<br></span>
     <span ng-if="ctrl.song.note != null"><b>Poznámka:</b>
     {{ctrl.song.note}}<br></span>
+    <span ng-if="ctrl.song.username != ctrl.user.username"><b>Vlastník:</b>
+    {{ctrl.song.username}}<br></span>
     </div>
 
     <section ng-repeat="section in ctrl.lyrics">

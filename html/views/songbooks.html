@@ -10,6 +10,9 @@
     <div class="row" ng-repeat="songbook in ctrl.songbooks">
         <div class="col-md-12">
             <h3><a href="#/songbook/{{songbook.id}}/view">{{songbook.name}}</a></h3>
+            <span ng-if="songbook.note != null"><b>Poznámka:</b>
+                {{songbook.note}}<br></span>
+            <br>
         </div>
     </div>
     <h2>Sdílené</h2>
