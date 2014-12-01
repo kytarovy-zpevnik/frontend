@@ -7,7 +7,7 @@
         </form>
     </div>
 
-    <h1>Písně</h1>
+    <h1>Veřejné písně</h1>
     <div class="row" ng-repeat="row in ctrl.songs">
         <div class="col-md-3" ng-repeat="song in row">
             <h3><a href="#/song/{{song.id}}/view">{{song.title}}</a></h3>
@@ -21,7 +21,9 @@
                 {{song.year}}<br></span>
                 <span ng-if="song.note != null"><b>Poznámka</b>
                 {{song.note}}<br></span>
-                <span ng-if="song.username != null"><b>Vlastník</b>
+                <span ng-if="song.tagsStr != ''"><b>Tagy:</b>
+                {{song.tagsStr}}<br></span>
+                <span ng-if="song.username != null"><b>Vlastník:</b>
                 {{song.username}}<br></span>
         </div>
     </div>
