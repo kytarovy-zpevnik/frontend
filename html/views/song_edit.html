@@ -4,15 +4,17 @@
     </div>
 
     <h1>
-        <span ng-if="ctrl.create">Nová píseň</span>
+        <span ng-if="ctrl.create && !ctrl.import">Nová píseň</span>
+        <span ng-if="ctrl.create && ctrl.import">Importovat píseň</span>
         <span ng-if="!ctrl.create">Editace písně</span>
         <span ng-if="ctrl.song.title != ''" class="text-muted"> {{ctrl.song.title}}</span>
     </h1>
 
     <ul class="nav nav-tabs" role="tablist">
         <li ng-class="{active: ctrl.tab == 0}"><a ng-click="ctrl.tab = 0" role="tab">Informace</a></li>
-        <li ng-class="{active: ctrl.tab == 1}"><a ng-click="ctrl.tab = 1" role="tab">Text</a></li>
-        <li ng-class="{active: ctrl.tab == 2}"><a ng-click="ctrl.tab = 2; ctrl.computeLyrics()" role="tab">Akordy</a></li>
+        <li ng-if="!ctrl.import" ng-class="{active: ctrl.tab == 1}"><a ng-click="ctrl.tab = 1" role="tab">Text</a></li>
+        <li ng-if="!ctrl.import" ng-class="{active: ctrl.tab == 2}"><a ng-click="ctrl.tab = 2; ctrl.computeLyrics()" role="tab">Akordy</a></li>
+        <li ng-if="ctrl.import" ng-class="{active: ctrl.tab == 3}"><a ng-click="ctrl.tab = 3" role="tab">Agama</a></li>
     </ul>
 
     <form class="song" role="form" ng-submit="ctrl.save()">
@@ -67,6 +69,13 @@
                     <chpos ng-repeat="char in line" offset="char['offset']" ctrl="ctrl" char="char['char']" hypen="$index + 1 < line.length && line[$index + 1]['char'] != ' '" chord="ctrl.song.chords[char['offset'].toString()]"></chpos>
                 </p>
             </section>
+        </div>
+
+        <div>
+            <div class="form-group">
+                <label for="input-agama">Text s akordy ve formátu agama</label>
+                <textarea type="text" required class="form-control monospaced" id="input-agama" ng-model="ctrl.agama"></textarea>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-success">Uložit</button>

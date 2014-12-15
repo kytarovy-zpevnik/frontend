@@ -114,6 +114,44 @@ class SongsResource {
   }
 
   /**
+   * Imports new song.
+   */
+  Future import(Song song, String agama) {
+    _normalize(song);
+
+    var songbooks = [];
+    song.songbooks.forEach((songbook) {
+      songbooks.add({
+          'id': songbook.id
+      });
+    });
+
+    var tags = [];
+    song.tags.forEach((tag) {
+      tags.add({
+          'tag': tag.tag
+      });
+    });
+
+    return _api.post('songs?import=agama', data: {
+        'title': song.title,
+        'album': song.album,
+        'author': song.author,
+        'originalAuthor': song.originalAuthor,
+        'year': song.year,
+        'note': song.note,
+        'public': song.public,
+        'agama': agama,
+        'songbooks': songbooks,
+        'tags': tags
+    }).then((HttpResponse response) {
+      song.id = response.data['id'];
+      print(song.id);
+      return new Future.value(song);
+    });
+  }
+
+  /**
    * Updates song.
    */
   Future update(Song song) {

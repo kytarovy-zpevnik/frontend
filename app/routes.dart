@@ -46,6 +46,9 @@ class Routes {
                     path: '/step2/:token',
                     view: 'html/views/set_new_password.html')
             }),
+        'importSong': appRoute(
+            path: '/song/import',
+            view: 'html/views/song_edit.html'),
         'createSong': appRoute(
             path: '/song/create',
             view: 'html/views/song_edit.html'),
