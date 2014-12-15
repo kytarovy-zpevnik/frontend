@@ -191,8 +191,14 @@ class SongsResource {
   /**
    * Reads song by id.
    */
-  Future<Song> read(int id) {
-    return _api.get('songs/' + id.toString()).then((HttpResponse response) {
+  Future<Song> read(int id, [int transposition]) {
+    var url;
+    if (transposition == null) {
+      url = 'songs/' + id.toString();
+    } else {
+      url = 'songs/' + id.toString() + '?transpose=' + transposition.toString();
+    }
+    return _api.get(url).then((HttpResponse response) {
       var chords = JSON.decode(response.data['chords']);
       if (chords == null) {
         chords = {
