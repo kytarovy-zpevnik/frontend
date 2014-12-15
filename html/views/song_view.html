@@ -26,7 +26,29 @@
         <span ng-if="ctrl.user.username == ctrl.song.username">
             <a href="#/song/{{ctrl.song.id}}/sharing" class="btn btn-default">Sdílet</a>
         </span>
+        <span>
+            <a ng-click="ctrl.export()" class="btn btn-info" data-toggle="modal" data-target="#export"><span class="glyphicon glyphicon-open"></span> Exportovat</a>
+        </span>
     </div>
+
+    <!-- export modal -->
+    <div class="modal fade" id="export" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Export ve formátu agama</h4>
+                </div>
+                <div class="modal-body">
+                     <textarea readonly style="cursor: text" class="form-control monospaced" ng-model="ctrl.agama"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h1>{{ctrl.song.title}}</h1>
 
     <div class="meta">
