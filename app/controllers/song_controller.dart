@@ -17,6 +17,10 @@ class SongController {
 
   int tab = 0;
 
+  String agama;
+
+  bool import = false;
+
   List lyrics = [];
 
   List items = [];
@@ -29,7 +33,13 @@ class SongController {
     var sections = [];
 
     if (song != null) {
+      var first = true;
       song.lyrics.split('\n\n').forEach((String section) {
+        if (first) {
+          first = false;
+        } else {
+          offset += 2; // count in delimiting \n\n
+        }
         var rowOffset = section.indexOf('))');
         var title = '';
 
@@ -41,8 +51,14 @@ class SongController {
           rowOffset = 0;
         }
 
+        first = true;
         var lines = [];
         section.substring(rowOffset).trim().split('\n').forEach((String line) {
+          if (first) {
+            first = false;
+          } else {
+            offset++;  // count in delimiting \n
+          }
           var chars = [];
           line.split('').forEach((String char) {
             chars.add({
@@ -66,7 +82,9 @@ class SongController {
 
 
   SongController(this._sessionService, this._songsResource, this._songbooksResource, this._messageService, this._routeProvider, this._router) {
-    create = !_routeProvider.parameters.containsKey('id');
+    import = _routeProvider.routeName == 'importSong';
+    create = !_routeProvider.parameters.containsKey('id') || import;
+
     User currentUser = _sessionService.session.user;
     this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
     if (create) {
@@ -141,10 +159,21 @@ class SongController {
 
   void save() {
     if (create) {
-      _songsResource.create(song).then((_) {
-        _messageService.prepareSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
-        _router.go('song.view', {'id': song.id});
-      });
+      if (import) {
+        _songsResource.import(song, agama).then((_) {
+          _messageService.prepareSuccess('Imortováno.', 'Nová píseň byla úspěšně naimportována.');
+          _router.go('song.view', {
+              'id': song.id
+          });
+        });
+      } else {
+        _songsResource.create(song).then((_) {
+          _messageService.prepareSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
+          _router.go('song.view', {
+              'id': song.id
+          });
+        });
+      }
     } else {
       _songsResource.update(song).then((_) {
         _messageService.prepareSuccess('Uloženo.', 'Píseň byla úspěšně uložena.');
