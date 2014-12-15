@@ -134,6 +134,14 @@ class SongController {
     });
   }
 
+  void transpose(int transposition) {
+    transposition %= 12; // shift by 0-12 semitones
+    _songsResource.read(_routeProvider.parameters['id'], transposition).then((Song song) {
+      this.song = song;
+      computeLyrics();
+    });
+  }
+
   void addToSongbook(int index) {
     items[index]['included'] = true;
     song.songbooks.add(items[index]['songbook']);
