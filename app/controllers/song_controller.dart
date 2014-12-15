@@ -79,8 +79,6 @@ class SongController {
     lyrics = sections;
   }
 
-
-
   SongController(this._sessionService, this._songsResource, this._songbooksResource, this._messageService, this._routeProvider, this._router) {
     import = _routeProvider.routeName == 'importSong';
     create = !_routeProvider.parameters.containsKey('id') || import;
@@ -128,8 +126,12 @@ class SongController {
         });
       });
     }
+  }
 
-
+  void export() {
+    _songsResource.export(_routeProvider.parameters['id']).then((String agama) {
+      this.agama = agama;
+    });
   }
 
   void addToSongbook(int index) {

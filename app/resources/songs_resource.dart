@@ -211,6 +211,15 @@ class SongsResource {
   }
 
   /**
+   * Exports song by id.
+   */
+  Future<String> export(int id) {
+    return _api.get('songs/' + id.toString() + '?export=agama').then((HttpResponse response) {
+      return response.data['agama'];
+    });
+  }
+
+  /**
    * Sets empty values to null.
    */
   void _normalize(Song song) {
