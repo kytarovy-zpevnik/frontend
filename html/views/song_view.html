@@ -8,12 +8,12 @@
         </span>
         <span style="position: relative">
 
-            <a href="#/song/{{ctrl.song.id}}/ratings" class="btn btn-default">Hodnocení písně</a>
+            <a href="#/song/{{ctrl.song.id}}/ratings" class="btn btn-default"><span class="glyphicon glyphicon-star"></span> Hodnocení písně</a>
 
 
             <span ng-if="ctrl.user.username == ctrl.song.username">
                 <a class="btn btn-default" data-toggle="dropdown">
-                    Zařadit do zpěvníku <span class="caret"></span>
+                    <span class="glyphicon glyphicon-book"></span> Zařadit do zpěvníku <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li ng-repeat="item in ctrl.items">
@@ -24,10 +24,10 @@
             </span>
         </span>
         <span ng-if="ctrl.user.username == ctrl.song.username">
-            <a href="#/song/{{ctrl.song.id}}/sharing" class="btn btn-default">Sdílet</a>
+            <a href="#/song/{{ctrl.song.id}}/sharing" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span> Sdílet</a>
         </span>
         <span>
-            <a ng-click="ctrl.export()" class="btn btn-info" data-toggle="modal" data-target="#export"><span class="glyphicon glyphicon-open"></span> Exportovat</a>
+            <a ng-click="ctrl.export()" class="btn btn-default" data-toggle="modal" data-target="#export"><span class="glyphicon glyphicon-open"></span> Exportovat</a>
         </span>
         <span>
             <a class="btn btn-default" data-toggle="modal" data-target="#transpose"><span class="glyphicon glyphicon-sort"></span> Transponovat</a>
