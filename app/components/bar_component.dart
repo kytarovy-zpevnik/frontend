@@ -27,6 +27,8 @@ class BarComponent {
 
   bool get admin => _sessionService.session != null && _sessionService.session.user.role.slug == 'admin';
 
+  String get username => _sessionService.session.user.username;
+
   void readNotifications() {
     _notificationsResource.updateAll(true).then((_) {
       unread = 0;
