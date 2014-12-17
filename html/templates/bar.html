@@ -66,6 +66,7 @@
                 <li ng-if="!cmp.loggedIn"><a href="#/register"><span class="glyphicon glyphicon-plus"></span> Registrovat</a></li>
                 <li ng-if="!cmp.loggedIn"><a href="#/sign"><span class="glyphicon glyphicon-user"></span> Přihlásit se</a></li>
                 <li ng-if="cmp.admin"><a href="#/admin"><span class="glyphicon glyphicon-user"></span> Administrace</a></li>
+                <li ng-if="cmp.loggedIn"><a>{{cmp.username}}</a></li>
                 <li ng-if="cmp.loggedIn"><a ng-click="cmp.signOut()"><span class="glyphicon glyphicon-user"></span> Odhlásit se</a></li>
                 <!--<li><a href="#">Upozornění <span class="badge">42</span></a></li>-->
                 <!--<li class="dropdown">-->
