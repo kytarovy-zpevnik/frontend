@@ -68,7 +68,11 @@ class UserResource {
   Future<List<Songbook>> readAllSharedSongbooks(int userId) {
     return _api.get('users/' + userId.toString() + '/sharing?subject=songbook').then((HttpResponse response) {
       var songbooks = response.data.map((data) {
-        return new Songbook(data['id'], data['name'], data['note'], public: data['public'], username: data['username']);
+        var tags = [];
+        for (var i = 0; i < response.data['tags'].length; i++) {
+          tags.add(new SongbookTag(response.data['tags'][i]['tag']));
+        }
+        return new Songbook(data['id'], data['name'], data['note'], public: data['public'], username: data['username'], tags: tags);
       });
 
       return new Future.value(songbooks);

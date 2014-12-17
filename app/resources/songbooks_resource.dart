@@ -36,7 +36,11 @@ class SongbooksResource {
   Future<List<Songbook>> readAll([String search]) {
     return _api.get('songbooks', params: {'search': search}).then((HttpResponse response) {
       var songbooks = response.data.map((data) {
-        return new Songbook(data['id'], data['name'], data['note'], public: data['public'], username: data['username']);
+        var tags = [];
+        for (var i = 0; i < data['tags'].length; i++) {
+          tags.add(new SongbookTag(data['tags'][i]['tag']));
+        }
+        return new Songbook(data['id'], data['name'], data['note'], public: data['public'], username: data['username'], tags: tags);
       });
 
       return new Future.value(songbooks);
