@@ -22,10 +22,13 @@ class SongbookController {
       }
 
       else {
+        querySelector('html').classes.add('wait');
         _songbooksResource.read(_routeProvider.parameters['id']).then((Songbook songbook) {
           List songs = [];
           List row;
           var index = 0;
+
+          this.songbook = songbook;
           songbook.songs.forEach((Song song) {
             if (index % 4 == 0) {
               row = [];
@@ -37,8 +40,12 @@ class SongbookController {
             }
             index++;
           });
-
+          this.songbook.songs = songs;
+          querySelector('html').classes.remove('wait');
+          /*
           this.songbook = new Songbook(songbook.id, songbook.name, songbook.note, username: songbook.username, public: songbook.public, songs: songs, tags: songbook.tags);
+          */
+
         });
       }
   }

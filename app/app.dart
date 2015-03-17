@@ -4,6 +4,7 @@ import 'package:angular/angular.dart';
 import 'package:angular/routing/module.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'dart:html';
 import 'package:intl/intl.dart';
 
 part 'components/bar_component.dart';

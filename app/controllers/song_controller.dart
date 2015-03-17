@@ -83,8 +83,11 @@ class SongController {
     import = _routeProvider.routeName == 'importSong';
     create = !_routeProvider.parameters.containsKey('id') || import;
 
-    User currentUser = _sessionService.session.user;
-    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    _sessionService.initialized.then((_) {
+      User currentUser = _sessionService.session.user;
+      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    }); // dodělat úplně všude
+
     if (create) {
       song = new Song('', '', '', '', '', '', false);
 
@@ -104,9 +107,11 @@ class SongController {
       });
 
     } else {
+      querySelector('html').classes.add('wait');
       _songsResource.read(_routeProvider.parameters['id']).then((Song song) {
         this.song = song;
         computeLyrics();
+        querySelector('html').classes.remove('wait');
 
         _songbooksResource.readAll().then((List<Songbook> songbooks) {
           songbooks.forEach((Songbook songbook) {

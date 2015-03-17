@@ -1,80 +1,82 @@
 <div songbook songbook-comments>
-    <div class="pull-right">
-        <a href="#/songbook/{{ctrl.songbook.id}}/ratings" class="btn btn-default">Hodnocení zpěvníku</a>
+    <div ng-if="ctrl.songbook != null">
+        <div class="pull-right">
+            <a href="#/songbook/{{ctrl.songbook.id}}/ratings" class="btn btn-default">Hodnocení zpěvníku</a>
 
-        <span ng-if="ctrl.user.username == ctrl.songbook.username">
-            <a href="#/songbook/{{ctrl.songbook.id}}/edit" class="btn btn-info">
-                <span class="glyphicon glyphicon-pencil"></span> Upravit zpěvník
-            </a>
-            <a href="#/song/create/songbook/{{ctrl.songbook.id}}" class="btn btn-success">
-                <span class="glyphicon glyphicon-plus"></span> Vytvořit píseň
-            </a>
-            <a href="#/songs" class="btn btn-default">
-                <span class="glyphicon glyphicon-book"></span> Zařadit píseň
-            </a>
-            <a href="#/songbook/{{ctrl.songbook.id}}/sharing" class="btn btn-default">Sdílet</a>
-        </span>
-    </div>
-    <h1>{{ctrl.songbook.name}}</h1>
-    <span ng-if="ctrl.songbook.note != null"><b>Poznámka:</b>
-        {{ctrl.songbook.note}}<br></span>
-    <span ng-if="ctrl.songbook.tagsStr != ''"><b>Tagy:</b>
-        {{ctrl.songbook.tagsStr}}<br></span>
-
-    <!--<div class="row">
-        <div class="col-md-3">
-            <h3><a href=""></a></h3>
-                <span><b>Autor</b>
-                Karel<br></span>
-                <span><b>Původní autor</b>
-                Pepa<br></span>
-                <span><b>Album</b>
-                Písně<br></span>
-                <span><b>Rok</b>
-                2015<br></span>
-        </div>
-    </div>-->
-
-    <div class="row" ng-repeat="row in ctrl.songbook.songs">
-        <div class="col-md-3" ng-repeat="song in row">
-            <h3><a href="#/song/{{song.id}}/view">{{song.title}}</a></h3>
-                <span ng-if="song.author != null"><b>Autor</b>
-                {{song.author}}<br></span>
-                <span ng-if="song.originalAuthor != null"><b>Původní autor</b>
-                {{song.originalAuthor}}<br></span>
-                <span ng-if="song.album != null"><b>Album</b>
-                {{song.album}}<br></span>
-                <span ng-if="song.year != null"><b>Rok</b>
-                {{song.year}}<br></span>
-        </div>
-    </div>
-
-    <h3>Komentáře</h3>
-
-    <form role="form" ng-submit="ctrl2.save()">
-        <textarea placeholder="Přidejte komentář" class="form-control comment" required id="input-comment" ng-model="ctrl2.comment.comment">
-        </textarea>
-        </br>
-        <button type="submit" class="btn btn-success">Uložit</button>
-    </form>
-
-    <div class="comment" ng-repeat="comment in ctrl2.comments">
-        <span><b>{{comment.username}} napsal: </b><p class="comment">{{comment.comment}}<p></span>
-        <span><b>Vytvořeno: </b>{{comment.created}}</span>
-        <span ng-if="ctrl2.user.username == comment.username">
-            <span ng-if="ctrl2.editId != comment.id" ng-click="ctrl2.prepareEdit(comment.id)"><a>Upravit</a>
+            <span ng-if="ctrl.user.username == ctrl.songbook.username">
+                <a href="#/songbook/{{ctrl.songbook.id}}/edit" class="btn btn-info">
+                    <span class="glyphicon glyphicon-pencil"></span> Upravit zpěvník
+                </a>
+                <a href="#/song/create/songbook/{{ctrl.songbook.id}}" class="btn btn-success">
+                    <span class="glyphicon glyphicon-plus"></span> Vytvořit píseň
+                </a>
+                <a href="#/songs" class="btn btn-default">
+                    <span class="glyphicon glyphicon-book"></span> Zařadit píseň
+                </a>
+                <a href="#/songbook/{{ctrl.songbook.id}}/sharing" class="btn btn-default">Sdílet</a>
             </span>
-        </span>
-        <span ng-if="((ctrl2.user.username == comment.username) || (ctrl2.user.role.slug == 'admin'))">
-            <span ng-click="ctrl2.delete(comment.id)">
-                <a>Smazat</a>
-            </span>
-        </span>
-        <form ng-if="ctrl2.editId == comment.id" class="comment" role="form" ng-submit="ctrl2.commentEdit()">
-            <textarea class="form-control comment" required id="edit-comment-{{comment.id}}" ng-model="ctrl2.editComment.comment">
+        </div>
+        <h1>{{ctrl.songbook.name}}</h1>
+        <span ng-if="ctrl.songbook.note != null"><b>Poznámka:</b>
+            {{ctrl.songbook.note}}<br></span>
+        <span ng-if="ctrl.songbook.tagsStr != ''"><b>Tagy:</b>
+            {{ctrl.songbook.tagsStr}}<br></span>
+
+        <!--<div class="row">
+            <div class="col-md-3">
+                <h3><a href=""></a></h3>
+                    <span><b>Autor</b>
+                    Karel<br></span>
+                    <span><b>Původní autor</b>
+                    Pepa<br></span>
+                    <span><b>Album</b>
+                    Písně<br></span>
+                    <span><b>Rok</b>
+                    2015<br></span>
+            </div>
+        </div>-->
+
+        <div class="row" ng-repeat="row in ctrl.songbook.songs">
+            <div class="col-md-3" ng-repeat="song in row">
+                <h3><a href="#/song/{{song.id}}/view">{{song.title}}</a></h3>
+                    <span ng-if="song.author != null"><b>Autor</b>
+                    {{song.author}}<br></span>
+                    <span ng-if="song.originalAuthor != null"><b>Původní autor</b>
+                    {{song.originalAuthor}}<br></span>
+                    <span ng-if="song.album != null"><b>Album</b>
+                    {{song.album}}<br></span>
+                    <span ng-if="song.year != null"><b>Rok</b>
+                    {{song.year}}<br></span>
+            </div>
+        </div>
+
+        <h3>Komentáře</h3>
+
+        <form role="form" ng-submit="ctrl2.save()">
+            <textarea placeholder="Přidejte komentář" class="form-control comment" required id="input-comment" ng-model="ctrl2.comment.comment">
             </textarea>
             </br>
             <button type="submit" class="btn btn-success">Uložit</button>
         </form>
+
+        <div class="comment" ng-repeat="comment in ctrl2.comments">
+            <span><b>{{comment.username}} napsal: </b><p class="comment">{{comment.comment}}<p></span>
+            <span><b>Vytvořeno: </b>{{comment.created}}</span>
+            <span ng-if="ctrl2.user.username == comment.username">
+                <span ng-if="ctrl2.editId != comment.id" ng-click="ctrl2.prepareEdit(comment.id)"><a>Upravit</a>
+                </span>
+            </span>
+            <span ng-if="((ctrl2.user.username == comment.username) || (ctrl2.user.role.slug == 'admin'))">
+                <span ng-click="ctrl2.delete(comment.id)">
+                    <a>Smazat</a>
+                </span>
+            </span>
+            <form ng-if="ctrl2.editId == comment.id" class="comment" role="form" ng-submit="ctrl2.commentEdit()">
+                <textarea class="form-control comment" required id="edit-comment-{{comment.id}}" ng-model="ctrl2.editComment.comment">
+                </textarea>
+                </br>
+                <button type="submit" class="btn btn-success">Uložit</button>
+            </form>
+        </div>
     </div>
 </div>

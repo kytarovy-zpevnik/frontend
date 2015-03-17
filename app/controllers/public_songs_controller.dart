@@ -16,13 +16,13 @@ class PublicSongsController {
 
   set search(String search) {
     _search = search;
-    if (_search == '') {
+    /*if (_search == '') {
       _songResource.readAll(searchAllPublic: false).then(_processSongs);
     }
     else {
       _songResource.readAll(searchPublic: search).then(_processSongs);
-    }
-
+    }*/
+    _songResource.readAll(searchPublic: _search).then(_processSongs);
   }
 
   toggleAdvSearch() {
@@ -34,7 +34,7 @@ class PublicSongsController {
   }
 
   PublicSongsController(this._sessionService, this._songResource, this._messageService) {
-    _songResource.readAll(searchAllPublic: false).then(_processSongs);
+    _songResource.readAll(/*searchAllPublic: false*/ searchPublic: ' ').then(_processSongs);
     user = _sessionService.session.user;
     this.user = new User(user.id, user.username, user.email, user.role, user.lastLogin);
   }
@@ -44,10 +44,10 @@ class PublicSongsController {
     List row;
     var index = 0;
     songs.forEach((Song song) {
-      if (song.username == this.user.username) {
+      /*if (song.username == this.user.username) {
         index--;
       }
-      else if(index % 4 == 0){
+      else*/ if(index % 4 == 0){
         row = [];
         row.add(song);
         this.songs.add(row);

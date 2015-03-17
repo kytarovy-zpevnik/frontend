@@ -9,7 +9,7 @@ class SongsResource {
   /**
    * Read's all songs.
    */
-  Future<List<Song>> readAll({bool searchAllPublic, String searchPublic, String search, Map<String, String> filters}) {
+  Future<List<Song>> readAll({/*bool searchAllPublic, */String searchPublic, String search, Map<String, String> filters}) {
     var params;
     if (filters != null) {
       params = filters;
@@ -17,10 +17,12 @@ class SongsResource {
     else if (search != null) {
       params = {'search': search};
     }
-    else if (searchAllPublic != null) {
+    /*else if (searchAllPublic != null) {
       params = {'searchAllPublic': searchAllPublic};
-    }
+    }*/
     else {
+      if(searchPublic == '')
+        searchPublic = ' ';
       params = {'searchPublic': searchPublic};
     }
     return _api.get('songs', params: params).then((HttpResponse response) {
