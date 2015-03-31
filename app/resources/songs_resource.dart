@@ -9,7 +9,7 @@ class SongsResource {
   /**
    * Read's all songs.
    */
-  Future<List<Song>> readAll({/*bool searchAllPublic, */String searchPublic, String search, Map<String, String> filters}) {
+  Future<List<Song>> readAll({/*bool searchAllPublic, */bool randomPublic, String searchPublic, String search, Map<String, String> filters}) {
     var params;
     if (filters != null) {
       params = filters;
@@ -20,6 +20,9 @@ class SongsResource {
     /*else if (searchAllPublic != null) {
       params = {'searchAllPublic': searchAllPublic};
     }*/
+    else if(randomPublic != null){
+        params = {'randomPublic': randomPublic};
+      }
     else {
       if(searchPublic == '')
         searchPublic = ' ';
@@ -118,7 +121,7 @@ class SongsResource {
   /**
    * Imports new song.
    */
-  Future import(Song song, String agama) {
+  Future import(Song song, String agama) { // import zrusit
     _normalize(song);
 
     var songbooks = [];

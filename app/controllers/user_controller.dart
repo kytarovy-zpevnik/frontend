@@ -22,10 +22,12 @@ class UserController {
   }
 
   void _loadUsers() {
+    querySelector('html').classes.add('wait');
     _userResource.readAll().then((List<User> users) {
       users.forEach((User user) {
         this.users.add(user);
       });
+      querySelector('html').classes.remove('wait');
     });
   }
 }

@@ -29,9 +29,13 @@ class SongsController {
   }
 
   SongsController(this._sessionService, this._songResource, this._messageService, this._userResource) {
-    _songResource.readAll().then(_processSongs);
-    var user = _sessionService.session.user;
-    _userResource.readAllSharedSongs(user.id).then(_processSharedSongs);
+    querySelector('html').classes.add('wait');
+    _sessionService.initialized.then((_) {
+      _songResource.readAll().then(_processSongs);
+      var user = _sessionService.session.user;
+      _userResource.readAllSharedSongs(user.id).then(_processSharedSongs);
+      querySelector('html').classes.remove('wait');
+    });
   }
 
   _processSongs(List<Song> songs) {

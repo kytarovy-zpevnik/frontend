@@ -61,14 +61,17 @@ class SongCommentsController {
   }
 
   void refresh() {
-    User currentUser = null;
-    currentUser = _sessionService.session.user;
-    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
-    this.comment = new Comment();
-    this.editComment = new Comment();
-    songId = _routeProvider.parameters['id'];
-    editId = 0;
-    _commentsResource.readAllComments(songId).then(_processComments);
+    querySelector('html').classes.add('wait');
+    _sessionService.initialized.then((_) {
+      User currentUser = _sessionService.session.user;
+      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
 
+      this.comment = new Comment();
+      this.editComment = new Comment();
+      songId = _routeProvider.parameters['id'];
+      editId = 0;
+      _commentsResource.readAllComments(songId).then(_processComments);
+      querySelector('html').classes.remove('wait');
+    });
   }
 }

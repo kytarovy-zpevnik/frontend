@@ -71,8 +71,8 @@ class Routes {
                     path: '/rating/edit',
                     view: 'html/views/song_rating_edit.html'),
                 'share': appRoute(
-                path: '/sharing',
-                view: 'html/views/song_sharing.html')
+                    path: '/sharing',
+                    view: 'html/views/song_sharing.html')
             }),
         'editSongbook': appRoute(
             path: '/songbook/create',
