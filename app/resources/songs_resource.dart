@@ -121,7 +121,8 @@ class SongsResource {
   /**
    * Imports new song.
    */
-  Future import(Song song, String agama) { // import zrusit
+  // XML IMPORT
+  /*Future import(Song song, String agama) {
     _normalize(song);
 
     var songbooks = [];
@@ -154,7 +155,7 @@ class SongsResource {
       print(song.id);
       return new Future.value(song);
     });
-  }
+  }*/
 
   /**
    * Updates song.
@@ -224,11 +225,12 @@ class SongsResource {
   /**
    * Exports song by id.
    */
-  Future<String> export(int id) {
+  // XML EXPORT
+  /*Future<String> export(int id) {
     return _api.get('songs/' + id.toString() + '?export=agama').then((HttpResponse response) {
       return response.data['agama'];
     });
-  }
+  }*/
 
   /**
    * Sets empty values to null.

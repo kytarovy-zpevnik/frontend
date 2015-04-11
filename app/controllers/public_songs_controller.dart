@@ -6,7 +6,6 @@ class PublicSongsController {
   final SongsResource _songResource;
   final MessageService _messageService;
 
-  User user;
   List songs = [];
   String _search = '';
   String get search => _search;
@@ -35,8 +34,6 @@ class PublicSongsController {
 
   PublicSongsController(this._sessionService, this._songResource, this._messageService) {
     _songResource.readAll(/*searchAllPublic: false*/ searchPublic: ' ').then(_processSongs);
-    user = _sessionService.session.user;
-    this.user = new User(user.id, user.username, user.email, user.role, user.lastLogin);
   }
 
   _processSongs(List<Song> songs) {

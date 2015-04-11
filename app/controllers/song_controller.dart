@@ -19,8 +19,6 @@ class SongController {
 
   String radio = '0';
 
-  bool import = false; // import zrusit
-
   List lyrics = [];
 
   List items = [];
@@ -33,7 +31,7 @@ class SongController {
 
   set agama(String text) {
     _agama = text;
-    this.import2('agama');
+    this.import('agama');
   }
 
   String _textExport;
@@ -42,7 +40,7 @@ class SongController {
 
   set textExport(String text) {
     _textExport = text;
-    this.import2('text');
+    this.import('text');
   }
 
   void computeLyrics() {
@@ -98,8 +96,7 @@ class SongController {
   }
 
   SongController(this._sessionService, this._songsResource, this._songbooksResource, this._messageService, this._routeProvider, this._router) {
-    import = _routeProvider.routeName == 'importSong'; // import zrusit
-    create = !_routeProvider.parameters.containsKey('id') || import; // import zrusit
+    create = !_routeProvider.parameters.containsKey('id');
 
     querySelector('html').classes.add('wait');
     _sessionService.initialized.then((_) {
@@ -153,7 +150,7 @@ class SongController {
     }); // dodělat úplně všude a nejspíš roztáhnout na celou metodu
   }
 
-  void import2(String type){
+  void import(String type){
     this.song.lyrics = '';
     this.song.chords = {};
     int prev = 0, chordPos;
@@ -300,14 +297,19 @@ class SongController {
       List<String> lines = this.song.lyrics.split('\n');
       int linesIndex = 0;
       int offIndex = 0;
+      int sectionsLen = 0;
       while(linesIndex < lines.length){
         int offset, lastOffset = 0, numOfSPaces = 0;
         String chordLine = '';
         String lyricLine = '';
         String thisLine = lines.elementAt(linesIndex);
 
+        if (thisLine.indexOf('((') == 0 && thisLine.indexOf('))') != -1) {
+          sectionsLen += thisLine.indexOf('))') + 2;
+        }
+
         while(offIndex < sortedOffset.length) {
-          offset = int.parse(sortedOffset.elementAt(offIndex));
+          offset = int.parse(sortedOffset.elementAt(offIndex)) + sectionsLen;;
           if((endlines.elementAt(linesIndex) != -1 && offset >= endlines.elementAt(linesIndex)) || (endlines.elementAt(linesIndex) == -1 && offset >= this.song.lyrics.length))
             break;
           if (linesIndex != 0)
@@ -348,17 +350,10 @@ class SongController {
         else return -1;
       });
       sortedOffset.forEach((String offset){
-        //_textExport += '[' + this.song.chords[offset] + ']' + offset;
         _textExport += this.song.lyrics.substring(last, (int.parse(offset) < this.song.lyrics.length ? int.parse(offset) : this.song.lyrics.length)) + '[' + this.song.chords[offset] + ']';
         last = int.parse(offset);
       });
       _textExport += this.song.lyrics.substring(last, this.song.lyrics.length);
-      /*this.song.chords.forEach((int offset, String chord){
-        _textExport += '[' + chord + ']' + offset;
-        _textExport += this.song.lyrics.substring(last, int.parse(offset)) + '[' + chord + ']';
-        last = offset;
-      });
-      _textExport += this.song.lyrics.substring(last, this.song.lyrics.length);*/
     }
   }
 
@@ -397,21 +392,12 @@ class SongController {
 
   void save() {
     if (create) {
-      if (import) { // import zrusit
-        _songsResource.import(song, agama).then((_) {
-          _messageService.prepareSuccess('Importováno.', 'Nová píseň byla úspěšně naimportována.');
-          _router.go('song.view', {
-              'id': song.id
-          });
+      _songsResource.create(song).then((_) {
+        _messageService.prepareSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
+        _router.go('song.view', {
+            'id': song.id
         });
-      } else {
-        _songsResource.create(song).then((_) {
-          _messageService.prepareSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
-          _router.go('song.view', {
-              'id': song.id
-          });
-        });
-      }
+      });
     } else {
       _songsResource.update(song).then((_) {
         _messageService.prepareSuccess('Uloženo.', 'Píseň byla úspěšně uložena.');

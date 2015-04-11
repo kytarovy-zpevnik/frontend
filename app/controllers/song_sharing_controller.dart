@@ -12,7 +12,6 @@ class SongSharingController {
 
   Song song;
   String userName = "";
-  bool editable = false;
 
   SongSharingController(this._songSharingResource, this._songsResource, this._userResource, this._messageService, this._routeProvider, this._router) {
     _songsResource.read(_routeProvider.parameters['id']).then((Song song){
@@ -22,7 +21,7 @@ class SongSharingController {
 
   void save() {
     _userResource.read(userName).then((User user){
-      _songSharingResource.create(song.id, user.id, editable).then((_) {
+      _songSharingResource.create(song.id, user.id).then((_) {
         _messageService.prepareSuccess('Uloženo.', 'Píseň byla úspěšně nasdílena.');
         _router.go('song.view', {'id': song.id});
       }).catchError((ApiError e) {

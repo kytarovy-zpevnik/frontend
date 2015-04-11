@@ -5,16 +5,14 @@
     </div>
 
     <h1>
-        <span ng-if="ctrl.create && !ctrl.import">Nová píseň</span>
-        <span ng-if="ctrl.create && ctrl.import">Importovat píseň</span>
+        <span ng-if="ctrl.create">Nová píseň</span>
         <span ng-if="!ctrl.create">Editace písně</span>
         <span ng-if="ctrl.song.title != ''" class="text-muted"> {{ctrl.song.title}}</span>
     </h1>
 
     <ul class="nav nav-tabs" role="tablist">
         <li ng-class="{active: ctrl.tab == 0}"><a ng-click="ctrl.tab = 0" role="tab">Informace</a></li>
-        <li ng-if="!ctrl.import" ng-class="{active: ctrl.tab == 1}"><a ng-click="ctrl.tab = 1" role="tab">Obsah</a></li>
-        <li ng-if="ctrl.import" ng-class="{active: ctrl.tab == 4}"><a ng-click="ctrl.tab = 4" role="tab">Agama</a></li>
+        <li ng-class="{active: ctrl.tab == 1}"><a ng-click="ctrl.tab = 1" role="tab">Obsah</a></li>
     </ul>
 
     <form class="song" role="form" ng-submit="ctrl.save()">
