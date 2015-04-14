@@ -276,27 +276,27 @@ class SongController {
   }
 
   void export(String type) {
+    List<String> sortedOffset = this.song.chords.keys.toList()..sort((String a, String b){
+      int ai = int.parse(a);
+      int bi = int.parse(b);
+      if(ai > bi) return 1;
+      else if(ai == bi) return 0;
+      else return -1;
+    }); // fill sorted list of chord offsets
     if(type == 'agama'){
       /*_songsResource.export(_routeProvider.parameters['id']).then((String agama) {
         this.agama = agama;
       });*/
       _agama = '';
-      List<String> sortedOffset = this.song.chords.keys.toList()..sort((String a, String b){
-        int ai = int.parse(a);
-        int bi = int.parse(b);
-        if(ai > bi) return 1;
-        else if(ai == bi) return 0;
-        else return -1;
-      });
       List<int> endlines = [];
       while(true){
         endlines.add(this.song.lyrics.indexOf('\n', endlines.isEmpty ? 0 : endlines.last+1));
         if(endlines.last == -1)
           break;
-      }
-      List<String> lines = this.song.lyrics.split('\n');
-      int linesIndex = 0;
-      int offIndex = 0;
+      } // fill list of indexes of endlines
+      List<String> lines = this.song.lyrics.split('\n');  // fill list of lines from lyrics
+      int linesIndex = 0; // iterating through lines
+      int offIndex = 0;   // iterating through offsets
       int sectionsLen = 0;
       while(linesIndex < lines.length){
         int offset, lastOffset = 0, numOfSPaces = 0;
@@ -305,16 +305,18 @@ class SongController {
         String thisLine = lines.elementAt(linesIndex);
 
         if (thisLine.indexOf('((') == 0 && thisLine.indexOf('))') != -1) {
-          sectionsLen += thisLine.indexOf('))') + 2;
+          sectionsLen += thisLine.indexOf('))') + 2;    // increasing the sum of lengths of section delimiters
         }
 
         while(offIndex < sortedOffset.length) {
-          offset = int.parse(sortedOffset.elementAt(offIndex)) + sectionsLen;;
+          offset = int.parse(sortedOffset.elementAt(offIndex)) + sectionsLen;   // actual offset is offset from the sorted list + sum of lengths of section delimiters
           if((endlines.elementAt(linesIndex) != -1 && offset >= endlines.elementAt(linesIndex)) || (endlines.elementAt(linesIndex) == -1 && offset >= this.song.lyrics.length))
-            break;
+            break;    // offset is not on this line
           if (linesIndex != 0)
-            offset -= (endlines.elementAt(linesIndex - 1) + 1);
+            offset -= (endlines.elementAt(linesIndex - 1) + 1);   // decreasing offset by the length of lyrics
           String chord = this.song.chords[(sortedOffset.elementAt(offIndex))];
+          if(offset < 0)
+            offset = 0;
           int chPadding;
           if(offset + numOfSPaces < chordLine.length)
             chPadding = chord.length;
@@ -342,16 +344,18 @@ class SongController {
     else{
       _textExport = '';
       int last = 0;
-      List sortedOffset = this.song.chords.keys.toList()..sort((String a, String b){
-        int ai = int.parse(a);
-        int bi = int.parse(b);
-        if(ai > bi) return 1;
-        else if(ai == bi) return 0;
-        else return -1;
-      });
+      int sectionsLen = 0;
       sortedOffset.forEach((String offset){
-        _textExport += this.song.lyrics.substring(last, (int.parse(offset) < this.song.lyrics.length ? int.parse(offset) : this.song.lyrics.length)) + '[' + this.song.chords[offset] + ']';
-        last = int.parse(offset);
+        int newOffset = (int.parse(offset) < this.song.lyrics.length ? int.parse(offset) : this.song.lyrics.length) + sectionsLen;;
+        int left = this.song.lyrics.indexOf('((', last);
+        int right = this.song.lyrics.indexOf('))', last);
+        if(left != -1 && right != -1 && left < right && left <= newOffset){
+          sectionsLen += right - left + 2;
+          newOffset += right - left + 2;
+          // potrebuju zmenit offset o vsechny predchozi (())
+        }
+        _textExport += this.song.lyrics.substring(last, newOffset) + '[' + this.song.chords[offset] + ']';
+        last = newOffset;
       });
       _textExport += this.song.lyrics.substring(last, this.song.lyrics.length);
     }
