@@ -9,13 +9,14 @@ class RegisterController {
   String username;
   String email;
   String password;
-  String password_validation;
+  String passwordCheck;
 
   RegisterController(this._router, this._messageService, this._userResource);
 
   void register() {
-    if(password != password_validation){
-      _messageService.showError('Hesla se neshodují.', 'Musíte zadat dvakrát stejné heslo.');
+    if(password != passwordCheck){
+      _messageService.showError('Překlep.', 'Zadaná hesla se neshodují.');
+      password = passwordCheck = '';
     }
     else {
       _userResource.create(username, email, password).then((_) {

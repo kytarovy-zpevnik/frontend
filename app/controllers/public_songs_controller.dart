@@ -33,7 +33,11 @@ class PublicSongsController {
   }
 
   PublicSongsController(this._sessionService, this._songResource, this._messageService) {
-    _songResource.readAll(/*searchAllPublic: false*/ searchPublic: ' ').then(_processSongs);
+    querySelector('html').classes.add('wait');
+    _songResource.readAll(searchPublic: ' ').then((List<Song> songs){
+      _processSongs(songs);
+      querySelector('html').classes.remove('wait');
+    });
   }
 
   _processSongs(List<Song> songs) {

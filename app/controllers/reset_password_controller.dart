@@ -19,7 +19,7 @@ class ResetPasswordController {
     }).catchError((ApiError e){
       switch(e.error) {
         case 'UNKNOWN_IDENTIFIER':
-          _messageService.showError('Nespech.', 'Uživatel ' + identifier + ' nenalezen');
+          _messageService.showError('Neúspěch.', 'Uživatel ' + identifier + ' nenalezen');
           break;
 
         case 'ALREADY_SENT':

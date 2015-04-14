@@ -62,15 +62,25 @@ class SongCommentsController {
 
   void refresh() {
     querySelector('html').classes.add('wait');
-    _sessionService.initialized.then((_) {
-      User currentUser = _sessionService.session.user;
-      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    if (_sessionService.session == null) {  // analogicky u dalších controllerů
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
+  }
 
-      this.comment = new Comment();
-      this.editComment = new Comment();
-      songId = _routeProvider.parameters['id'];
-      editId = 0;
-      _commentsResource.readAllComments(songId).then(_processComments);
+  _initialize(){
+    User currentUser = _sessionService.session.user;
+    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+
+    this.comment = new Comment();
+    this.editComment = new Comment();
+    songId = _routeProvider.parameters['id'];
+    editId = 0;
+    _commentsResource.readAllComments(songId).then((List<Comment> comments){
+      _processComments(comments);
       querySelector('html').classes.remove('wait');
     });
   }

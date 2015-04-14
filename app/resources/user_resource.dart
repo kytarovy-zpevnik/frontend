@@ -69,8 +69,8 @@ class UserResource {
     return _api.get('users/' + userId.toString() + '/sharing?subject=songbook').then((HttpResponse response) {
       var songbooks = response.data.map((data) {
         var tags = [];
-        for (var i = 0; i < response.data['tags'].length; i++) {
-          tags.add(new SongbookTag(response.data['tags'][i]['tag']));
+        for (int i = 0; i < data['tags'].length; i++) {
+          tags.add(new SongbookTag(data['tags'][i]['tag']));
         }
         return new Songbook(data['id'], data['name'], data['note'], public: data['public'], username: data['username'], tags: tags);
       });

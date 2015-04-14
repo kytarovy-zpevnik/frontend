@@ -9,7 +9,11 @@ class HomepageController {
   List songs = [];
 
   HomepageController(this._router, this._songResource){
-    _songResource.readAll(randomPublic: true).then(_processSongs);
+    querySelector('html').classes.add('wait');
+    _songResource.readAll(randomPublic: true).then((List<Song> songs){
+      _processSongs(songs);
+      querySelector('html').classes.remove('wait');
+    });
   }
 
   _processSongs(List<Song> songs) {

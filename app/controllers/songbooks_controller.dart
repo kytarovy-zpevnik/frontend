@@ -21,9 +21,23 @@ class SongbooksController {
   }
 
   SongbooksController(this._sessionService, this._songbookResource, this._messageService, this._userResource) {
+    querySelector('html').classes.add('wait');
+    if (_sessionService.session == null) {  // analogicky u dalších controllerů
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
+  }
+
+  _initialize(){
     _songbookResource.readAll().then(_processSongbooks);
     var user = _sessionService.session.user;
-    _userResource.readAllSharedSongbooks(user.id).then(_processSharedSongbooks);
+    _userResource.readAllSharedSongbooks(user.id).then((List<Songbook> songbooks){
+      _processSharedSongbooks(songbooks);
+      querySelector('html').classes.remove('wait');
+    });
   }
 
   void _processSongbooks(List<Songbook> songbooks) {

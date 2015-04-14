@@ -61,13 +61,27 @@ class SongbookCommentsController {
   }
 
   void refresh() {
-    User currentUser = null;
-    currentUser = _sessionService.session.user;
+    querySelector('html').classes.add('wait');
+    if (_sessionService.session == null) {  // analogicky u dalších controllerů
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
+  }
+
+  _initialize(){
+    User currentUser = _sessionService.session.user;
     this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+
     this.comment = new Comment();
     this.editComment = new Comment();
     songbookId = _routeProvider.parameters['id'];
     editId = 0;
-    _commentsResource.readAllComments(songbookId).then(_processComments);
+    _commentsResource.readAllComments(songbookId).then((List<Comment> comments){
+      _processComments(comments);
+      querySelector('html').classes.remove('wait');
+    });
   }
 }

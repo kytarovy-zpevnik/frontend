@@ -15,39 +15,46 @@ class SongbookController {
   SongbookController(this._sessionService, this._songbooksResource, this._messageService, this._routeProvider, this._router) {
 
       create = !_routeProvider.parameters.containsKey('id');
-      User currentUser = _sessionService.session.user;
-      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
-      if(create) {
-        this.songbook = new Songbook('','','', public: false);
-      }
-
-      else {
-        querySelector('html').classes.add('wait');
-        _songbooksResource.read(_routeProvider.parameters['id']).then((Songbook songbook) {
-          List songs = [];
-          List row;
-          var index = 0;
-
-          this.songbook = songbook;
-          songbook.songs.forEach((Song song) {
-            if (index % 4 == 0) {
-              row = [];
-              row.add(song);
-              songs.add(row);
-            }
-            else {
-              row.add(song);
-            }
-            index++;
-          });
-          this.songbook.songs = songs;
-          querySelector('html').classes.remove('wait');
-          /*
-          this.songbook = new Songbook(songbook.id, songbook.name, songbook.note, username: songbook.username, public: songbook.public, songs: songs, tags: songbook.tags);
-          */
-
+      querySelector('html').classes.add('wait');
+      if (_sessionService.session == null) {  // analogicky u dalších controllerů
+        _sessionService.initialized.then((_) {
+          _initialize();
         });
+      } else {
+        _initialize();
       }
+  }
+
+  _initialize(){
+    User currentUser = _sessionService.session.user;
+    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    if(create) {
+      this.songbook = new Songbook('','','', public: false);
+      querySelector('html').classes.remove('wait');
+    }
+    else {
+      _songbooksResource.read(_routeProvider.parameters['id']).then((Songbook songbook) {
+        List songs = [];
+        List row;
+        var index = 0;
+
+        this.songbook = songbook;
+        songbook.songs.forEach((Song song) {
+          if (index % 4 == 0) {
+            row = [];
+            row.add(song);
+            songs.add(row);
+          }
+          else {
+            row.add(song);
+          }
+          index++;
+        });
+        this.songbook.songs = songs;
+        querySelector('html').classes.remove('wait');
+
+      });
+    }
   }
 
   void save() {

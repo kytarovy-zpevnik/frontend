@@ -99,55 +99,62 @@ class SongController {
     create = !_routeProvider.parameters.containsKey('id');
 
     querySelector('html').classes.add('wait');
-    _sessionService.initialized.then((_) {
-      User currentUser = _sessionService.session.user;
-      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    if (_sessionService.session == null) {  // analogicky u dalších controllerů
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
+  }
 
-      if (create) {
-        querySelector('html').classes.remove('wait');
-        song = new Song('', '', '', '', '', '', false);
+  _initialize(){
+    User currentUser = _sessionService.session.user;
+    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
 
-        if (_routeProvider.parameters.containsKey('songbookId')) {
-          _songbooksResource.read(_routeProvider.parameters['songbookId']).then((Songbook songbook) {
-            song.songbooks.add(songbook);
-          });
-        }
+    if (create) {
+      song = new Song('', '', '', '', '', '', false);
+      querySelector('html').classes.remove('wait');
 
-        _songbooksResource.readAll().then((List<Songbook> songbooks) {
-          songbooks.forEach((Songbook songbook) {
-            this.items.add({
-              'songbook': songbook,
-              'included': false
-            });
-          });
-        });
-
-      } else {
-        _songsResource.read(_routeProvider.parameters['id']).then((Song song) {
-          this.song = song;
-          computeLyrics();
-          querySelector('html').classes.remove('wait');
-
-          _songbooksResource.readAll().then((List<Songbook> songbooks) {
-            songbooks.forEach((Songbook songbook) {
-              var included = false;
-
-              song.songbooks.forEach((Songbook songsongbook) {
-                if (songbook.id == songsongbook.id) {
-                  included = true;
-                }
-              });
-
-              this.items.add({
-                'songbook': songbook,
-                'included': included
-              });
-            });
-          });
+      if (_routeProvider.parameters.containsKey('songbookId')) {
+        _songbooksResource.read(_routeProvider.parameters['songbookId']).then((Songbook songbook) {
+          song.songbooks.add(songbook);
         });
       }
 
-    }); // dodělat úplně všude a nejspíš roztáhnout na celou metodu
+      _songbooksResource.readAll().then((List<Songbook> songbooks) {
+        songbooks.forEach((Songbook songbook) {
+          this.items.add({
+              'songbook': songbook,
+              'included': false
+          });
+        });
+      });
+
+    } else {
+      _songsResource.read(_routeProvider.parameters['id']).then((Song song) {
+        this.song = song;
+        computeLyrics();
+        querySelector('html').classes.remove('wait');
+
+        _songbooksResource.readAll().then((List<Songbook> songbooks) {
+          songbooks.forEach((Songbook songbook) {
+            var included = false;
+
+            song.songbooks.forEach((Songbook songsongbook) {
+              if (songbook.id == songsongbook.id) {
+                included = true;
+              }
+            });
+
+            this.items.add({
+                'songbook': songbook,
+                'included': included
+            });
+          });
+        });
+      });
+    }
   }
 
   void import(String type){

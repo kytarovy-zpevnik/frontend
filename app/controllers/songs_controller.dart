@@ -30,10 +30,20 @@ class SongsController {
 
   SongsController(this._sessionService, this._songResource, this._messageService, this._userResource) {
     querySelector('html').classes.add('wait');
-    _sessionService.initialized.then((_) {
-      _songResource.readAll().then(_processSongs);
-      var user = _sessionService.session.user;
-      _userResource.readAllSharedSongs(user.id).then(_processSharedSongs);
+    if (_sessionService.session == null) {  // analogicky u dalších controllerů
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
+  }
+
+  _initialize(){  // analogicky u dalších controllerů
+    _songResource.readAll().then(_processSongs);
+    var user = _sessionService.session.user;
+    _userResource.readAllSharedSongs(user.id).then((List<Song> songs){
+      _processSharedSongs(songs);
       querySelector('html').classes.remove('wait');
     });
   }
