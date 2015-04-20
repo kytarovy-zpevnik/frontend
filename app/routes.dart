@@ -33,6 +33,9 @@ class Routes {
         'songbooks': appRoute(
             path: '/songbooks',
             view: 'html/views/songbooks.html'),
+        'public-songs': appRoute(
+            path: '/public-songbooks',
+            view: 'html/views/songbooks_public.html'),
         'sign': appRoute(
             path: '/sign',
             view: 'html/views/sign_in.html'),

@@ -18,6 +18,7 @@ part 'controllers/reset_password_controller.dart';
 part 'controllers/sign_in_controller.dart';
 part 'controllers/songbook_controller.dart';
 part 'controllers/songbooks_controller.dart';
+part 'controllers/public_songbooks_controller.dart';
 part 'controllers/song_controller.dart';
 part 'controllers/songs_controller.dart';
 part 'controllers/public_songs_controller.dart';
@@ -89,6 +90,7 @@ class AppModule extends Module {
     bind(SongbookRatingsController);
     bind(SongbookRatingController);
     bind(SongbookSharingController);
+    bind(PublicSongbooksController);
     bind(SongCommentsController);
     bind(SongbookCommentsController);
     bind(SongSearch);

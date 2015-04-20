@@ -71,4 +71,11 @@ class SongbookController {
       });
     }
   }
+
+  void delete(){
+    _songbooksResource.delete(songbook).then((_){
+      _messageService.prepareSuccess('Smazáno.', 'Zpěvník byl úspěšně smazán.');
+      _router.go('songbooks', {});
+    });
+  }
 }

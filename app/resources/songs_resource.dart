@@ -223,6 +223,14 @@ class SongsResource {
   }
 
   /**
+   * Deletes song by id.
+   */
+  Future delete(Song song) {
+    return _api.delete('songs/' + song.id.toString()).then((_){
+    });
+  }
+
+  /**
    * Exports song by id.
    */
   // XML EXPORT

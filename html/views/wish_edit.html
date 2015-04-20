@@ -1,7 +1,8 @@
 <div wish edit>
 
     <div class="btn-group pull-right">
-        <a href="#/wish/{{ctrl.wish.id}}/view" class="btn btn-default">Zpět</a>
+        <span ng-if="ctrl.create"><a href="#/wishes" class="btn btn-default">Zpět</a></span>
+        <span ng-if="!ctrl.create"><a href="#/wish/{{ctrl.wish.id}}/view" class="btn btn-default">Zpět</a></span>
     </div>
 
     <h1>

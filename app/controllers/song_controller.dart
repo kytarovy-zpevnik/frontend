@@ -268,13 +268,19 @@ class SongController {
     else{
       int prev = 0;
       int chordsLen = 0;
+      int sectionsLen = 0;
       int chordPos;
       int chordEnd;
       while((chordPos = _textExport.indexOf('[', prev)) != -1){
         if((chordEnd = _textExport.indexOf(']', prev)) == -1)
           break;
+        int left = _textExport.indexOf('((', prev);
+        int right = _textExport.indexOf('))', prev);
+        if(left != -1 && right != -1 && left < right && left <= chordPos && left - 1 == _textExport.indexOf('\n')){
+          sectionsLen += right - left + 2;
+        }
         this.song.lyrics += _textExport.substring(prev, chordPos);
-        this.song.chords[(chordPos-chordsLen).toString()] = _textExport.substring(chordPos + 1, chordEnd);
+        this.song.chords[(chordPos-chordsLen-sectionsLen).toString()] = _textExport.substring(chordPos + 1, chordEnd);
         prev = chordEnd + 1;
         chordsLen += (chordEnd - chordPos + 1);
       }
@@ -356,7 +362,7 @@ class SongController {
         int newOffset = (int.parse(offset) < this.song.lyrics.length ? int.parse(offset) : this.song.lyrics.length) + sectionsLen;;
         int left = this.song.lyrics.indexOf('((', last);
         int right = this.song.lyrics.indexOf('))', last);
-        if(left != -1 && right != -1 && left < right && left <= newOffset){
+        if(left != -1 && right != -1 && left < right && left <= newOffset && left - 1 == this.song.lyrics.indexOf('\n')){
           sectionsLen += right - left + 2;
           newOffset += right - left + 2;
           // potrebuju zmenit offset o vsechny predchozi (())
@@ -431,6 +437,13 @@ class SongController {
     _songsResource.takeSong(song).then((_) {
       _messageService.prepareSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
       _router.go('song.view', {'id': song.id});
+    });
+  }
+
+  void delete(){
+    _songsResource.delete(song).then((_){
+      _messageService.prepareSuccess('Smazáno.', 'Píseň byla úspěšně smazána.');
+      _router.go('songs', {});
     });
   }
 

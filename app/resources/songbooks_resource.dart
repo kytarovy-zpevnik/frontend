@@ -33,8 +33,23 @@ class SongbooksResource {
   /**
    * Reads all songbooks.
    */
-  Future<List<Songbook>> readAll([String search]) {
-    return _api.get('songbooks', params: {'search': search}).then((HttpResponse response) {
+  Future<List<Songbook>> readAll({bool randomPublic, String searchPublic, String search}) {
+    var params;
+    if (search != null) {
+      params = {'search': search};
+    }
+    /*else if (searchAllPublic != null) {
+      params = {'searchAllPublic': searchAllPublic};
+    }*/
+    else if(randomPublic != null){
+        params = {'randomPublic': randomPublic};
+    }
+    else {
+      if(searchPublic == '')
+        searchPublic = ' ';
+      params = {'searchPublic': searchPublic};
+    }
+    return _api.get('songbooks', params: params).then((HttpResponse response) {
       var songbooks = response.data.map((data) {
         var tags = [];
         for (var i = 0; i < data['tags'].length; i++) {
@@ -80,6 +95,14 @@ class SongbooksResource {
       'tags': tags
     }).then((_){
 
+    });
+  }
+
+  /**
+   * Deletes songbook by id.
+   */
+  Future delete(Songbook songbook) {
+    return _api.delete('songbooks/' + songbook.id.toString()).then((_){
     });
   }
 
