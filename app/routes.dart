@@ -33,7 +33,7 @@ class Routes {
         'songbooks': appRoute(
             path: '/songbooks',
             view: 'html/views/songbooks.html'),
-        'public-songs': appRoute(
+        'public-songbooks': appRoute(
             path: '/public-songbooks',
             view: 'html/views/songbooks_public.html'),
         'sign': appRoute(
@@ -109,6 +109,12 @@ class Routes {
         'admin': appRoute(
             path: '/admin',
             view: 'html/views/admin.html'),
+        'admin-songs': appRoute(
+            path: '/admin-songs',
+            view: 'html/views/songs_admin.html'),
+        'admin-songbooks': appRoute(
+            path: '/admin-songbooks',
+            view: 'html/views/songbooks_admin.html'),
         'notifications': appRoute(
             path: '/notifications',
             view: 'html/views/notifications.html'),

@@ -1,0 +1,26 @@
+<div admin-songbooks>
+    <h1>Nahrané zpěvníky</h1>
+    <table class="table table-striped">
+        <tbody>
+        <tr ng-repeat="songbook in ctrl.songbooks">
+            <td>{{songbook.id}}</td>
+            <td>{{songbook.name}}</td>
+            <td>{{songbook.username}}</td>
+            <td ng-if="!songbook.archived">
+                <button class="btn btn-danger" ng-click="ctrl.delete(songbook)">Smazat</button>
+            </td>
+            <td ng-if="songbook.archived">
+                <button class="btn btn-success" ng-click="ctrl.restore(songbook)">Obnovit</button>
+            </td>
+        </tr>
+        </tbody>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Název</th>
+            <th>Vlastník</th>
+            <th>Akce</th>
+        </tr>
+        </thead>
+    </table>
+</div>

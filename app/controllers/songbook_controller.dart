@@ -65,7 +65,7 @@ class SongbookController {
       });
     }
     else {
-      _songbooksResource.edit(songbook).then((_){
+      _songbooksResource.update(songbook).then((_){
         _messageService.prepareSuccess('Uloženo.', 'Zpěvník byl úspěšně uložen.');
         _router.go('songbook.view', {'id': songbook.id});
       });

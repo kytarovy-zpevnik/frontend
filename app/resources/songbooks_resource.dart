@@ -33,7 +33,7 @@ class SongbooksResource {
   /**
    * Reads all songbooks.
    */
-  Future<List<Songbook>> readAll({bool randomPublic, String searchPublic, String search}) {
+  Future<List<Songbook>> readAll({bool admin, bool randomPublic, String searchPublic, String search}) {
     var params;
     if (search != null) {
       params = {'search': search};
@@ -43,6 +43,9 @@ class SongbooksResource {
     }*/
     else if(randomPublic != null){
         params = {'randomPublic': randomPublic};
+    }
+    else if(admin != null){
+      params = {'admin': admin};
     }
     else {
       if(searchPublic == '')
@@ -55,7 +58,7 @@ class SongbooksResource {
         for (var i = 0; i < data['tags'].length; i++) {
           tags.add(new SongbookTag(data['tags'][i]['tag']));
         }
-        return new Songbook(data['id'], data['name'], data['note'], public: data['public'], username: data['username'], tags: tags);
+        return new Songbook(data['id'], data['name'], data['note'], public: data['public'], username: data['username'], tags: tags, archived: data['archived']);
       });
 
       return new Future.value(songbooks);
@@ -78,7 +81,7 @@ class SongbooksResource {
   /**
    * Updates songbook.
    */
-  Future edit(Songbook songbook) {
+  Future update(Songbook songbook) {
     _normalize(songbook);
 
     var tags = [];
@@ -92,6 +95,7 @@ class SongbooksResource {
       'name': songbook.name,
       'note': songbook.note,
       'public' : songbook.public,
+      'archived': songbook.archived,
       'tags': tags
     }).then((_){
 

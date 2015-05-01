@@ -9,7 +9,7 @@ class SongsResource {
   /**
    * Read's all songs.
    */
-  Future<List<Song>> readAll({/*bool searchAllPublic, */bool randomPublic, String searchPublic, String search, Map<String, String> filters}) {
+  Future<List<Song>> readAll({bool admin, bool randomPublic, String searchPublic, String search, Map<String, String> filters}) {
     var params;
     if (filters != null) {
       params = filters;
@@ -17,12 +17,12 @@ class SongsResource {
     else if (search != null) {
       params = {'search': search};
     }
-    /*else if (searchAllPublic != null) {
-      params = {'searchAllPublic': searchAllPublic};
-    }*/
     else if(randomPublic != null){
         params = {'randomPublic': randomPublic};
-      }
+    }
+    else if(admin != null){
+        params = {'admin': admin};
+    }
     else {
       if(searchPublic == '')
         searchPublic = ' ';
@@ -34,7 +34,7 @@ class SongsResource {
         for (var i = 0; i < data['tags'].length; i++) {
           tags.add(new SongTag(data['tags'][i]['tag']));
         }
-        return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'], data['note'], data['public'], id: data['id'], username: data['username'], tags: tags);
+        return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'], data['note'], data['public'], id: data['id'], username: data['username'], tags: tags, archived: data['archived']);
       });
 
       return new Future.value(songs);
@@ -185,6 +185,7 @@ class SongsResource {
         'year': song.year,
         'note': song.note,
         'public': song.public,
+        'archived': song.archived,
         'lyrics': song.lyrics,
         'chords': JSON.encode(song.chords),
         'songbooks': songbooks,

@@ -13,6 +13,7 @@ class Song {
   String note = '';
   bool public = false;
   String username = '';
+  bool archived = false;
 
   String lyrics;
   Map<int, String> chords;
@@ -45,7 +46,7 @@ class Song {
     }
   }
 
-  Song(this.title, this.album, this.author, this.originalAuthor, this.year, this.note, this.public, {this.username, this.id, this.lyrics: '', this.chords, this.songbooks, tags}) {
+  Song(this.title, this.album, this.author, this.originalAuthor, this.year, this.note, this.public, {this.username, this.id, this.lyrics: '', this.chords, this.songbooks, tags, this.archived}) {
     this.tags = tags;
     if (chords == null) chords = {};
     if (songbooks == null) songbooks = [];

@@ -11,6 +11,8 @@ part 'components/bar_component.dart';
 part 'components/chord_position.dart';
 part 'components/messages_component.dart';
 part 'components/song_search.dart';
+part 'controllers/admin_songs_controller.dart';
+part 'controllers/admin_songbooks_controller.dart';
 part 'controllers/homepage_controller.dart';
 part 'controllers/notifications_controller.dart';
 part 'controllers/register_controller.dart';
@@ -71,6 +73,8 @@ class AppModule extends Module {
     bind(BarComponent);
     bind(ChordPosition);
     bind(MessagesComponent);
+    bind(AdminSongsController);
+    bind(AdminSongbooksController);
     bind(HomepageController);
     bind(NotificationsController);
     bind(RegisterController);

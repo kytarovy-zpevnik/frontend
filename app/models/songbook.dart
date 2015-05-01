@@ -11,6 +11,7 @@ class Songbook {
   bool public = false;
   List songs = [];
   String tagsStr = '';
+  bool archived = false;
 
   List<SongbookTag> get tags {
     if(tagsStr == '')
@@ -33,7 +34,7 @@ class Songbook {
     }
   }
 
-  Songbook(this.id, this.name, this.note, {this.public, this.songs, this.username, tags}) {
+  Songbook(this.id, this.name, this.note, {this.public, this.songs, this.username, tags, this.archived}) {
     this.tags = tags;
   }
 }

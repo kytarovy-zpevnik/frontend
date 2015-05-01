@@ -4,12 +4,17 @@ part of app;
 class HomepageController {
 
   final SongsResource _songResource;
+  final SongbooksResource _songbookResource;
   final Router _router;
 
   List songs = [];
+  List songbooks = [];
 
-  HomepageController(this._router, this._songResource){
+  HomepageController(this._router, this._songResource, this._songbookResource){
     querySelector('html').classes.add('wait');
+    _songbookResource.readAll(randomPublic: true).then((List<Songbook> songbooks){
+      _processSongbooks(songbooks);
+    });
     _songResource.readAll(randomPublic: true).then((List<Song> songs){
       _processSongs(songs);
       querySelector('html').classes.remove('wait');
@@ -28,6 +33,23 @@ class HomepageController {
       }
       else{
         row.add(song);
+      }
+      index++;
+    });
+  }
+
+  _processSongbooks(List<Songbook> songbooks) {
+    this.songbooks.clear();
+    List row;
+    var index = 0;
+    songbooks.forEach((Songbook songbook) {
+      if(index % 4 == 0){
+        row = [];
+        row.add(songbook);
+        this.songbooks.add(row);
+      }
+      else{
+        row.add(songbook);
       }
       index++;
     });
