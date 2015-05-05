@@ -9,7 +9,7 @@ class SongsController {
   final UserResource _userResource;
 
   List songs = [];
-  List sharedSongs = [];
+  List visibleSongs = [];
   String _search = '';
   String get search => _search;
   bool advSearchVisible = false;
@@ -17,7 +17,8 @@ class SongsController {
 
   set search(String search) {
     _search = search;
-    _songResource.readAll(search: search).then(_processSongs);
+    //_songResource.readAll(search: search).then(_processSongs);
+    _filterSongs();
   }
 
   toggleAdvSearch() {
@@ -40,6 +41,8 @@ class SongsController {
   }
 
   _initialize(){  // analogicky u dalších controllerů
+    this.songs.clear();
+    this.visibleSongs.clear();
     _songResource.readAll().then(_processSongs);
     var user = _sessionService.session.user;
     _userResource.readAllSharedSongs(user.id).then((List<Song> songs){
@@ -49,36 +52,24 @@ class SongsController {
   }
 
   _processSongs(List<Song> songs) {
-    this.songs.clear();
-    List row;
-    var index = 0;
     songs.forEach((Song song) {
-      if(index % 4 == 0){
-        row = [];
-        row.add(song);
-        this.songs.add(row);
-      }
-      else{
-        row.add(song);
-      }
-      index++;
+      this.songs.add(song);
+      this.visibleSongs.add(song);
     });
   }
 
   _processSharedSongs(List<Song> songs) {
-    this.sharedSongs.clear();
-    List row;
-    var index = 0;
     songs.forEach((Song song) {
-      if(index % 4 == 0){
-        row = [];
-        row.add(song);
-        this.sharedSongs.add(row);
-      }
-      else{
-        row.add(song);
-      }
-      index++;
+      this.songs.add(song);
+      this.visibleSongs.add(song);
+    });
+  }
+
+  _filterSongs(){
+    this.visibleSongs.clear();
+    this.songs.forEach((Song song){
+      if(song.contains(_search))
+        visibleSongs.add(song);
     });
   }
 

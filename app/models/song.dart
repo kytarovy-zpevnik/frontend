@@ -46,6 +46,22 @@ class Song {
     }
   }
 
+  bool contains(String other){
+    if(title != null && title.toUpperCase().contains(other.toUpperCase()))
+      return true;
+    if(author != null && author.toUpperCase().contains(other.toUpperCase()))
+      return true;
+    if(originalAuthor != null && originalAuthor.toUpperCase().contains(other.toUpperCase()))
+      return true;
+    if(album != null && album.toUpperCase().contains(other.toUpperCase()))
+      return true;
+    if(year != null && year.toString().toUpperCase().contains(other.toUpperCase()))
+      return true;
+    if(tagsStr != null && tagsStr.toUpperCase().contains(other.toUpperCase()))
+      return true;
+    return false;
+  }
+
   Song(this.title, this.album, this.author, this.originalAuthor, this.year, this.note, this.public, {this.username, this.id, this.lyrics: '', this.chords, this.songbooks, tags, this.archived}) {
     this.tags = tags;
     if (chords == null) chords = {};

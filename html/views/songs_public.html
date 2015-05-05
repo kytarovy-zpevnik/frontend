@@ -2,13 +2,39 @@
     <div class="pull-right">
         <form class="form-inline" role="search">
             <div class="form-group">
-                <input ng-model="ctrl.search" type="text" class="form-control" placeholder="Hledat písně">
+                <input ng-model="ctrl.search" type="text" class="form-control" placeholder="Filtrovat písně">
             </div>
         </form>
     </div>
 
     <h1>Veřejné písně</h1>
-    <div class="row" ng-repeat="row in ctrl.songs">
+    <table class="table table-striped">
+        <tbody>
+        <tr ng-repeat="song in ctrl.visibleSongs">
+            <td><a href="#/song/{{song.id}}/view">{{song.title}}</a></td>
+            <td>{{song.author}}</td>
+            <td>{{song.originalAuthor}}</td>
+            <td>{{song.album}}</td>
+            <td>{{song.year}}</td>
+            <td>{{song.username}}</td>
+            <td>{{song.tagsStr}}</td>
+            <td>{{song.note}}</td>
+        </tr>
+        </tbody>
+        <thead>
+        <tr>
+            <th>Název</th>
+            <th>Autor</th>
+            <th>Původní autor</th>
+            <th>Album</th>
+            <th>Rok</th>
+            <th>Vlastník</th>
+            <th>Tagy</th>
+            <th>Poznámka</th>
+        </tr>
+        </thead>
+    </table>
+    <!--<div class="row" ng-repeat="row in ctrl.songs">
         <div class="col-md-3" ng-repeat="song in row">
             <h3><a href="#/song/{{song.id}}/view">{{song.title}}</a></h3>
                 <span ng-if="song.author != null"><b>Autor</b>
@@ -26,5 +52,5 @@
                 <span ng-if="song.username != null"><b>Vlastník:</b>
                 {{song.username}}<br></span>
         </div>
-    </div>
+    </div>-->
 </div>

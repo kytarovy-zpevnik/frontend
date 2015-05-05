@@ -7,6 +7,7 @@ class PublicSongsController {
   final MessageService _messageService;
 
   List songs = [];
+  List visibleSongs = [];
   String _search = '';
   String get search => _search;
   bool advSearchVisible = false;
@@ -15,13 +16,8 @@ class PublicSongsController {
 
   set search(String search) {
     _search = search;
-    /*if (_search == '') {
-      _songResource.readAll(searchAllPublic: false).then(_processSongs);
-    }
-    else {
-      _songResource.readAll(searchPublic: search).then(_processSongs);
-    }*/
-    _songResource.readAll(searchPublic: _search).then(_processSongs);
+    //_songResource.readAll(searchPublic: _search).then(_processSongs);
+    _filterSongs();
   }
 
   toggleAdvSearch() {
@@ -42,21 +38,18 @@ class PublicSongsController {
 
   _processSongs(List<Song> songs) {
     this.songs.clear();
-    List row;
-    var index = 0;
+    this.visibleSongs.clear();
     songs.forEach((Song song) {
-      /*if (song.username == this.user.username) {
-        index--;
-      }
-      else*/ if(index % 4 == 0){
-        row = [];
-        row.add(song);
-        this.songs.add(row);
-      }
-      else{
-        row.add(song);
-      }
-      index++;
+      this.songs.add(song);
+      this.visibleSongs.add(song);
+    });
+  }
+
+  _filterSongs(){
+    this.visibleSongs.clear();
+    this.songs.forEach((Song song){
+      if(song.contains(_search))
+        visibleSongs.add(song);
     });
   }
 }

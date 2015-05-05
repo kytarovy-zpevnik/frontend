@@ -60,7 +60,7 @@ class SongController {
         var title = '';
 
         if (section.indexOf('((') == 0 && rowOffset != -1) {
-          print(rowOffset);
+          //print(rowOffset);
           title = section.substring(2, rowOffset) + ':';
           rowOffset += 2;
         } else {
@@ -69,7 +69,7 @@ class SongController {
 
         first = true;
         var lines = [];
-        section.substring(rowOffset).trim().split('\n').forEach((String line) {
+        section.substring(rowOffset).split('\n').forEach((String line) {
           if (first) {
             first = false;
           } else {
@@ -157,6 +157,15 @@ class SongController {
     }
   }
 
+  int _checkSection(String line){
+    int sectionLen = 0;
+    int right = line.indexOf('))');
+    if(line.startsWith('((') && right != -1){
+      sectionLen = right + 2;
+    }
+    return sectionLen;
+  }
+
   void import(String type){
     this.song.lyrics = '';
     this.song.chords = {};
@@ -182,13 +191,13 @@ class SongController {
         String nextLine = lines.elementAt(next);
         if(!currLine.startsWith(' ')){        // first line doesn't start with space
           if(nextLine.isEmpty){               // second line empty -> first must be lyrics, second "too"
-            offset += currLine.length + 2;
+            offset += currLine.length + 2 - _checkSection(currLine);
             this.song.lyrics += currLine + '\n\n';
             curr += 2;
             next += 2;
           }
           else if(!nextLine.startsWith(' ')){ // second line doesn't start with space -> first must be lyrics
-            offset += currLine.length + 1;
+            offset += currLine.length + 1 - _checkSection(currLine);
             this.song.lyrics += currLine + '\n';
             curr = next++;
           }
@@ -220,8 +229,10 @@ class SongController {
               int chordEnd = currLine.indexOf(new RegExp(r'[ A-Z]'), prev);
               tmpChords[(tmpOffset).toString()] = currLine.substring(chordPos, chordEnd > 0 ? chordEnd : currLine.length);
             }
+            if(prev == 0)
+              failed = true;
             if(failed){
-              offset += currLine.length + 1;
+              offset += currLine.length + 1 - _checkSection(currLine);
               this.song.lyrics += currLine + '\n';
               curr = next++;
             }
@@ -236,6 +247,7 @@ class SongController {
         }
         else{                                 // first line starts with space -> must be chords
           prev = 0;
+          offset -= _checkSection(nextLine);
           while(true){
             chordPos = nextLine.indexOf(' ', prev);
             if(chordPos == -1 || chordPos >= currLine.length){
@@ -276,7 +288,7 @@ class SongController {
           break;
         int left = _textExport.indexOf('((', prev);
         int right = _textExport.indexOf('))', prev);
-        if(left != -1 && right != -1 && left < right && left <= chordPos && left - 1 == _textExport.indexOf('\n')){
+        if(left != -1 && right != -1 && left < right && left <= chordPos && (left == 0 || left - 1 == _textExport.indexOf('\n'))){
           sectionsLen += right - left + 2;
         }
         this.song.lyrics += _textExport.substring(prev, chordPos);
@@ -359,7 +371,7 @@ class SongController {
         int newOffset = (int.parse(offset) < this.song.lyrics.length ? int.parse(offset) : this.song.lyrics.length) + sectionsLen;;
         int left = this.song.lyrics.indexOf('((', last);
         int right = this.song.lyrics.indexOf('))', last);
-        if(left != -1 && right != -1 && left < right && left <= newOffset && left - 1 == this.song.lyrics.indexOf('\n')){
+        if(left != -1 && right != -1 && left < right && left <= newOffset && (left == 0 || left - 1 == this.song.lyrics.indexOf('\n'))){
           sectionsLen += right - left + 2;
           newOffset += right - left + 2;
           // potrebuju zmenit offset o vsechny predchozi (())
