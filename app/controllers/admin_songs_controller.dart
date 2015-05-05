@@ -18,7 +18,7 @@ class AdminSongsController {
 
   void restore(Song song) {
     song.archived = false;
-    _songsResource.update(song);
+    _songsResource.delete(song);
   }
 
   void _loadSongs() {

@@ -95,7 +95,6 @@ class SongbooksResource {
       'name': songbook.name,
       'note': songbook.note,
       'public' : songbook.public,
-      'archived': songbook.archived,
       'tags': tags
     }).then((_){
 

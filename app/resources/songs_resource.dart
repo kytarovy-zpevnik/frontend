@@ -185,7 +185,6 @@ class SongsResource {
         'year': song.year,
         'note': song.note,
         'public': song.public,
-        'archived': song.archived,
         'lyrics': song.lyrics,
         'chords': JSON.encode(song.chords),
         'songbooks': songbooks,

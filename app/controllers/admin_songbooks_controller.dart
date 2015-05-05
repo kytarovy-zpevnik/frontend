@@ -18,7 +18,7 @@ class AdminSongbooksController {
 
   void restore(Songbook songbook) {
     songbook.archived = false;
-    _songbooksResource.update(songbook);
+    _songbooksResource.delete(songbook);
   }
 
   void _loadSongbooks() {

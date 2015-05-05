@@ -297,9 +297,6 @@ class SongController {
       else return -1;
     }); // fill sorted list of chord offsets
     if(type == 'agama'){
-      /*_songsResource.export(_routeProvider.parameters['id']).then((String agama) {
-        this.agama = agama;
-      });*/
       _agama = '';
       List<int> endlines = [];
       while(true){
