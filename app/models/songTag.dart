@@ -4,9 +4,10 @@ part of app;
  * SongTag model.
  */
 class SongTag {
-  string tag;
+  String tag;
+  bool public;
 
-  SongTag(this.tag) {
+  SongTag(this.tag, this.public) {
   }
 
   toString() => tag;

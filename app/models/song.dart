@@ -21,27 +21,38 @@ class Song {
   List<Songbook> songbooks;
 
   String tagsStr = '';
+  String privateTagsStr = '';
 
   List<SongTag> get tags {
-    if(tagsStr == '')
-      return [];
-    var tagsSet = new Set<String>();
     var songTags = [];
-    tagsStr.split(",").forEach((tag) {
-      tagsSet.add(tag.trim());
-    });
-    tagsSet.forEach((tag) {
-      songTags.add(new SongTag(tag));
-    });
+    if(tagsStr != ''){
+      tagsStr.split(",").forEach((tag) {
+        songTags.add(new SongTag(tag.trim(), true));
+      });
+    }
+    if(privateTagsStr != ''){
+      privateTagsStr.split(",").forEach((tag) {
+        songTags.add(new SongTag(tag.trim(), false));
+      });
+    }
     return songTags;
   }
 
   set tags(List<SongTag> tags){
-    tagsStr = "";
-    if(tags != null && !tags.isEmpty) {
-      tagsStr = tags[0].toString();
-      for(var i = 1; i < tags.length; i++) {
-        tagsStr += ", " + tags[i].toString();
+    tagsStr = '';
+    privateTagsStr = '';
+    if(tags != null) {
+      for(int i = 0; i < tags.length; i++){
+        if(tags[i].public){
+          if(tagsStr != '')
+            tagsStr += ', ';
+          tagsStr += tags[i].tag;
+        }
+        else{
+          if(privateTagsStr != '')
+            privateTagsStr += ', ';
+          privateTagsStr += tags[i].tag;
+        }
       }
     }
   }

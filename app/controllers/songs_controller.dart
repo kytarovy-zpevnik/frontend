@@ -43,12 +43,16 @@ class SongsController {
   _initialize(){  // analogicky u dalších controllerů
     this.songs.clear();
     this.visibleSongs.clear();
-    _songResource.readAll().then(_processSongs);
     var user = _sessionService.session.user;
+
+    /*_songResource.readAll().then(_processSongs);
     _userResource.readAllSharedSongs(user.id).then((List<Song> songs){
       _processSharedSongs(songs);
       querySelector('html').classes.remove('wait');
-    });
+    });*/
+    Future.wait([_songResource.readAll().then(_processSongs), // analogicky u dalších
+                _userResource.readAllSharedSongs(user.id).then(_processSharedSongs)]
+    ).then((List<Future> futures){querySelector('html').classes.remove('wait');});
   }
 
   _processSongs(List<Song> songs) {

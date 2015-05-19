@@ -1,7 +1,7 @@
 <div homepage>
     <h1>Úvodní stránka</h1>
     <p>Vítejte na projektu kytarového zpěvníku.</p>
-    <p>Tato aplikace je nyní ve vývojové verzi 0.4.3.</p>
+    <p>Tato aplikace je nyní ve vývojové verzi 0.4.4.</p>
 
     <h3>Náhodný výběr <a href="#/public-songs">veřejných písní</a></h3>
     <div class="row" ng-repeat="row in ctrl.songs">
@@ -9,14 +9,10 @@
             <h4><a href="#/song/{{song.id}}/view">{{song.title}}</a></h4>
                 <span ng-if="song.author != null"><b>Autor</b>
                 {{song.author}}<br></span>
-                <span ng-if="song.originalAuthor != null"><b>Původní autor</b>
-                {{song.originalAuthor}}<br></span>
                 <span ng-if="song.album != null"><b>Album</b>
                 {{song.album}}<br></span>
                 <span ng-if="song.year != null"><b>Rok</b>
                 {{song.year}}<br></span>
-                <span ng-if="song.note != null"><b>Poznámka</b>
-                {{song.note}}<br></span>
                 <span ng-if="song.tagsStr != ''"><b>Tagy:</b>
                 {{song.tagsStr}}<br></span>
                 <span ng-if="song.username != null"><b>Vlastník:</b>

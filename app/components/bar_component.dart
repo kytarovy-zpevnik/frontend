@@ -18,9 +18,11 @@ class BarComponent {
   List<Notification> notifications = [];
 
   BarComponent(this._sessionService, this._messageService, this._router, this._notificationsResource) {
-    _loadNotifications().then((_) {
-      unread = notifications.length;
-    });
+    if(loggedIn) {
+      _loadNotifications().then((_) {
+        unread = notifications.length;
+      });
+    }
   }
 
   bool get loggedIn => _sessionService.session != null;

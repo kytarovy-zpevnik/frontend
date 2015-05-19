@@ -391,6 +391,13 @@ class SongController {
     });
   }
 
+  void addTags(){
+    _songsResource.update(song, 'tags').then((_) {
+      _messageService.prepareSuccess('Uloženo.', 'Tagy byly k písni úspěšně přidány.');
+      _router.go('song.view', {'id': song.id});
+    });
+  }
+
   void addToSongbook(int index) {
     items[index]['included'] = true;
     song.songbooks.add(items[index]['songbook']);

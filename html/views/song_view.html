@@ -7,11 +7,10 @@
             <span ng-if="ctrl.user.username == ctrl.song.username">
                 <a href="#/song/{{ctrl.song.id}}/edit" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span> Editovat</a>
             </span>
-            <span style="position: relative">
-
+            <!--<span>
                 <a href="#/song/{{ctrl.song.id}}/ratings" class="btn btn-default"><span class="glyphicon glyphicon-star"></span> Hodnocení písně</a>
-
-
+            </span>-->
+            <span style="position: relative">
                 <span ng-if="ctrl.user.username == ctrl.song.username">
                     <a class="btn btn-default" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-book"></span> Zařadit do zpěvníku <span class="caret"></span>
@@ -24,9 +23,12 @@
                     </ul>
                 </span>
             </span>
-            <span ng-if="ctrl.user.username == ctrl.song.username">
-                <a href="#/song/{{ctrl.song.id}}/sharing" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span> Sdílet</a>
+            <span>
+                <a class="btn btn-default" data-toggle="modal" data-target="#tag"><span class="glyphicon glyphicon-tag"></span> Přidat tag</a>
             </span>
+            <!--<span ng-if="ctrl.user.username == ctrl.song.username">
+                <a href="#/song/{{ctrl.song.id}}/sharing" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span> Sdílet</a>
+            </span>-->
             <!-- XML EXPORT -->
             <!--<span>
                 <a ng-click="ctrl.export('agama')" class="btn btn-default" data-toggle="modal" data-target="#export"><span class="glyphicon glyphicon-open"></span> Exportovat</a>
@@ -34,9 +36,31 @@
             <span>
                 <a class="btn btn-default" data-toggle="modal" data-target="#transpose"><span class="glyphicon glyphicon-sort"></span> Transponovat</a>
             </span>
-            <span>
+            <span ng-if="ctrl.user.username == ctrl.song.username">
                 <a class="btn btn-default" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-trash"></span> Smazat</a>
             </span>
+        </div>
+
+        <!-- tag modal -->
+        <div class="modal fade" id="tag" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="tagLabel">Přidat vlastní tagy</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="tags">Tagy oddělené čárkami</label>
+                            <input type="text" class="form-control" id="tags" ng-model="ctrl.song.privateTagsStr">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+                        <button ng-click="ctrl.addTags()" type="button" class="btn btn-primary" data-dismiss="modal">Odeslat</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- delete modal -->
@@ -106,8 +130,8 @@
         {{ctrl.song.album}}<br></span>
         <span ng-if="ctrl.song.year != null"><b>Rok:</b>
         {{ctrl.song.year}}<br></span>
-        <span ng-if="ctrl.song.tagsStr != ''"><b>Tagy:</b>
-        {{ctrl.song.tagsStr}}<br></span>
+        <span ng-if="ctrl.song.tagsStr != '' || ctrl.song.privateTagsStr != ''"><b>Tagy:</b>
+        {{ctrl.song.tagsStr}}<span ng-if="ctrl.song.tagsStr != '' && ctrl.song.privateTagsStr != ''">, </span><span class="text-primary">{{ctrl.song.privateTagsStr}}</span><br></span>
         <span ng-if="ctrl.song.note != null"><b>Poznámka:</b>
         {{ctrl.song.note}}<br></span>
         <span ng-if="ctrl.song.username != ctrl.user.username"><b>Vlastník:</b>
