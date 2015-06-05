@@ -25,6 +25,8 @@ class SongController {
 
   List<ChordPosition> chpos = [];
 
+  int transposition = 0;
+
   String _agama;
 
   String get agama => _agama;
@@ -384,6 +386,7 @@ class SongController {
   }
 
   void transpose(int transposition) {
+    this.transposition += transposition;
     transposition %= 12; // shift by 0-12 semitones
     _songsResource.read(_routeProvider.parameters['id'], transposition).then((Song song) {
       this.song = song;

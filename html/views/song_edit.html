@@ -42,8 +42,12 @@
                 <input type="text" class="form-control" id="input-note" ng-model="ctrl.song.note">
             </div>
             <div class="form-group">
-                <label for="input-tags">Tagy (oddělené čárkami)</label>
+                <label for="input-tags">Veřejné tagy (oddělené čárkami)</label>
                 <input type="text" class="form-control" id="input-tags" ng-model="ctrl.song.tagsStr">
+            </div>
+            <div class="form-group">
+                <label for="input-priv-tags">Soukromé tagy (oddělené čárkami)</label>
+                <input type="text" class="form-control" id="input-priv-tags" ng-model="ctrl.song.privateTagsStr">
             </div>
 
             <div class="checkbox">

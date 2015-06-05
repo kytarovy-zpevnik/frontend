@@ -2,30 +2,43 @@
     <div ng-if="ctrl.song != null">
         <div class="pull-right">
             <span ng-if="ctrl.user.username != ctrl.song.username">
-                <a ng-click="ctrl.takeSong()" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span> Převzít píseň</a>
+                <a ng-click="ctrl.takeSong()" class="btn btn-info">
+                    <span class="glyphicon glyphicon-pencil"></span> Převzít píseň
+                </a>
             </span>
-            <span ng-if="ctrl.user.username == ctrl.song.username">
-                <a href="#/song/{{ctrl.song.id}}/edit" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span> Editovat</a>
+            <span ng-if="ctrl.user.username == ctrl.song.username" style="position: relative">
+                <a class="btn btn-info" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-wrench"></span> Správa písně <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="#/song/{{ctrl.song.id}}/edit">
+                            <span class="glyphicon glyphicon-pencil"></span> Editovat
+                        </a>
+                        <a data-toggle="modal" data-target="#delete">
+                            <span class="glyphicon glyphicon-trash"></span> Smazat
+                        </a>
+                    </li>
+                </ul>
+            </span>
+            <span ng-if="ctrl.user.username == ctrl.song.username" style="position: relative">
+                <a class="btn btn-default" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-th-list"></span> Možnosti písně <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a data-toggle="modal" data-target="#tag">
+                            <span class="glyphicon glyphicon-tag"></span> Soukromé tagy
+                        </a>
+                        <a data-toggle="modal" data-target="#songbook">
+                            <span class="glyphicon glyphicon-book"></span> Zařadit do zpěvníku
+                        </a>
+                    </li>
+                </ul>
             </span>
             <!--<span>
                 <a href="#/song/{{ctrl.song.id}}/ratings" class="btn btn-default"><span class="glyphicon glyphicon-star"></span> Hodnocení písně</a>
             </span>-->
-            <span style="position: relative">
-                <span ng-if="ctrl.user.username == ctrl.song.username">
-                    <a class="btn btn-default" data-toggle="dropdown">
-                        <span class="glyphicon glyphicon-book"></span> Zařadit do zpěvníku <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li ng-repeat="item in ctrl.items">
-                            <a ng-if="item.included" ng-click="ctrl.removeFromSongbook($index)"><i class="glyphicon glyphicon-ok"></i> <span class="toggle-on-label">{{item.songbook.name}}</span></a>
-                            <a ng-if="!item.included" ng-click="ctrl.addToSongbook($index)"><span class="toggle-off-label">{{item.songbook.name}}</span></a>
-                        </li>
-                    </ul>
-                </span>
-            </span>
-            <span>
-                <a class="btn btn-default" data-toggle="modal" data-target="#tag"><span class="glyphicon glyphicon-tag"></span> Přidat tag</a>
-            </span>
             <!--<span ng-if="ctrl.user.username == ctrl.song.username">
                 <a href="#/song/{{ctrl.song.id}}/sharing" class="btn btn-default"><span class="glyphicon glyphicon-share-alt"></span> Sdílet</a>
             </span>-->
@@ -33,12 +46,9 @@
             <!--<span>
                 <a ng-click="ctrl.export('agama')" class="btn btn-default" data-toggle="modal" data-target="#export"><span class="glyphicon glyphicon-open"></span> Exportovat</a>
             </span>-->
-            <span>
+            <!--<span>
                 <a class="btn btn-default" data-toggle="modal" data-target="#transpose"><span class="glyphicon glyphicon-sort"></span> Transponovat</a>
-            </span>
-            <span ng-if="ctrl.user.username == ctrl.song.username">
-                <a class="btn btn-default" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-trash"></span> Smazat</a>
-            </span>
+            </span>-->
         </div>
 
         <!-- tag modal -->
@@ -58,6 +68,34 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
                         <button ng-click="ctrl.addTags()" type="button" class="btn btn-primary" data-dismiss="modal">Odeslat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- songbook modal -->
+        <div class="modal fade" id="songbook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog smaller-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="songbookLabel">Zařadit píseň do zpěvníku</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-unstyled">
+                            <li ng-repeat="item in ctrl.items">
+                                <a ng-if="item.included" ng-click="ctrl.removeFromSongbook($index)">
+                                    <i class="glyphicon glyphicon-ok"></i>
+                                    <span class="toggle-on-label">{{item.songbook.name}}</span>
+                                </a>
+                                <a ng-if="!item.included" ng-click="ctrl.addToSongbook($index)">
+                                    <span class="toggle-off-label">{{item.songbook.name}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
                     </div>
                 </div>
             </div>
@@ -98,7 +136,7 @@
         </div>-->
 
         <!-- transpose modal -->
-        <div class="modal fade" id="transpose" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <!--<div class="modal fade" id="transpose" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -117,34 +155,52 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <h1>{{ctrl.song.title}}</h1>
 
-        <div class="meta">
-        <span ng-if="ctrl.song.author != null"><b>Autor:</b>
-        {{ctrl.song.author}}<br></span>
-        <span ng-if="ctrl.song.originalAuthor != null"><b>Původní autor:</b>
-        {{ctrl.song.originalAuthor}}<br></span>
-        <span ng-if="ctrl.song.album != null"><b>Album:</b>
-        {{ctrl.song.album}}<br></span>
-        <span ng-if="ctrl.song.year != null"><b>Rok:</b>
-        {{ctrl.song.year}}<br></span>
-        <span ng-if="ctrl.song.tagsStr != '' || ctrl.song.privateTagsStr != ''"><b>Tagy:</b>
-        {{ctrl.song.tagsStr}}<span ng-if="ctrl.song.tagsStr != '' && ctrl.song.privateTagsStr != ''">, </span><span class="text-primary">{{ctrl.song.privateTagsStr}}</span><br></span>
-        <span ng-if="ctrl.song.note != null"><b>Poznámka:</b>
-        {{ctrl.song.note}}<br></span>
-        <span ng-if="ctrl.song.username != ctrl.user.username"><b>Vlastník:</b>
-        {{ctrl.song.username}}<br></span>
+        <div class="central">
+            <div class="meta">
+                <span ng-if="ctrl.song.author != null"><b>Autor:</b>
+                {{ctrl.song.author}}<br></span>
+                <span ng-if="ctrl.song.originalAuthor != null"><b>Původní autor:</b>
+                {{ctrl.song.originalAuthor}}<br></span>
+                <span ng-if="ctrl.song.album != null"><b>Album:</b>
+                {{ctrl.song.album}}<br></span>
+                <span ng-if="ctrl.song.year != null"><b>Rok:</b>
+                {{ctrl.song.year}}<br></span>
+            </div>
+            <div class="meta">
+                <span ng-if="ctrl.song.username != ctrl.user.username"><b>Vlastník:</b>
+                {{ctrl.song.username}}<br></span>
+                <span ng-if="ctrl.song.tagsStr != '' || ctrl.song.privateTagsStr != ''"><b>Tagy:</b>
+                {{ctrl.song.tagsStr}}<span ng-if="ctrl.song.tagsStr != '' && ctrl.song.privateTagsStr != ''">, </span><span class="text-success">{{ctrl.song.privateTagsStr}}</span><br></span>
+                <span ng-if="ctrl.song.note != null"><b>Poznámka:</b>
+                {{ctrl.song.note}}<br></span>
+            </div>
+
+            <div id="transpose" class="form-inline">
+                <span>
+                    <b>Transponovat: </b>
+                    <a class="btn btn-primary glyphicon-minus" ng-click="ctrl.transpose(-1)"></a>
+                    <div class="form-group">
+                        <label class="sr-only" for="transponsition">Počet půltónů oproti původnímu stavu</label>
+                        <input id="transponsition" class="form-control" type="number" ng-model="ctrl.transposition" value="1" min="1" max="12" readonly>
+                    </div>
+                    <a class="btn btn-primary glyphicon-plus" ng-click="ctrl.transpose(1)"></a>
+                </span>
+            </div>
+
+            <section ng-repeat="section in ctrl.lyrics">
+                <span class="title">{{section['title']}}&nbsp;</span>
+
+                <p ng-repeat="line in section['lines']" class="line">
+                    <chpos ng-repeat="char in line track by $index" offset="char['offset']" ctrl="ctrl" char="char['char']" hypen="$index + 1 < line.length && line[$index + 1]['char'] != ' '" chord="ctrl.song.chords[char['offset'].toString()]" editable="false">{{index}}</chpos>
+                </p>
+            </section>
         </div>
 
-        <section ng-repeat="section in ctrl.lyrics">
-            <span class="title">{{section['title']}}&nbsp;</span>
 
-            <p ng-repeat="line in section['lines']" class="line">
-                <chpos ng-repeat="char in line track by $index" offset="char['offset']" ctrl="ctrl" char="char['char']" hypen="$index + 1 < line.length && line[$index + 1]['char'] != ' '" chord="ctrl.song.chords[char['offset'].toString()]" editable="false">{{index}}</chpos>
-            </p>
-        </section>
 
         <h3>Komentáře</h3>
 
