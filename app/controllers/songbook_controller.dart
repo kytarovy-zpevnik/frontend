@@ -57,6 +57,13 @@ class SongbookController {
     }
   }
 
+  void addTags(){
+    _songbooksResource.update(songbook, 'tags').then((_) {
+      _messageService.prepareSuccess('Uloženo.', 'Tagy byly ke zpěvníku úspěšně přidány.');
+      _router.go('songbook.view', {'id': songbook.id});
+    });
+  }
+
   void save() {
     if (create) {
       _songbooksResource.create(songbook).then((_){

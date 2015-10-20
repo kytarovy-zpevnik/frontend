@@ -70,7 +70,7 @@ class UserResource {
       var songbooks = response.data.map((data) {
         var tags = [];
         for (int i = 0; i < data['tags'].length; i++) {
-          tags.add(new SongbookTag(data['tags'][i]['tag']));
+          tags.add(new SongbookTag(data['tags'][i]['tag'], data['tags'][i]['public']));
         }
         return new Songbook(data['id'], data['name'], data['note'], public: data['public'], username: data['username'], tags: tags);
       });

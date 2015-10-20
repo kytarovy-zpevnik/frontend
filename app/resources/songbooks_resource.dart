@@ -15,7 +15,8 @@ class SongbooksResource {
     var tags = [];
     songbook.tags.forEach((tag) {
       tags.add({
-          'tag': tag.tag
+          'tag': tag.tag,
+          'public': true
       });
     });
 
@@ -56,7 +57,7 @@ class SongbooksResource {
       var songbooks = response.data.map((data) {
         var tags = [];
         for (var i = 0; i < data['tags'].length; i++) {
-          tags.add(new SongbookTag(data['tags'][i]['tag']));
+          tags.add(new SongbookTag(data['tags'][i]['tag'], data['tags'][i]['public']));
         }
         return new Songbook(data['id'], data['name'], data['note'], public: data['public'], username: data['username'], tags: tags, archived: data['archived']);
       });
@@ -72,7 +73,7 @@ class SongbooksResource {
     return _api.get('songbooks/' + id.toString()).then((HttpResponse response) {
       var tags = [];
       for (var i = 0; i < response.data['tags'].length; i++) {
-        tags.add(new SongbookTag(response.data['tags'][i]['tag']));
+        tags.add(new SongbookTag(response.data['tags'][i]['tag'], response.data['tags'][i]['public']));
       }
       return new Songbook(response.data['id'], response.data['name'], response.data['note'], public: response.data['public'], songs: response.data['songs'], username: response.data['username'], tags: tags);
     });
@@ -81,13 +82,19 @@ class SongbooksResource {
   /**
    * Updates songbook.
    */
-  Future update(Songbook songbook) {
+  Future update(Songbook songbook, [String action]) {
     _normalize(songbook);
+    var params;
+
+    if(action != null){
+      params = {'action': action};
+    }
 
     var tags = [];
     songbook.tags.forEach((tag) {
       tags.add({
-          'tag': tag.tag
+          'tag': tag.tag,
+          'public': tag.public
       });
     });
 
@@ -96,8 +103,8 @@ class SongbooksResource {
       'note': songbook.note,
       'public' : songbook.public,
       'tags': tags
-    }).then((_){
-
+    }, params: params).then((HttpResponse response) {
+      return new Future.value(songbook);
     });
   }
 

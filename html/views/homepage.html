@@ -13,8 +13,11 @@
                 {{song.album}}<br></span>
                 <span ng-if="song.year != null"><b>Rok</b>
                 {{song.year}}<br></span>
-                <span ng-if="song.tagsStr != ''"><b>Tagy:</b>
-                {{song.tagsStr}}<br></span>
+                <span ng-if="song.tagsStr != '' || song.privateTagsStr != ''"><b>Tagy:</b>
+                    {{song.tagsStr}}
+                    <span ng-if="song.tagsStr != '' && song.privateTagsStr != ''">, </span>
+                    <span class="text-success">{{song.privateTagsStr}}</span><br>
+                </span>
                 <span ng-if="song.username != null"><b>Vlastník:</b>
                 {{song.username}}<br></span>
         </div>
@@ -24,8 +27,11 @@
     <div class="row" ng-repeat="row in ctrl.songbooks">
         <div class="col-md-3" ng-repeat="songbook in row">
             <h4><a href="#/songbook/{{songbook.id}}/view">{{songbook.name}}</a></h4>
-                <span ng-if="songbook.tagsStr != ''"><b>Tagy:</b>
-                {{songbook.tagsStr}}<br></span>
+                <span ng-if="songbook.tagsStr != '' || songbook.privateTagsStr != ''"><b>Tagy:</b>
+                    {{songbook.tagsStr}}
+                    <span ng-if="songbook.tagsStr != '' && songbook.privateTagsStr != ''">, </span>
+                    <span class="text-success">{{songbook.privateTagsStr}}</span><br>
+                </span>
                 <span ng-if="songbook.username != null"><b>Vlastník:</b>
                 {{songbook.username}}<br></span>
         </div>

@@ -9,29 +9,51 @@ class Songbook {
   String note = '';
   String username = '';
   bool public = false;
+  bool archived = false;
   List songs = [];
   String tagsStr = '';
-  bool archived = false;
+  String privateTagsStr = '';
 
   List<SongbookTag> get tags {
-    if(tagsStr == '')
-      return [];
-    List<SongbookTag> res = new List<SongbookTag>();
-    var tagSet = tagsStr.split(",").toSet();
-    for(var tag in tagSet) {
-      res.add(new SongbookTag(tag));
+    var songbookTags = [];
+    if(tagsStr != ''){
+      tagsStr.split(",").forEach((tag) {
+        songbookTags.add(new SongbookTag(tag.trim(), true));
+      });
     }
-    return res;
+    if(privateTagsStr != ''){
+      privateTagsStr.split(",").forEach((tag) {
+        songbookTags.add(new SongbookTag(tag.trim(), false));
+      });
+    }
+    return songbookTags;
   }
 
   set tags(List<SongbookTag> tags){
-    tagsStr = "";
-    if(tags != null && !tags.isEmpty) {
-      tagsStr = tags[0].toString();
-      for(var i = 1; i < tags.length; i++) {
-        tagsStr += "," + tags[i].toString();
+    tagsStr = '';
+    privateTagsStr = '';
+    if(tags != null) {
+      for(int i = 0; i < tags.length; i++){
+        if(tags[i].public){
+          if(tagsStr != '')
+            tagsStr += ', ';
+          tagsStr += tags[i].tag;
+        }
+        else{
+          if(privateTagsStr != '')
+            privateTagsStr += ', ';
+          privateTagsStr += tags[i].tag;
+        }
       }
     }
+  }
+
+  bool contains(String other){
+    if(name != null && name.toUpperCase().contains(other.toUpperCase()))
+      return true;
+    if(tagsStr != null && tagsStr.toUpperCase().contains(other.toUpperCase()))
+      return true;
+    return false;
   }
 
   Songbook(this.id, this.name, this.note, {this.public, this.songs, this.username, tags, this.archived}) {

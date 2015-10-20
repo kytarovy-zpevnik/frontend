@@ -1,23 +1,74 @@
 <div songbook songbook-comments>
     <div ng-if="ctrl.songbook != null">
         <div class="pull-right">
+            <span ng-if="ctrl.user.username == ctrl.songbook.username" style="position: relative">
+                <a class="btn btn-info" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-wrench"></span> Správa zpěvníku <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="#/songbook/{{ctrl.songbook.id}}/edit">
+                            <span class="glyphicon glyphicon-pencil"></span> Editovat
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="modal" data-target="#delete">
+                            <span class="glyphicon glyphicon-trash"></span> Smazat
+                        </a>
+                    </li>
+                </ul>
+            </span>
+            <span ng-if="ctrl.user.username == ctrl.songbook.username" style="position: relative">
+                <a class="btn btn-default" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-th-list"></span> Možnosti zpěvníku <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a data-toggle="modal" data-target="#tag">
+                            <span class="glyphicon glyphicon-tag"></span> Soukromé tagy
+                        </a>
+                    </li>
+                </ul>
+            </span>
+
+
+            <!--
             <a href="#/songbook/{{ctrl.songbook.id}}/ratings" class="btn btn-default">Hodnocení zpěvníku</a>
+            -->
 
             <span ng-if="ctrl.user.username == ctrl.songbook.username">
-                <a href="#/songbook/{{ctrl.songbook.id}}/edit" class="btn btn-info">
-                    <span class="glyphicon glyphicon-pencil"></span> Upravit zpěvník
-                </a>
                 <a href="#/song/create/songbook/{{ctrl.songbook.id}}" class="btn btn-success">
                     <span class="glyphicon glyphicon-plus"></span> Vytvořit píseň
                 </a>
                 <a href="#/songs" class="btn btn-default">
                     <span class="glyphicon glyphicon-book"></span> Zařadit píseň
                 </a>
+                <!--
                 <a href="#/songbook/{{ctrl.songbook.id}}/sharing" class="btn btn-default">Sdílet</a>
+                -->
             </span>
-            <span>
-                <a class="btn btn-default" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-trash"></span> Smazat</a>
-            </span>
+        </div>
+
+        <!-- tag modal -->
+        <div class="modal fade" id="tag" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="tagLabel">Přidat vlastní tagy</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="tags">Tagy oddělené čárkami</label>
+                            <input type="text" class="form-control" id="tags" ng-model="ctrl.songbook.privateTagsStr">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+                        <button ng-click="ctrl.addTags()" type="button" class="btn btn-primary" data-dismiss="modal">Odeslat</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- delete modal -->
@@ -37,10 +88,10 @@
         </div>
 
         <h1>{{ctrl.songbook.name}}</h1>
+        <span ng-if="ctrl.songbook.tagsStr != '' || ctrl.songbook.privateTagsStr != ''"><b>Tagy:</b>
+                {{ctrl.songbook.tagsStr}}<span ng-if="ctrl.songbook.tagsStr != '' && ctrl.songbook.privateTagsStr != ''">, </span><span class="text-success">{{ctrl.songbook.privateTagsStr}}</span><br></span>
         <span ng-if="ctrl.songbook.note != null"><b>Poznámka:</b>
             {{ctrl.songbook.note}}<br></span>
-        <span ng-if="ctrl.songbook.tagsStr != ''"><b>Tagy:</b>
-            {{ctrl.songbook.tagsStr}}<br></span>
 
         <!--<div class="row">
             <div class="col-md-3">

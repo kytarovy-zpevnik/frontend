@@ -9,15 +9,16 @@ class SongbooksController {
   final UserResource _userResource;
 
   List songbooks = [];
-
-  List sharedSongbooks = [];
+  List visibleSongbooks = [];
 
   String _search = '';
 
   String get search => _search;
 
   set search(String search) {
-    _songbookResource.readAll(search).then(_processSongbooks);
+    _search = search;
+    //_songbookResource.readAll(search).then(_processSongbooks);
+    _filterSongbooks();
   }
 
   SongbooksController(this._sessionService, this._songbookResource, this._messageService, this._userResource) {
@@ -32,25 +33,34 @@ class SongbooksController {
   }
 
   _initialize(){
-    _songbookResource.readAll().then(_processSongbooks);
+    this.songbooks.clear();
+    this.visibleSongbooks.clear();
     var user = _sessionService.session.user;
-    _userResource.readAllSharedSongbooks(user.id).then((List<Songbook> songbooks){
-      _processSharedSongbooks(songbooks);
-      querySelector('html').classes.remove('wait');
-    });
+
+    Future.wait([_songbookResource.readAll().then(_processSongbooks), // analogicky u dalších
+    _userResource.readAllSharedSongbooks(user.id).then(_processSongbooks)]
+    ).then((List<Future> futures){querySelector('html').classes.remove('wait');});
   }
 
   void _processSongbooks(List<Songbook> songbooks) {
-    this.songbooks.clear();
     songbooks.forEach((Songbook songbook) {
       this.songbooks.add(songbook);
+      this.visibleSongbooks.add(songbook);
     });
   }
 
-  void _processSharedSongbooks(List<Songbook> songbooks) {
-    this.sharedSongbooks.clear();
+  /*void _processSharedSongbooks(List<Songbook> songbooks) {
     songbooks.forEach((Songbook songbook) {
-      this.sharedSongbooks.add(songbook);
+      this.songbooks.add(songbook);
+      this.visibleSongbooks.add(songbook);
+    });
+  }*/
+
+  _filterSongbooks(){
+    this.visibleSongbooks.clear();
+    this.songbooks.forEach((Songbook songbook){
+      if(songbook.contains(_search))
+        visibleSongbooks.add(songbook);
     });
   }
 

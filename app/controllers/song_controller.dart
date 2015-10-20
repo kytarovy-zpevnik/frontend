@@ -387,11 +387,27 @@ class SongController {
 
   void transpose(int transposition) {
     this.transposition += transposition;
-    transposition %= 12; // shift by 0-12 semitones
-    _songsResource.read(_routeProvider.parameters['id'], transposition).then((Song song) {
-      this.song = song;
-      computeLyrics();
+    this.transposition %= 12;
+
+    String notePattern = 'C#|D#|F#|G#|C|D|E|F|G|A|B|H';
+    List<String> chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'B', 'H'];
+
+    this.song.chords.forEach((int k, String chord){
+
+      this.song.chords[k] = chord.replaceAllMapped(new RegExp(notePattern), (Match match){
+        int key = chromaticScale.indexOf(match.group(0));
+        key += transposition;
+
+        if(key >= chromaticScale.length)
+          key -= chromaticScale.length;
+        if(key < 0)
+          key += chromaticScale.length;
+
+        return chromaticScale[key];
+      });
+
     });
+    computeLyrics();
   }
 
   void addTags(){
