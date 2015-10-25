@@ -5,20 +5,23 @@
             <a href="#/songbook/create" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Nový zpěvník</a>
         </form>
     </div>
-    <h1>Zpěvníky</h1>
-    <div class="row" ng-repeat="songbook in ctrl.visibleSongbooks">
-        <div class="col-md-12">
-            <h3><a href="#/songbook/{{songbook.id}}/view">{{songbook.name}}</a></h3>
-            <span ng-if="songbook.username != null"><b>Vlastník:</b>
-                {{songbook.username}}<br></span>
-            <span ng-if="songbook.note != null"><b>Poznámka:</b>
-                {{songbook.note}}<br></span>
-            <span ng-if="songbook.tagsStr != '' || songbook.privateTagsStr != ''"><b>Tagy:</b>
-                {{songbook.tagsStr}}
-                <span ng-if="songbook.tagsStr != '' && songbook.privateTagsStr != ''">, </span>
-                <span class="text-success">{{songbook.privateTagsStr}}</span>
-                <br></span>
-            <br>
-        </div>
-    </div>
+    <h1>Vlastní a převzaté  zpěvníky</h1>
+    <table class="table table-striped">
+        <tbody>
+            <tr ng-repeat="songbook in ctrl.visibleSongbooks">
+                <td><a href="#/songbook/{{songbook.id}}/view">{{songbook.name}}</a></td>
+                <td>{{songbook.numberOfSongs}}</td>
+                <td>{{songbook.username}}</td>
+                <td>{{songbook.tagsStr}}<span ng-if="songbook.tagsStr != '' && songbook.privateTagsStr != ''">, </span><span class="text-success">{{songbook.privateTagsStr}}</span></td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th>Název</th>
+                <th>Počet písní</th>
+                <th>Vlastník</th>
+                <th>Tagy</th>
+            </tr>
+        </thead>
+    </table>
 </div>

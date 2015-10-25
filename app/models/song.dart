@@ -74,7 +74,7 @@ class Song {
     return false;
   }
 
-  Song(this.title, this.album, this.author, this.originalAuthor, this.year, this.note, this.public, {this.username, this.id, this.lyrics: '', this.chords, this.songbooks, tags, this.archived, this.rating}) {
+  Song(this.title, this.album, this.author, this.year, this.public, {this.originalAuthor, this.note, this.username, this.id, this.lyrics: '', this.chords, this.songbooks, tags, this.archived, this.rating}) {
     this.tags = tags;
     if (chords == null) chords = {};
     if (songbooks == null) songbooks = [];

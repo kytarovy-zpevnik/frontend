@@ -27,6 +27,9 @@ class Routes {
         'songs': appRoute(
             path: '/songs',
             view: 'html/views/songs.html'),
+        'addSongsToSongbook': appRoute(
+            path: '/songs/songbook/:songbookId',
+            view: 'html/views/songs.html'),
         'public-songs': appRoute(
             path: '/public-songs',
             view: 'html/views/songs_public.html'),

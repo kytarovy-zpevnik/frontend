@@ -1,6 +1,13 @@
 <div song edit>
     <div class="btn-group pull-right">
-        <span ng-if="ctrl.create"><a href="#/songs" class="btn btn-default">Zpět</a></span>
+        <span ng-if="ctrl.create">
+            <span ng-if="ctrl.createInSongbook != null">
+                <a href="#/songbook/{{ctrl.createInSongbook}}/view" class="btn btn-default">Zpět</a>
+            </span>
+            <span ng-if="ctrl.createInSongbook == null">
+                <a href="#/songs" class="btn btn-default">Zpět</a>
+            </span>
+        </span>
         <span ng-if="!ctrl.create"><a href="#/song/{{ctrl.song.id}}/view" class="btn btn-default">Zpět</a></span>
     </div>
 

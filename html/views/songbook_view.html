@@ -28,6 +28,16 @@
                             <span class="glyphicon glyphicon-tag"></span> Soukromé tagy
                         </a>
                     </li>
+                    <li>
+                        <a href="#/song/create/songbook/{{ctrl.songbook.id}}">
+                            <span class="glyphicon glyphicon-plus"></span> Vytvořit píseň
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#/songs/songbook/{{ctrl.songbook.id}}">
+                            <span class="glyphicon glyphicon-book"></span> Zařadit píseň
+                        </a>
+                    </li>
                 </ul>
             </span>
 
@@ -36,17 +46,10 @@
             <a href="#/songbook/{{ctrl.songbook.id}}/ratings" class="btn btn-default">Hodnocení zpěvníku</a>
             -->
 
-            <span ng-if="ctrl.user.username == ctrl.songbook.username">
-                <a href="#/song/create/songbook/{{ctrl.songbook.id}}" class="btn btn-success">
-                    <span class="glyphicon glyphicon-plus"></span> Vytvořit píseň
-                </a>
-                <a href="#/songs" class="btn btn-default">
-                    <span class="glyphicon glyphicon-book"></span> Zařadit píseň
-                </a>
+
                 <!--
                 <a href="#/songbook/{{ctrl.songbook.id}}/sharing" class="btn btn-default">Sdílet</a>
                 -->
-            </span>
         </div>
 
         <!-- tag modal -->
@@ -88,38 +91,53 @@
         </div>
 
         <h1>{{ctrl.songbook.name}}</h1>
-        <span ng-if="ctrl.songbook.tagsStr != '' || ctrl.songbook.privateTagsStr != ''"><b>Tagy:</b>
+        <div class="meta">
+            <span ng-if="ctrl.songbook.username == ctrl.user.username"><b>Váš vlastní </b></span>
+            <span ng-if="ctrl.songbook.username != ctrl.user.username"><b>Cizí </b></span>
+            <span ng-if="ctrl.songbook.public"><b>veřejný</b></span>
+            <span ng-if="!ctrl.songbook.public"><b>privátní</b></span>
+            <span><b> zpěvník</b><br /></span>
+            <span ng-if="ctrl.songbook.username != ctrl.user.username"><b>Vlastník:</b>
+            {{ctrl.songbook.username}}<br></span>
+            <span><b>Počet písní:</b> {{ctrl.songbook.songs.length}}<br></span>
+            <span><b>Průměrné <a href="#/songbook/{{ctrl.songbook.id}}/ratings">hodnocení</a>:</b>
+                <span ng-if="ctrl.songbook.rating < 1">Zatím nehodnoceno</span>
+                <img ng-if="ctrl.songbook.rating >= 1" src="img/star.png" width="20" height="20">
+                <img ng-if="ctrl.songbook.rating >= 2" src="img/star.png" width="20" height="20">
+                <img ng-if="ctrl.songbook.rating >= 3" src="img/star.png" width="20" height="20">
+                <img ng-if="ctrl.songbook.rating >= 4" src="img/star.png" width="20" height="20">
+                <img ng-if="ctrl.songbook.rating >= 5" src="img/star.png" width="20" height="20">
+                <br>
+            </span>
+            <span ng-if="ctrl.songbook.tagsStr != '' || ctrl.songbook.privateTagsStr != ''"><b>Tagy:</b>
                 {{ctrl.songbook.tagsStr}}<span ng-if="ctrl.songbook.tagsStr != '' && ctrl.songbook.privateTagsStr != ''">, </span><span class="text-success">{{ctrl.songbook.privateTagsStr}}</span><br></span>
-        <span ng-if="ctrl.songbook.note != null"><b>Poznámka:</b>
+            <span ng-if="ctrl.songbook.note != null"><b>Poznámka:</b>
             {{ctrl.songbook.note}}<br></span>
-
-        <!--<div class="row">
-            <div class="col-md-3">
-                <h3><a href=""></a></h3>
-                    <span><b>Autor</b>
-                    Karel<br></span>
-                    <span><b>Původní autor</b>
-                    Pepa<br></span>
-                    <span><b>Album</b>
-                    Písně<br></span>
-                    <span><b>Rok</b>
-                    2015<br></span>
-            </div>
-        </div>-->
-
-        <div class="row" ng-repeat="row in ctrl.songbook.songs">
-            <div class="col-md-3" ng-repeat="song in row">
-                <h3><a href="#/song/{{song.id}}/view">{{song.title}}</a></h3>
-                    <span ng-if="song.author != null"><b>Autor</b>
-                    {{song.author}}<br></span>
-                    <span ng-if="song.originalAuthor != null"><b>Původní autor</b>
-                    {{song.originalAuthor}}<br></span>
-                    <span ng-if="song.album != null"><b>Album</b>
-                    {{song.album}}<br></span>
-                    <span ng-if="song.year != null"><b>Rok</b>
-                    {{song.year}}<br></span>
-            </div>
         </div>
+
+        <h3>Písně</h3>
+        <table class="table table-striped">
+            <tbody>
+            <tr ng-repeat="song in ctrl.songbook.songs">
+                <td><a href="#/song/{{song.id}}/view">{{song.title}}</a></td>
+                <td>{{song.author}}</td>
+                <td>{{song.album}}</td>
+                <td>{{song.year}}</td>
+                <td>{{song.username}}</td>
+                <td>{{song.tagsStr}}<span ng-if="song.tagsStr != '' && song.privateTagsStr != ''">, </span><span class="text-success">{{song.privateTagsStr}}</span></td>
+            </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th>Název</th>
+                <th>Autor</th>
+                <th>Album</th>
+                <th>Rok</th>
+                <th>Vlastník</th>
+                <th>Tagy</th>
+            </tr>
+            </thead>
+        </table>
 
         <h3>Komentáře</h3>
 

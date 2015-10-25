@@ -4,8 +4,10 @@ part of app;
 class SongsController {
 
   final SongsResource _songResource;
+  final SongbooksResource _songbooksResource;
   final MessageService _messageService;
   SessionService _sessionService;
+  final RouteProvider _routeProvider;
   final UserResource _userResource;
 
   List songs = [];
@@ -14,6 +16,9 @@ class SongsController {
   String get search => _search;
   bool advSearchVisible = false;
   Map<String, String> filters = {};
+
+  bool loaded = false;
+  Songbook songbook = null;
 
   set search(String search) {
     _search = search;
@@ -29,7 +34,7 @@ class SongsController {
     _songResource.readAll(filters: filters).then(_processSongs);
   }
 
-  SongsController(this._sessionService, this._songResource, this._messageService, this._userResource) {
+  SongsController(this._sessionService, this._songResource, this._songbooksResource, this._messageService, this._userResource, this._routeProvider) {
     querySelector('html').classes.add('wait');
     if (_sessionService.session == null) {  // analogicky u dalších controllerů
       _sessionService.initialized.then((_) {
@@ -52,7 +57,19 @@ class SongsController {
     });*/
     Future.wait([_songResource.readAll().then(_processSongs), // analogicky u dalších
                 _userResource.readAllSharedSongs(user.id).then(_processSharedSongs)]
-    ).then((List<Future> futures){querySelector('html').classes.remove('wait');});
+    ).then((List<Future> futures){
+      if (_routeProvider.parameters.containsKey('songbookId')) {
+        _songbooksResource.read(_routeProvider.parameters['songbookId']).then((Songbook songbook) {
+          this.songbook = songbook;
+          loaded = true;
+          querySelector('html').classes.remove('wait');
+        });
+      }
+      else {
+        loaded = true;
+        querySelector('html').classes.remove('wait');
+      }
+    });
   }
 
   _processSongs(List<Song> songs) {
@@ -74,6 +91,28 @@ class SongsController {
     this.songs.forEach((Song song){
       if(song.contains(_search))
         visibleSongs.add(song);
+    });
+  }
+
+  void addToSongbook(Song song) {
+    songbook.songs.add(song);
+    _songbooksResource.update(songbook).then((_){
+      _messageService.showSuccess("Přidána", "Písnička byla úspěšně přidána do zpěvníku.");
+    });
+  }
+
+  void removeFromSongbook(Song song) {
+
+    var toRemove;
+    songbook.songs.forEach((songbooksong) {
+      if (songbooksong.id == song.id) {
+        toRemove = songbooksong;
+      }
+    });
+
+    songbook.songs.remove(toRemove);
+    _songbooksResource.update(songbook).then((_){
+      _messageService.showSuccess('Odebrána','Píseň byla úspěšně odebrána ze zpěvníku.');
     });
   }
 

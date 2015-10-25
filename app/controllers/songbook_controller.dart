@@ -13,8 +13,8 @@ class SongbookController {
   bool create;
 
   SongbookController(this._sessionService, this._songbooksResource, this._messageService, this._routeProvider, this._router) {
+    create = !_routeProvider.parameters.containsKey('id');
 
-      create = !_routeProvider.parameters.containsKey('id');
       querySelector('html').classes.add('wait');
       if (_sessionService.session == null) {  // analogicky u dalších controllerů
         _sessionService.initialized.then((_) {
@@ -29,12 +29,14 @@ class SongbookController {
     User currentUser = _sessionService.session.user;
     this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
     if(create) {
-      this.songbook = new Songbook('','','', public: false);
+      this.songbook = new Songbook('','', public: false);
       querySelector('html').classes.remove('wait');
     }
     else {
       _songbooksResource.read(_routeProvider.parameters['id']).then((Songbook songbook) {
-        List songs = [];
+        this.songbook = songbook;
+        //print(this.songbook.songs);
+        /*List songs = [];
         List row;
         var index = 0;
 
@@ -50,7 +52,7 @@ class SongbookController {
           }
           index++;
         });
-        this.songbook.songs = songs;
+        this.songbook.songs = songs;*/
         querySelector('html').classes.remove('wait');
 
       });

@@ -59,7 +59,7 @@ class SongbooksResource {
         for (var i = 0; i < data['tags'].length; i++) {
           tags.add(new SongbookTag(data['tags'][i]['tag'], data['tags'][i]['public']));
         }
-        return new Songbook(data['id'], data['name'], data['note'], public: data['public'], username: data['username'], tags: tags, archived: data['archived']);
+        return new Songbook(data['id'], data['name'], note: data['note'], public: data['public'], username: data['username'], tags: tags, archived: data['archived'], numberOfSongs: data['songs']);
       });
 
       return new Future.value(songbooks);
@@ -75,7 +75,23 @@ class SongbooksResource {
       for (var i = 0; i < response.data['tags'].length; i++) {
         tags.add(new SongbookTag(response.data['tags'][i]['tag'], response.data['tags'][i]['public']));
       }
-      return new Songbook(response.data['id'], response.data['name'], response.data['note'], public: response.data['public'], songs: response.data['songs'], username: response.data['username'], tags: tags);
+
+      var songs = [];
+      for(var j = 0; j < response.data['songs'].length; j++) {
+        var songTags = [];
+        for (var i = 0; i < response.data['songs'][j]['tags'].length; i++) {
+          songTags.add(new SongTag(response.data['songs'][j]['tags'][i]['tag'], response.data['songs'][j]['tags'][i]['public']));
+        }
+        songs.add(new Song(response.data['songs'][j]['title'], response.data['songs'][j]['album'],
+                          response.data['songs'][j]['author'], response.data['songs'][j]['year'],
+                          response.data['songs'][j]['public'], username: response.data['songs'][j]['username'],
+                          id: response.data['songs'][j]['id'], tags: songTags,
+                          archived: response.data['songs'][j]['archived']));
+      }
+
+      return new Songbook(response.data['id'], response.data['name'], note: response.data['note'],
+                          public: response.data['public'], songs: songs,
+                          username: response.data['username'], tags: tags, rating: response.data['rating']);
     });
   }
 
@@ -90,6 +106,13 @@ class SongbooksResource {
       params = {'action': action};
     }
 
+    var songs = [];
+    songbook.songs.forEach((song) {
+      songs.add({
+          'id': song.id
+      });
+    });
+
     var tags = [];
     songbook.tags.forEach((tag) {
       tags.add({
@@ -102,6 +125,7 @@ class SongbooksResource {
       'name': songbook.name,
       'note': songbook.note,
       'public' : songbook.public,
+      'songs': songs,
       'tags': tags
     }, params: params).then((HttpResponse response) {
       return new Future.value(songbook);

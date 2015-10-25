@@ -15,6 +15,8 @@ class SongController {
 
   bool create;
 
+  var createInSongbook = null;
+
   int tab = 0;
 
   String radio = '0';
@@ -115,11 +117,12 @@ class SongController {
     this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
 
     if (create) {
-      song = new Song('', '', '', '', '', '', false);
+      song = new Song('', '', '', '', false);
       querySelector('html').classes.remove('wait');
 
       if (_routeProvider.parameters.containsKey('songbookId')) {
-        _songbooksResource.read(_routeProvider.parameters['songbookId']).then((Songbook songbook) {
+        createInSongbook = _routeProvider.parameters['songbookId'];
+        _songbooksResource.read(createInSongbook).then((Songbook songbook) {
           song.songbooks.add(songbook);
         });
       }
@@ -422,7 +425,7 @@ class SongController {
     song.songbooks.add(items[index]['songbook']);
     _songsResource.update(song).then((_){
       _messageService.showSuccess("Přidána", "Písnička byla úspěšně přidána do zpěvníku.");
-      _router.go('songs.view', {'id': song.id});
+      _router.go('song.view', {'id': song.id});
     });
   }
 

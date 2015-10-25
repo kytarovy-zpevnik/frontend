@@ -74,8 +74,8 @@ class SongsResource {
         for (var i = 0; i < data['tags'].length; i++) {
           tags.add(new SongTag(data['tags'][i]['tag'], data['tags'][i]['public']));
         }
-        return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'],
-                        data['note'], data['public'], id: data['id'], username: data['username'],
+        return new Song(data['title'], data['album'], data['author'], data['year'],
+                        data['public'], id: data['id'], username: data['username'],
                         tags: tags, archived: data['archived'], rating: data['rating']);
       });
 
@@ -95,16 +95,16 @@ class SongsResource {
       }
       var songbooks = [];
       for (var i = 0; i < response.data['songbooks'].length; i++) {
-        songbooks.add(new Songbook(response.data['songbooks'][i]['id'], response.data['songbooks'][i]['name'], response.data['songbooks'][i]['note'], public: response.data['songbooks'][i]['public']));
+        songbooks.add(new Songbook(response.data['songbooks'][i]['id'], response.data['songbooks'][i]['name'], note: response.data['songbooks'][i]['note'], public: response.data['songbooks'][i]['public']));
       }
       var tags = [];
       for (var i = 0; i < response.data['tags'].length; i++) {
         tags.add(new SongTag(response.data['tags'][i]['tag'], response.data['tags'][i]['public']));
       }
-      return new Song(response.data['title'], response.data['album'], response.data['author'],
-                      response.data['originalAuthor'], response.data['year'], response.data['note'],
-                      response.data['public'], lyrics: response.data['lyrics'], chords: chords,
-                      id: response.data['id'], username: response.data['username'], songbooks: songbooks,
+      return new Song(response.data['title'], response.data['album'], response.data['author'], response.data['year'],
+                      response.data['public'], originalAuthor: response.data['originalAuthor'], note: response.data['note'],
+                      lyrics: response.data['lyrics'], chords: chords, id: response.data['id'],
+                      username: response.data['username'], songbooks: songbooks,
                       tags: tags, rating: response.data['rating']);
     });
   }

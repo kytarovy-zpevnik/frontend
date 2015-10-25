@@ -72,7 +72,7 @@ class UserResource {
         for (int i = 0; i < data['tags'].length; i++) {
           tags.add(new SongbookTag(data['tags'][i]['tag'], data['tags'][i]['public']));
         }
-        return new Songbook(data['id'], data['name'], data['note'], public: data['public'], username: data['username'], tags: tags);
+        return new Songbook(data['id'], data['name'], note: data['note'], public: data['public'], username: data['username'], tags: tags, numberOfSongs: data['songs']);
       });
 
       return new Future.value(songbooks);
@@ -89,7 +89,7 @@ class UserResource {
         for (var i = 0; i < data['tags'].length; i++) {
           tags.add(new SongTag(data['tags'][i]['tag'], data['tags'][i]['public']));
         }
-        return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'], data['note'], data['public'], id: data['id'], username: data['username'], tags: tags);
+        return new Song(data['title'], data['album'], data['author'], data['year'], data['public'], id: data['id'], username: data['username'], tags: tags);
       });
 
       return new Future.value(songs);

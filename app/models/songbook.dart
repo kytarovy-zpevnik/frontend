@@ -13,6 +13,8 @@ class Songbook {
   List songs = [];
   String tagsStr = '';
   String privateTagsStr = '';
+  int rating = 0;
+  int numberOfSongs = 0;
 
   List<SongbookTag> get tags {
     var songbookTags = [];
@@ -56,7 +58,17 @@ class Songbook {
     return false;
   }
 
-  Songbook(this.id, this.name, this.note, {this.public, this.songs, this.username, tags, this.archived}) {
+  bool containsSong(int song){
+    var contains = false;
+    this.songs.forEach((Song songbooksong) {
+      if (song == songbooksong.id) {
+        contains = true;
+      }
+    });
+    return contains;
+  }
+
+  Songbook(this.id, this.name, {this.note, this.public, this.songs, this.username, tags, this.archived, this.rating, this.numberOfSongs}) {
     this.tags = tags;
   }
 }
