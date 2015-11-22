@@ -187,13 +187,14 @@
                 <span><b> píseň</b><br /></span>
                 <span ng-if="ctrl.song.username != ctrl.user.username"><b>Vlastník:</b>
                 {{ctrl.song.username}}<br></span>
-                <span><b>Průměrné <a href="#/song/{{ctrl.song.id}}/ratings">hodnocení</a>:</b>
+                <span><b>Průměrné hodnocení:</b>
                     <span ng-if="ctrl.song.rating < 1">Zatím nehodnoceno</span>
                     <img ng-if="ctrl.song.rating >= 1" src="img/star.png" width="20" height="20">
                     <img ng-if="ctrl.song.rating >= 2" src="img/star.png" width="20" height="20">
                     <img ng-if="ctrl.song.rating >= 3" src="img/star.png" width="20" height="20">
                     <img ng-if="ctrl.song.rating >= 4" src="img/star.png" width="20" height="20">
                     <img ng-if="ctrl.song.rating >= 5" src="img/star.png" width="20" height="20">
+                    <a href="#/song/{{ctrl.song.id}}/ratings"><small>(více)</small></a>
                     <br>
                 </span>
                 <span ng-if="ctrl.song.tagsStr != '' || ctrl.song.privateTagsStr != ''"><b>Tagy:</b>

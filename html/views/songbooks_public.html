@@ -13,6 +13,15 @@
             <td>{{songbook.numberOfSongs}}</td>
             <td>{{songbook.username}}</td>
             <td>{{songbook.tagsStr}}<span ng-if="songbook.tagsStr != '' && songbook.privateTagsStr != ''">, </span><span class="text-success">{{songbook.privateTagsStr}}</span></td>
+            <td>
+                <span ng-if="songbook.rating < 1">Zatím nehodnoceno</span>
+                <img ng-if="songbook.rating >= 1" src="img/star.png" width="20" height="20">
+                <img ng-if="songbook.rating >= 2" src="img/star.png" width="20" height="20">
+                <img ng-if="songbook.rating >= 3" src="img/star.png" width="20" height="20">
+                <img ng-if="songbook.rating >= 4" src="img/star.png" width="20" height="20">
+                <img ng-if="songbook.rating >= 5" src="img/star.png" width="20" height="20">
+                <br>
+            </td>
         </tr>
         </tbody>
         <thead>
@@ -21,6 +30,7 @@
             <th>Počet písní</th>
             <th>Vlastník</th>
             <th>Tagy</th>
+            <th>Průměrné hodnocení</th>
         </tr>
         </thead>
     </table>

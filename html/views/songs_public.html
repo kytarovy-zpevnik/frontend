@@ -17,6 +17,14 @@
             <td>{{song.year}}</td>
             <td>{{song.username}}</td>
             <td>{{song.tagsStr}}<span ng-if="song.tagsStr != '' && song.privateTagsStr != ''">, </span><span class="text-success">{{song.privateTagsStr}}</span></td>
+            <td>
+                <span ng-if="song.rating < 1">Zatím nehodnoceno</span>
+                <img ng-if="song.rating >= 1" src="img/star.png" width="20" height="20">
+                <img ng-if="song.rating >= 2" src="img/star.png" width="20" height="20">
+                <img ng-if="song.rating >= 3" src="img/star.png" width="20" height="20">
+                <img ng-if="song.rating >= 4" src="img/star.png" width="20" height="20">
+                <img ng-if="song.rating >= 5" src="img/star.png" width="20" height="20">
+            </td>
         </tr>
         </tbody>
         <thead>
@@ -27,6 +35,7 @@
             <th>Rok</th>
             <th>Vlastník</th>
             <th>Tagy</th>
+            <th>Průměrné hodnocení</th>
         </tr>
         </thead>
     </table>

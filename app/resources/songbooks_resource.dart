@@ -59,7 +59,9 @@ class SongbooksResource {
         for (var i = 0; i < data['tags'].length; i++) {
           tags.add(new SongbookTag(data['tags'][i]['tag'], data['tags'][i]['public']));
         }
-        return new Songbook(data['id'], data['name'], note: data['note'], public: data['public'], username: data['username'], tags: tags, archived: data['archived'], numberOfSongs: data['songs']);
+        return new Songbook(data['id'], data['name'], note: data['note'], public: data['public'],
+                            username: data['username'], tags: tags, archived: data['archived'],
+                            rating: data['rating'], numberOfSongs: data['songs']);
       });
 
       return new Future.value(songbooks);

@@ -28,6 +28,14 @@
                 <td>{{song.year}}</td>
                 <td>{{song.username}}</td>
                 <td>{{song.tagsStr}}<span ng-if="song.tagsStr != '' && song.privateTagsStr != ''">, </span><span class="text-success">{{song.privateTagsStr}}</span></td>
+                <td>
+                    <span ng-if="song.rating < 1">Zatím nehodnoceno</span>
+                    <img ng-if="song.rating >= 1" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 2" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 3" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 4" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 5" src="img/star.png" width="20" height="20">
+                </td>
                 <td ng-if="ctrl.songbook != null">
                     <span ng-if="!ctrl.songbook.containsSong(song.id)"><button class="btn btn-success" ng-click="ctrl.addToSongbook(song)"><span class="glyphicon glyphicon-plus"></span></button></span>
                     <span ng-if="ctrl.songbook.containsSong(song.id)"><button class="btn btn-danger" ng-click="ctrl.removeFromSongbook(song)"><span class="glyphicon glyphicon-minus"></span></button></span>
@@ -42,6 +50,7 @@
                 <th>Rok</th>
                 <th>Vlastník</th>
                 <th>Tagy</th>
+                <th>Průměrné hodnocení</th>
                 <th ng-if="ctrl.songbook != null">
                     {{ctrl.songbook.name}}
                 </th>

@@ -100,13 +100,14 @@
             <span ng-if="ctrl.songbook.username != ctrl.user.username"><b>Vlastník:</b>
             {{ctrl.songbook.username}}<br></span>
             <span><b>Počet písní:</b> {{ctrl.songbook.songs.length}}<br></span>
-            <span><b>Průměrné <a href="#/songbook/{{ctrl.songbook.id}}/ratings">hodnocení</a>:</b>
+            <span><b>Průměrné hodnocení:</b>
                 <span ng-if="ctrl.songbook.rating < 1">Zatím nehodnoceno</span>
                 <img ng-if="ctrl.songbook.rating >= 1" src="img/star.png" width="20" height="20">
                 <img ng-if="ctrl.songbook.rating >= 2" src="img/star.png" width="20" height="20">
                 <img ng-if="ctrl.songbook.rating >= 3" src="img/star.png" width="20" height="20">
                 <img ng-if="ctrl.songbook.rating >= 4" src="img/star.png" width="20" height="20">
                 <img ng-if="ctrl.songbook.rating >= 5" src="img/star.png" width="20" height="20">
+                <a href="#/songbook/{{ctrl.songbook.id}}/ratings"><small>(více)</small></a>
                 <br>
             </span>
             <span ng-if="ctrl.songbook.tagsStr != '' || ctrl.songbook.privateTagsStr != ''"><b>Tagy:</b>

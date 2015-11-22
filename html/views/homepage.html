@@ -20,6 +20,15 @@
                 </span>
                 <span ng-if="song.username != null"><b>Vlastník:</b>
                 {{song.username}}<br></span>
+                <span><b>Průměrné hodnocení:</b>
+                    <span ng-if="song.rating < 1">Zatím nehodnoceno</span>
+                    <img ng-if="song.rating >= 1" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 2" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 3" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 4" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 5" src="img/star.png" width="20" height="20">
+                    <br>
+                </span>
         </div>
     </div>
 
@@ -34,6 +43,15 @@
                 </span>
                 <span ng-if="songbook.username != null"><b>Vlastník:</b>
                 {{songbook.username}}<br></span>
+                <span><b>Průměrné hodnocení:</b>
+                    <span ng-if="songbook.rating < 1">Zatím nehodnoceno</span>
+                    <img ng-if="songbook.rating >= 1" src="img/star.png" width="20" height="20">
+                    <img ng-if="songbook.rating >= 2" src="img/star.png" width="20" height="20">
+                    <img ng-if="songbook.rating >= 3" src="img/star.png" width="20" height="20">
+                    <img ng-if="songbook.rating >= 4" src="img/star.png" width="20" height="20">
+                    <img ng-if="songbook.rating >= 5" src="img/star.png" width="20" height="20">
+                    <br>
+                </span>
         </div>
     </div>
 </div>
