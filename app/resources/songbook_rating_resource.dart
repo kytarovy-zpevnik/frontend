@@ -29,7 +29,7 @@ class SongbookRatingResource {
     : {};
     return _api.get('songbooks/' + songbookId.toString() + "/rating", params: params).then((HttpResponse response) {
       var ratings = response.data.map((data) {
-        return new Rating(id: data['id'], comment: data['comment'], rating: data['rating'], created: data['created'], modified: data['modified']);
+        return new Rating(id: data['id'], comment: data['comment'], rating: data['rating'], created: data['created'], modified: data['modified'], userId: data['user']);
       });
 
       return new Future.value(ratings);
@@ -48,7 +48,7 @@ class SongbookRatingResource {
   /**
    * Updates songbook rating by id.
    */
-  Future editRating(int songbookId, Rating rating) {
+  Future updateRating(int songbookId, Rating rating) {
     _normalize(rating);
     return _api.put('songbooks/' + songbookId.toString()  + "/rating/" + rating.id.toString()  , data: {
         'comment': rating.comment,
@@ -61,7 +61,7 @@ class SongbookRatingResource {
    * Deletes songbook rating by id.
    */
   Future deleteRating(int songbookId, Rating rating) {
-    return _api.put('songbooks/' + songbookId.toString()  + '/rating/' + rating.id.toString()).then((_){
+    return _api.delete('songbooks/' + songbookId.toString()  + '/rating/' + rating.id.toString()).then((_){
     });
   }
 

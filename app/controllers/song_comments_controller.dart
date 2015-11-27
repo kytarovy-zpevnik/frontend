@@ -31,7 +31,7 @@ class SongCommentsController {
 
   void save() {
     _commentsResource.createComment(songId, this.comment).then((_) {
-      _messageService.showSuccess('Vytvořeno.', 'Nový komentář byla úspěšně přidán.');
+      _messageService.showSuccess('Vytvořeno.', 'Nový komentář byl úspěšně přidán.');
       refresh();
       _router.go('song.view', {'id': this.songId});
     });
@@ -39,7 +39,7 @@ class SongCommentsController {
 
   void delete(int id) {
     _commentsResource.deleteComment(songId, id).then((_) {
-      _messageService.showSuccess('Odstraněno.', 'Komentář byla úspěšně odebrán.');
+      _messageService.showSuccess('Odstraněno.', 'Komentář byl úspěšně odebrán.');
       refresh();
       _router.go('song.view', {'id': this.songId});
     });

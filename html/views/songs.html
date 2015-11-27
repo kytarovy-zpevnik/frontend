@@ -11,6 +11,7 @@
                 </span>
                 <span ng-if="ctrl.songbook != null">
                     <a href="#/songbook/{{ctrl.songbook.id}}/view" class="btn btn-default">Zpět</a>
+                    <button class="btn btn-success" ng-click="ctrl.saveSongbook()">Uložit změny</button>
                 </span>
                 <!-- XML IMPORT -->
                 <!--<a href="#/song/import" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span> Importovat píseň</a> -->

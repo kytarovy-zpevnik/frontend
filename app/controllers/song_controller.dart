@@ -23,7 +23,7 @@ class SongController {
 
   List lyrics = [];
 
-  List items = [];
+  List allSongbooks = [];
 
   List<ChordPosition> chpos = [];
 
@@ -127,38 +127,23 @@ class SongController {
         });
       }
 
-      _songbooksResource.readAll().then((List<Songbook> songbooks) {
-        songbooks.forEach((Songbook songbook) {
-          this.items.add({
-              'songbook': songbook,
-              'included': false
-          });
-        });
-      });
-
     } else {
-      _songsResource.read(_routeProvider.parameters['id']).then((Song song) {
-        this.song = song;
-        computeLyrics();
+
+      Future.wait([
+          _songsResource.read(_routeProvider.parameters['id']).then((Song song) {
+            this.song = song;
+            computeLyrics();
+          }),
+          _songbooksResource.readAll().then((List<Songbook> songbooks) {
+            //this.allSongbooks = songbooks;
+            songbooks.forEach((Songbook songbook){
+              this.allSongbooks.add(songbook);
+            });
+          })]
+      ).then((List<Future> futures){
         querySelector('html').classes.remove('wait');
-
-        _songbooksResource.readAll().then((List<Songbook> songbooks) {
-          songbooks.forEach((Songbook songbook) {
-            var included = false;
-
-            song.songbooks.forEach((Songbook songsongbook) {
-              if (songbook.id == songsongbook.id) {
-                included = true;
-              }
-            });
-
-            this.items.add({
-                'songbook': songbook,
-                'included': included
-            });
-          });
-        });
       });
+
     }
   }
 
@@ -420,28 +405,24 @@ class SongController {
     });
   }
 
-  void addToSongbook(int index) {
-    items[index]['included'] = true;
-    song.songbooks.add(items[index]['songbook']);
-    _songsResource.update(song).then((_){
-      _messageService.showSuccess("Přidána", "Písnička byla úspěšně přidána do zpěvníku.");
-      _router.go('song.view', {'id': song.id});
-    });
+  void addToSongbook(Songbook songbook) {
+    song.songbooks.add(songbook);
   }
 
-  void removeFromSongbook(int index) {
-    items[index]['included'] = false;
+  void removeFromSongbook(Songbook songbook) {
 
     var toRemove;
-    song.songbooks.forEach((songbook) {
-      if (songbook.id == items[index]['songbook'].id) {
-        toRemove = songbook;
+    song.songbooks.forEach((songsongbook) {
+      if (songsongbook.id == songbook.id) {
+        toRemove = songsongbook;
       }
     });
-
     song.songbooks.remove(toRemove);
+  }
+
+  void saveSongbooks(){
     _songsResource.update(song).then((_){
-      _messageService.showSuccess('Odebrána','Píseň byla úspěšně odebrána ze zpěvníku.');
+      _messageService.showSuccess('Aktualizován','Seznam zpěvníků obsahujících tuto píseň byl úspěšně aktualizován.');
     });
   }
 

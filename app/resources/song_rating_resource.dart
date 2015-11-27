@@ -29,7 +29,7 @@ class SongRatingResource {
     : {};
     return _api.get('songs/' + songId.toString() + "/rating", params: params).then((HttpResponse response) {
       var ratings = response.data.map((data) {
-        return new Rating(id: data['id'], comment: data['comment'], rating: data['rating'], created: data['created'], modified: data['modified']);
+        return new Rating(id: data['id'], comment: data['comment'], rating: data['rating'], created: data['created'], modified: data['modified'], userId: data['user']);
       });
 
       return new Future.value(ratings);
@@ -48,7 +48,7 @@ class SongRatingResource {
   /**
    * Updates song rating by id.
    */
-  Future editRating(int id, Rating rating) {
+  Future updateRating(int id, Rating rating) {
     _normalize(rating);
     int ratingId = rating.id;
     return _api.put('songs/' + id.toString()  + "/rating/" + ratingId.toString()  , data: {
@@ -62,7 +62,7 @@ class SongRatingResource {
    * Deletes song rating by id.
    */
   Future deleteRating(int songId, Rating rating) {
-    return _api.put('songs/' + songId.toString()  + '/rating/' + rating.id.toString()).then((_){
+    return _api.delete('songs/' + songId.toString()  + '/rating/' + rating.id.toString()).then((_){
     });
   }
 

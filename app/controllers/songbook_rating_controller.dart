@@ -44,7 +44,7 @@ class SongbookRatingController {
       });
     }
     else {
-      _ratingResource.editRating(songbook.id, rating).then((_){
+      _ratingResource.updateRating(songbook.id, rating).then((_){
         _messageService.prepareSuccess('Uloženo.', 'Hodnocení bylo úspěšně uloženo.');
         _router.go('songbook.ratings', {'id': songbook.id});
       });

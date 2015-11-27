@@ -9,6 +9,7 @@ class Rating {
   String created = '';
   String modified = '';
   int rating;
+  int userId;
 
-  Rating({this.id, this.comment, this.created, this.modified, this.rating});
+  Rating({this.id, this.comment, this.created, this.modified, this.rating, this.userId});
 }

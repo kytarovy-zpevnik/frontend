@@ -23,7 +23,7 @@ class SongsResource {
     song.tags.forEach((tag) {
       tags.add({
           'tag': tag.tag,
-          'public': true
+          'public': tag.public
       });
     });
 
@@ -76,7 +76,8 @@ class SongsResource {
         }
         return new Song(data['title'], data['album'], data['author'], data['year'],
                         data['public'], id: data['id'], username: data['username'],
-                        tags: tags, archived: data['archived'], rating: data['rating']);
+                        tags: tags, archived: data['archived'], rating: data['rating']['rating'],
+                        numOfRating: data['rating']['numOfRating']);
       });
 
       return new Future.value(songs);
@@ -105,7 +106,8 @@ class SongsResource {
                       response.data['public'], originalAuthor: response.data['originalAuthor'], note: response.data['note'],
                       lyrics: response.data['lyrics'], chords: chords, id: response.data['id'],
                       username: response.data['username'], songbooks: songbooks,
-                      tags: tags, rating: response.data['rating']);
+                      tags: tags, rating: response.data['rating']['rating'],
+                      numOfRating: response.data['rating']['numOfRating']);
     });
   }
 

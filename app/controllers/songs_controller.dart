@@ -96,9 +96,9 @@ class SongsController {
 
   void addToSongbook(Song song) {
     songbook.songs.add(song);
-    _songbooksResource.update(songbook).then((_){
+    /*_songbooksResource.update(songbook).then((_){
       _messageService.showSuccess("Přidána", "Písnička byla úspěšně přidána do zpěvníku.");
-    });
+    });*/
   }
 
   void removeFromSongbook(Song song) {
@@ -109,10 +109,15 @@ class SongsController {
         toRemove = songbooksong;
       }
     });
-
     songbook.songs.remove(toRemove);
-    _songbooksResource.update(songbook).then((_){
+    /*_songbooksResource.update(songbook).then((_){
       _messageService.showSuccess('Odebrána','Píseň byla úspěšně odebrána ze zpěvníku.');
+    });*/
+  }
+
+  void saveSongbook(){
+    _songbooksResource.update(songbook).then((_){
+      _messageService.showSuccess("Aktualizován", "Seznam písní ve zpěvníku byl úspěšně aktualizován.");
     });
   }
 

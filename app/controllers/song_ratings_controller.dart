@@ -5,38 +5,108 @@ class SongRatingsController {
 
   final SongRatingResource _ratingResource;
   final SongsResource _songsResource;
+  MessageService _messageService;
   SessionService _sessionService;
   RouteProvider _routeProvider;
 
   List ratings = [];
+  Rating newRating;
+  int ratingSum;
+  int avgRating;
 
   User user;
   Song song;
+  bool rated = false;
 
-  SongRatingsController(this._sessionService, this._ratingResource, this._songsResource, this._routeProvider) {
+  SongRatingsController(this._sessionService, this._ratingResource, this._songsResource, this._messageService, this._routeProvider) {
     querySelector('html').classes.add('wait');
-    _songsResource.read(_routeProvider.parameters['id']).then((Song song){
-      this.song = song;
-      if (_sessionService.session == null) {  // analogicky u dalších controllerů
-        _sessionService.initialized.then((_) {
-          user = _sessionService.session.user;
-          this.user = new User(user.id, user.username, user.email, user.role, user.lastLogin);
-        });
-      } else {
-        user = _sessionService.session.user;
-        this.user = new User(user.id, user.username, user.email, user.role, user.lastLogin);
-      }
-    });
-    _ratingResource.readAllRating(_routeProvider.parameters['id']).then((List<Rating> ratings){
-      _processRatings(ratings);
+    if (_sessionService.session == null) {
+      // analogicky u dalších controllerů
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
+  }
+
+  _initialize(){
+    User currentUser = _sessionService.session.user;
+    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+
+    Future.wait([
+        _songsResource.read(_routeProvider.parameters['id']).then((Song song){
+          this.song = song;
+        }),
+        _ratingResource.readAllRating(_routeProvider.parameters['id']).then((List<Rating> ratings){
+          _processRatings(ratings);
+        })]
+    ).then((List<Future> futures){
       querySelector('html').classes.remove('wait');
     });
   }
 
-  void _processRatings(List<Rating> ratings) {
+  bool _processRatings(List<Rating> ratings) {
+    avgRating = 0;
+    ratingSum = 0;
     this.ratings.clear();
+    List row;
+    var index = 0;
     ratings.forEach((Rating rating) {
-      this.ratings.add(rating);
+      ratingSum++;
+      avgRating += rating.rating;
+      if (rating.userId == this.user.id) {
+        this.rated = true;
+        this.newRating = rating;
+      }
+
+      if(index % 3 == 0){
+        row = [];
+        row.add(rating);
+        this.ratings.add(row);
+      }
+      else{
+        row.add(rating);
+      }
+      index++;
+      //this.ratings.add(rating);
+    });
+    if(!this.rated){
+      this.newRating = new Rating();
+      this.newRating.rating = 1;
+    }
+    avgRating /= ratingSum;
+  }
+
+  void saveRating() {
+    querySelector('html').classes.add('wait');
+    if (!rated) {
+      rated = true;
+      _ratingResource.createRating(song.id, newRating).then((_){
+        _ratingResource.readAllRating(_routeProvider.parameters['id']).then((List<Rating> ratings){
+          _processRatings(ratings);
+          _messageService.showSuccess('Vytvořeno.', 'Nové hodnocení bylo úspěšně vytvořeno.');
+          querySelector('html').classes.remove('wait');
+        });
+      });
+    }
+    else {
+      _ratingResource.updateRating(song.id, newRating).then((_){
+        _messageService.showSuccess('Uloženo.', 'Hodnocení bylo úspěšně uloženo.');
+        querySelector('html').classes.remove('wait');
+      });
+    }
+  }
+
+  void deleteRating(){
+    querySelector('html').classes.add('wait');
+    _ratingResource.deleteRating(song.id, newRating).then((_) {
+      rated = false;
+      _ratingResource.readAllRating(_routeProvider.parameters['id']).then((List<Rating> ratings){
+        _processRatings(ratings);
+        _messageService.showSuccess('Odstraněno.', 'Hodnocení bylo úspěšně odebráno.');
+        querySelector('html').classes.remove('wait');
+      });
     });
   }
 

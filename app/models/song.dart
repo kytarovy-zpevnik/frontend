@@ -15,6 +15,8 @@ class Song {
   String username = '';
   bool archived = false;
   int rating = 0;
+  int numOfRating = 0;
+  int posInSongbook;
 
   String lyrics;
   Map<int, String> chords;
@@ -74,7 +76,17 @@ class Song {
     return false;
   }
 
-  Song(this.title, this.album, this.author, this.year, this.public, {this.originalAuthor, this.note, this.username, this.id, this.lyrics: '', this.chords, this.songbooks, tags, this.archived, this.rating}) {
+  bool isInSongbook(int songbook){
+    var contains = false;
+    this.songbooks.forEach((Songbook songsongbook) {
+      if (songbook == songsongbook.id) {
+        contains = true;
+      }
+    });
+    return contains;
+  }
+
+  Song(this.title, this.album, this.author, this.year, this.public, {this.originalAuthor, this.note, this.username, this.id, this.lyrics: '', this.chords, this.songbooks, tags, this.archived, this.rating, this.numOfRating, this.posInSongbook}) {
     this.tags = tags;
     if (chords == null) chords = {};
     if (songbooks == null) songbooks = [];

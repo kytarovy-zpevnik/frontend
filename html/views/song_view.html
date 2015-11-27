@@ -89,18 +89,19 @@
                     </div>
                     <div class="modal-body">
                         <ul class="list-unstyled">
-                            <li ng-repeat="item in ctrl.items">
-                                <a ng-if="item.included" ng-click="ctrl.removeFromSongbook($index)">
+                            <li ng-repeat="songbook in ctrl.allSongbooks">
+                                <a ng-if="ctrl.song.isInSongbook(songbook.id)" ng-click="ctrl.removeFromSongbook(songbook)">
                                     <i class="glyphicon glyphicon-ok"></i>
-                                    <span class="toggle-on-label">{{item.songbook.name}}</span>
+                                    <span class="toggle-on-label">{{songbook.name}}</span>
                                 </a>
-                                <a ng-if="!item.included" ng-click="ctrl.addToSongbook($index)">
-                                    <span class="toggle-off-label">{{item.songbook.name}}</span>
+                                <a ng-if="!ctrl.song.isInSongbook(songbook.id)" ng-click="ctrl.addToSongbook(songbook)">
+                                    <span class="toggle-off-label">{{songbook.name}}</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-success" ng-click="ctrl.saveSongbooks()">Uložit změny</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
                     </div>
                 </div>
@@ -196,6 +197,9 @@
                     <img ng-if="ctrl.song.rating >= 5" src="img/star.png" width="20" height="20">
                     <a href="#/song/{{ctrl.song.id}}/ratings"><small>(více)</small></a>
                     <br>
+                    <span ng-if="ctrl.song.rating > 0">
+                        Hodnotil<span  ng-if="ctrl.song.numOfRating > 1 && ctrl.song.numOfRating < 5">i</span><span  ng-if="ctrl.song.numOfRating >= 5">o</span>
+                         {{ctrl.song.numOfRating}} uživatel<span  ng-if="ctrl.song.numOfRating > 1 && ctrl.song.numOfRating < 5">é</span><span  ng-if="ctrl.song.numOfRating >= 5">ů</span>.</span>
                 </span>
                 <span ng-if="ctrl.song.tagsStr != '' || ctrl.song.privateTagsStr != ''"><b>Tagy:</b>
                 {{ctrl.song.tagsStr}}<span ng-if="ctrl.song.tagsStr != '' && ctrl.song.privateTagsStr != ''">, </span><span class="text-success">{{ctrl.song.privateTagsStr}}</span><br></span>

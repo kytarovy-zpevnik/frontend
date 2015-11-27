@@ -16,7 +16,7 @@ class SongbooksResource {
     songbook.tags.forEach((tag) {
       tags.add({
           'tag': tag.tag,
-          'public': true
+          'public': tag.public
       });
     });
 
@@ -88,8 +88,16 @@ class SongbooksResource {
                           response.data['songs'][j]['author'], response.data['songs'][j]['year'],
                           response.data['songs'][j]['public'], username: response.data['songs'][j]['username'],
                           id: response.data['songs'][j]['id'], tags: songTags,
-                          archived: response.data['songs'][j]['archived']));
+                          archived: response.data['songs'][j]['archived'],
+                          posInSongbook: response.data['songs'][j]['position']));
       }
+      songs.sort((Song a, Song b){ // tady neni sort potreba, ale urcite bude potreba pri zmene poradi
+        if(a.posInSongbook > b.posInSongbook)
+          return 1;
+        if(b.posInSongbook > a.posInSongbook)
+          return -1;
+        return 0;
+      });
 
       return new Songbook(response.data['id'], response.data['name'], note: response.data['note'],
                           public: response.data['public'], songs: songs,
