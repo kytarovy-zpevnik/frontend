@@ -44,7 +44,7 @@ class SongCommentsResource {
   /**
    * Updates song comment by id.
    */
-  Future editComment(int id, Comment comment) {
+  Future updateComment(int id, Comment comment) {
     _normalize(comment);
     return _api.put('songs/' + id.toString()  + "/comment/" + comment.id.toString(), data: {
         'comment': comment.comment,

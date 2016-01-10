@@ -30,17 +30,20 @@ class SongbookRatingsController {
   }
 
   _initialize(){
-    User currentUser = _sessionService.session.user;
-    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    if (_sessionService.session != null) {
+      User currentUser = _sessionService.session.user;
+      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    }
 
     Future.wait([
         _songbooksResource.read(_routeProvider.parameters['id']).then((Songbook songbook){
           this.songbook = songbook;
         }),
-        _ratingResource.readAllRating(_routeProvider.parameters['id']).then((List<Rating> ratings){
-          _processRatings(ratings);
-        })]
+        _ratingResource.readAllRating(_routeProvider.parameters['id']).then(_processRatings)]
     ).then((List<Future> futures){
+
+      js.context.callMethod(r'$', ['#rating']).callMethod('modal', [new js.JsObject.jsify({'show': 'true'})]);
+
       querySelector('html').classes.remove('wait');
     });
   }
@@ -54,7 +57,7 @@ class SongbookRatingsController {
     ratings.forEach((Rating rating) {
       ratingSum++;
       avgRating += rating.rating;
-      if (rating.userId == this.user.id) {
+      if (this.user != null && rating.userId == this.user.id) {
         this.rated = true;
         this.newRating = rating;
       }
@@ -74,7 +77,9 @@ class SongbookRatingsController {
       this.newRating = new Rating();
       this.newRating.rating = 1;
     }
-    avgRating /= ratingSum;
+    if(ratingSum != 0){
+      avgRating /= ratingSum;
+    }
   }
 
   void saveRating() {
@@ -91,8 +96,11 @@ class SongbookRatingsController {
     }
     else {
       _ratingResource.updateRating(songbook.id, newRating).then((_){
-        _messageService.showSuccess('Uloženo.', 'Hodnocení bylo úspěšně uloženo.');
-        querySelector('html').classes.remove('wait');
+        _ratingResource.readAllRating(_routeProvider.parameters['id']).then((List<Rating> ratings){
+          _processRatings(ratings);
+          _messageService.showSuccess('Uloženo.', 'Hodnocení bylo úspěšně uloženo.');
+          querySelector('html').classes.remove('wait');
+        });
       });
     }
   }

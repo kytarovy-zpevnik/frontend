@@ -31,7 +31,7 @@ class SongbookCommentsController {
 
   void save() {
     _commentsResource.createComment(songbookId, this.comment).then((_) {
-      _messageService.showSuccess('Vytvořeno.', 'Nový komentář byla úspěšně přidán.');
+      _messageService.showSuccess('Vytvořeno.', 'Nový komentář byl úspěšně přidán.');
       refresh();
       _router.go('songbook.view', {'id': this.songbookId});
     });
@@ -39,14 +39,14 @@ class SongbookCommentsController {
 
   void delete(int id) {
     _commentsResource.deleteComment(songbookId, id).then((_) {
-      _messageService.showSuccess('Odstraněno.', 'Komentář byla úspěšně odebrán.');
+      _messageService.showSuccess('Odstraněno.', 'Komentář byl úspěšně odebrán.');
       refresh();
       _router.go('songbook.view', {'id': this.songbookId});
     });
   }
 
   void commentEdit() {
-    _commentsResource.editComment(songbookId, editComment).then((_) {
+    _commentsResource.updateComment(songbookId, editComment).then((_) {
       _messageService.showSuccess('Změněno.', 'Komentář byl úspěšně změněn.');
       refresh();
       _router.go('song.view', {'id': this.songbookId});
@@ -72,8 +72,10 @@ class SongbookCommentsController {
   }
 
   _initialize(){
-    User currentUser = _sessionService.session.user;
-    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    if(_sessionService.session != null) {
+      User currentUser = _sessionService.session.user;
+      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    }
 
     this.comment = new Comment();
     this.editComment = new Comment();

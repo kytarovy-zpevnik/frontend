@@ -15,7 +15,10 @@ class SessionService {
       _sessionResource.get(_sessionToken.sessionToken).then((Session session) {
         _session = session;
         _completer.complete();
-      });
+      }).catchError((ApiError error) {
+        if (error.code == 400)
+          _completer.complete();
+        });
     }
   }
 

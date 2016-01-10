@@ -14,6 +14,7 @@ class Songbook {
   String tagsStr = '';
   String privateTagsStr = '';
   int rating = 0;
+  int numOfRating = 0;
   int numberOfSongs = 0;
 
   List<SongbookTag> get tags {
@@ -68,7 +69,7 @@ class Songbook {
     return contains;
   }
 
-  Songbook(this.id, this.name, {this.note, this.public, this.songs, this.username, tags, this.archived, this.rating, this.numberOfSongs}) {
+  Songbook(this.id, this.name, {this.note, this.public, this.songs, this.username, tags, this.archived, this.rating, this.numOfRating, this.numberOfSongs}) {
     this.tags = tags;
   }
 }

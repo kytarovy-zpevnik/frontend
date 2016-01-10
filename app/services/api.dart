@@ -41,8 +41,8 @@ class Api {
    * Sends a http delete request to given resource.
    */
   Future delete(String resource, {
-    Map<String, dynamic> data, Map<String, dynamic> params, Map<String, dynamic> headers
-  }) => _http.delete(_getResourceUrl(resource), data: JSON.encode(data), params: params, headers: _addSessionTokenHeader(headers)).then(_success).catchError(_error);
+    /*Map<String, dynamic> data, */Map<String, dynamic> params, Map<String, dynamic> headers
+  }) => _http.delete(_getResourceUrl(resource)/*, data: JSON.encode(data)*/, params: params, headers: _addSessionTokenHeader(headers)).then(_success).catchError(_error);
 
   /**
    * Returns resource's url.

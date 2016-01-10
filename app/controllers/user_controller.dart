@@ -7,7 +7,7 @@ class UserController {
   final SessionService _sessionService;
 
   List<User> users = [];
-  User currentUser;
+  User user;
 
   UserController(this._sessionService, this._userResource, this._messageService) {
     querySelector('html').classes.add('wait');
@@ -22,7 +22,7 @@ class UserController {
 
   _initialize() {
     User currentUser = _sessionService.session.user;
-    this.currentUser = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
 
     _loadUsers();
   }

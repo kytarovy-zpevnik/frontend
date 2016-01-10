@@ -1,7 +1,7 @@
 <div song_ratings song-ratings>
     <div ng-if="ctrl.newRating != null">
         <div class="pull-right">
-            <form class="form-inline" role="search">
+            <span ng-if="ctrl.user != null">
                 <a ng-if="ctrl.user.username != ctrl.song.username && ctrl.rated" ng-click="ctrl.deleteRating()" class="btn btn-default">
                     <span class="glyphicon glyphicon-trash"></span>
                     Smazat hodnocení
@@ -11,42 +11,8 @@
                     <span ng-if="!ctrl.rated">Přidat hodnocení</span>
                     <span ng-if="ctrl.rated">Upravit hodnocení</span>
                 </a>
-                <a href="#/song/{{ctrl.song.id}}/view" class="btn btn-default">Zpět</a>
-            </form>
-        </div>
-
-        <!-- create ratig modal -->
-        <div class="modal fade" id="rating" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="tagLabel">Ohodnotit píseň {{ctrl.song.title}}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <img ng-click="ctrl.newRating.rating = 1" ng-if="ctrl.newRating.rating >= 1" src="img/star.png" width="20" height="20">
-                        <img ng-click="ctrl.newRating.rating = 2" ng-if="ctrl.newRating.rating >= 2" src="img/star.png" width="20" height="20">
-                        <img ng-click="ctrl.newRating.rating = 3" ng-if="ctrl.newRating.rating >= 3" src="img/star.png" width="20" height="20">
-                        <img ng-click="ctrl.newRating.rating = 4" ng-if="ctrl.newRating.rating >= 4" src="img/star.png" width="20" height="20">
-                        <img ng-click="ctrl.newRating.rating = 5" ng-if="ctrl.newRating.rating >= 5" src="img/star.png" width="20" height="20">
-
-                        <img ng-click="ctrl.newRating.rating = 1" ng-if="ctrl.newRating.rating < 1" src="img/empty_star.png" width="20" height="20">
-                        <img ng-click="ctrl.newRating.rating = 2" ng-if="ctrl.newRating.rating < 2" src="img/empty_star.png" width="20" height="20">
-                        <img ng-click="ctrl.newRating.rating = 3" ng-if="ctrl.newRating.rating < 3" src="img/empty_star.png" width="20" height="20">
-                        <img ng-click="ctrl.newRating.rating = 4" ng-if="ctrl.newRating.rating < 4" src="img/empty_star.png" width="20" height="20">
-                        <img ng-click="ctrl.newRating.rating = 5" ng-if="ctrl.newRating.rating < 5" src="img/empty_star.png" width="20" height="20">
-
-                        <div class="form-group">
-                            <label for="input-note">Komentář</label>
-                            <input type="text" required class="form-control" id="input-note" ng-model="ctrl.newRating.comment">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
-                        <button ng-click="ctrl.saveRating()" type="button" class="btn btn-primary" data-dismiss="modal">Odeslat</button>
-                    </div>
-                </div>
-            </div>
+            </span>
+            <a href="#/song/{{ctrl.song.id}}/view" class="btn btn-default">Zpět</a>
         </div>
 
         <h1>Hodnocení písně {{ctrl.song.title}}</h1>
@@ -75,6 +41,40 @@
                 </div>
                 <br>
                 <p>{{rating.comment}}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- create ratig modal -->
+    <div class="modal fade" id="rating" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="tagLabel">Ohodnotit píseň {{ctrl.song.title}}</h4>
+                </div>
+                <div class="modal-body">
+                    <img ng-click="ctrl.newRating.rating = 1" ng-if="ctrl.newRating.rating >= 1" src="img/star.png" width="20" height="20">
+                    <img ng-click="ctrl.newRating.rating = 2" ng-if="ctrl.newRating.rating >= 2" src="img/star.png" width="20" height="20">
+                    <img ng-click="ctrl.newRating.rating = 3" ng-if="ctrl.newRating.rating >= 3" src="img/star.png" width="20" height="20">
+                    <img ng-click="ctrl.newRating.rating = 4" ng-if="ctrl.newRating.rating >= 4" src="img/star.png" width="20" height="20">
+                    <img ng-click="ctrl.newRating.rating = 5" ng-if="ctrl.newRating.rating >= 5" src="img/star.png" width="20" height="20">
+
+                    <img ng-click="ctrl.newRating.rating = 1" ng-if="ctrl.newRating.rating < 1" src="img/empty_star.png" width="20" height="20">
+                    <img ng-click="ctrl.newRating.rating = 2" ng-if="ctrl.newRating.rating < 2" src="img/empty_star.png" width="20" height="20">
+                    <img ng-click="ctrl.newRating.rating = 3" ng-if="ctrl.newRating.rating < 3" src="img/empty_star.png" width="20" height="20">
+                    <img ng-click="ctrl.newRating.rating = 4" ng-if="ctrl.newRating.rating < 4" src="img/empty_star.png" width="20" height="20">
+                    <img ng-click="ctrl.newRating.rating = 5" ng-if="ctrl.newRating.rating < 5" src="img/empty_star.png" width="20" height="20">
+
+                    <div class="form-group">
+                        <label for="input-note">Komentář</label>
+                        <input type="text" required class="form-control" id="input-note" ng-model="ctrl.newRating.comment">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+                    <button ng-click="ctrl.saveRating()" type="button" class="btn btn-primary" data-dismiss="modal">Odeslat</button>
+                </div>
             </div>
         </div>
     </div>

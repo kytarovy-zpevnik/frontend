@@ -23,25 +23,13 @@ class SongRatingResource {
   /**
    * Reads all song ratings.
    */
-  Future<List<Rating>> readAllRating(int songId, [bool checkIfRated = false]) {
-    var params = checkIfRated
-    ? {'checkRated': checkIfRated}
-    : {};
-    return _api.get('songs/' + songId.toString() + "/rating", params: params).then((HttpResponse response) {
+  Future<List<Rating>> readAllRating(int songId) {
+    return _api.get('songs/' + songId.toString() + "/rating").then((HttpResponse response) {
       var ratings = response.data.map((data) {
         return new Rating(id: data['id'], comment: data['comment'], rating: data['rating'], created: data['created'], modified: data['modified'], userId: data['user']);
       });
 
       return new Future.value(ratings);
-    });
-  }
-
-  /**
-   * Reads song rating by id.
-   */
-  Future<Rating> readRating(int id, int ratingId) {
-    return _api.get('songs/' + id.toString()  + "/rating/" + ratingId.toString()).then((HttpResponse response) {
-      return new Rating(id: response.data['id'], comment: response.data['comment'], rating: response.data['rating'], created: response.data['created'], modified: response.data['modified']);
     });
   }
 

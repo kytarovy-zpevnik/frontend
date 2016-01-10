@@ -26,8 +26,11 @@ class SongbookController {
   }
 
   _initialize(){
-    User currentUser = _sessionService.session.user;
-    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    if(_sessionService.session != null) {
+      User currentUser = _sessionService.session.user;
+      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    }
+
     if(create) {
       this.songbook = new Songbook('','', public: false);
       querySelector('html').classes.remove('wait');
@@ -35,26 +38,7 @@ class SongbookController {
     else {
       _songbooksResource.read(_routeProvider.parameters['id']).then((Songbook songbook) {
         this.songbook = songbook;
-        //print(this.songbook.songs);
-        /*List songs = [];
-        List row;
-        var index = 0;
-
-        this.songbook = songbook;
-        songbook.songs.forEach((Song song) {
-          if (index % 4 == 0) {
-            row = [];
-            row.add(song);
-            songs.add(row);
-          }
-          else {
-            row.add(song);
-          }
-          index++;
-        });
-        this.songbook.songs = songs;*/
         querySelector('html').classes.remove('wait');
-
       });
     }
   }

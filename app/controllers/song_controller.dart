@@ -4,6 +4,7 @@ part of app;
 class SongController {
   final SongsResource _songsResource;
   final SongbooksResource _songbooksResource;
+  final UserResource _userResource;
   final MessageService _messageService;
   final SessionService _sessionService;
   final RouteProvider _routeProvider;
@@ -28,6 +29,8 @@ class SongController {
   List<ChordPosition> chpos = [];
 
   int transposition = 0;
+
+  String targetUser = '';
 
   String _agama;
 
@@ -99,7 +102,7 @@ class SongController {
     lyrics = sections;
   }
 
-  SongController(this._sessionService, this._songsResource, this._songbooksResource, this._messageService, this._routeProvider, this._router) {
+  SongController(this._sessionService, this._songsResource, this._songbooksResource, this._userResource, this._messageService, this._routeProvider, this._router) {
     create = !_routeProvider.parameters.containsKey('id');
 
     querySelector('html').classes.add('wait');
@@ -113,8 +116,10 @@ class SongController {
   }
 
   _initialize(){
-    User currentUser = _sessionService.session.user;
-    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    if(_sessionService.session != null) {
+      User currentUser = _sessionService.session.user;
+      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    }
 
     if (create) {
       song = new Song('', '', '', '', false);
@@ -129,21 +134,23 @@ class SongController {
 
     } else {
 
-      Future.wait([
-          _songsResource.read(_routeProvider.parameters['id']).then((Song song) {
-            this.song = song;
-            computeLyrics();
-          }),
+      _songsResource.read(_routeProvider.parameters['id']).then((Song song) {
+        this.song = song;
+        computeLyrics();
+        if(this.user != null){
           _songbooksResource.readAll().then((List<Songbook> songbooks) {
             //this.allSongbooks = songbooks;
             songbooks.forEach((Songbook songbook){
               this.allSongbooks.add(songbook);
             });
-          })]
-      ).then((List<Future> futures){
-        querySelector('html').classes.remove('wait');
-      });
+            querySelector('html').classes.remove('wait');
+          });
+        }
+        else{
+          querySelector('html').classes.remove('wait');
+        }
 
+      });
     }
   }
 
@@ -430,9 +437,7 @@ class SongController {
     if (create) {
       _songsResource.create(song).then((_) {
         _messageService.prepareSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
-        _router.go('song.view', {
-            'id': song.id
-        });
+        _router.go('song.view', {'id': song.id});
       });
     } else {
       _songsResource.update(song).then((_) {
@@ -452,10 +457,38 @@ class SongController {
     });
   }
 
-  void takeSong() {
-    _songsResource.takeSong(song).then((_) {
+  void share(){
+    _userResource.read(targetUser).then((User user){
+      _songsResource.shareSong(song.id, user.id).then((_) {
+        _messageService.showSuccess('Uloženo.', 'Píseň byla úspěšně nasdílena.');
+      }).catchError((ApiError e) {
+        switch (e.error) {
+          case 'DUPLICATE_SHARING':
+            _messageService.showError('Opakované sdílení.', 'S tímto uživatelem píseň ' + song.title + ' již sdílíte.');
+            break;
+        }
+      });
+    }).catchError((ApiError e) {
+      switch (e.error) {
+        case 'UNKNOWN_IDENTIFIER':
+          _messageService.showError('Neznámý uživatel.', 'Bohužel neznáme žádného uživatele, který by měl zadané uživatelské jméno.');
+          break;
+      }
+    });
+  }
+
+  void copySong() {
+    _songsResource.create(song, copy: true).then((_) {
       _messageService.prepareSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
       _router.go('song.view', {'id': song.id});
+    });
+  }
+
+  void takeSong() {
+    _songsResource.takeSong(song).then((_) {
+      _messageService.showSuccess('Převzato.', 'Píseň byla úspěšně převzata.');
+      song.taken = true;
+      //_router.go('song.view', {'id': song.id});
     });
   }
 

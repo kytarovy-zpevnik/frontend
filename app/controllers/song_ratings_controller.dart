@@ -31,22 +31,28 @@ class SongRatingsController {
   }
 
   _initialize(){
-    User currentUser = _sessionService.session.user;
-    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    if (_sessionService.session != null) {
+      User currentUser = _sessionService.session.user;
+      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    }
 
     Future.wait([
         _songsResource.read(_routeProvider.parameters['id']).then((Song song){
           this.song = song;
         }),
-        _ratingResource.readAllRating(_routeProvider.parameters['id']).then((List<Rating> ratings){
-          _processRatings(ratings);
-        })]
+        _ratingResource.readAllRating(_routeProvider.parameters['id']).then(_processRatings)]
     ).then((List<Future> futures){
+
+
+      print(Uri.base.toString());
+      if(Uri.base.queryParameters.containsKey('rate')){
+        js.context.callMethod(r'$', ['#rating']).callMethod('modal', [new js.JsObject.jsify({'show': 'true'})]);
+      }
       querySelector('html').classes.remove('wait');
     });
   }
 
-  bool _processRatings(List<Rating> ratings) {
+  void _processRatings(List<Rating> ratings) {
     avgRating = 0;
     ratingSum = 0;
     this.ratings.clear();
@@ -55,7 +61,7 @@ class SongRatingsController {
     ratings.forEach((Rating rating) {
       ratingSum++;
       avgRating += rating.rating;
-      if (rating.userId == this.user.id) {
+      if (this.user != null && rating.userId == this.user.id) {
         this.rated = true;
         this.newRating = rating;
       }
@@ -75,7 +81,9 @@ class SongRatingsController {
       this.newRating = new Rating();
       this.newRating.rating = 1;
     }
-    avgRating /= ratingSum;
+    if(ratingSum != 0){
+      avgRating /= ratingSum;
+    }
   }
 
   void saveRating() {
@@ -92,8 +100,11 @@ class SongRatingsController {
     }
     else {
       _ratingResource.updateRating(song.id, newRating).then((_){
-        _messageService.showSuccess('Uloženo.', 'Hodnocení bylo úspěšně uloženo.');
-        querySelector('html').classes.remove('wait');
+        _ratingResource.readAllRating(_routeProvider.parameters['id']).then((List<Rating> ratings){
+          _processRatings(ratings);
+          _messageService.showSuccess('Uloženo.', 'Hodnocení bylo úspěšně uloženo.');
+          querySelector('html').classes.remove('wait');
+        });
       });
     }
   }

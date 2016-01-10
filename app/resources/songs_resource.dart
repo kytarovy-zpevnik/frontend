@@ -9,15 +9,17 @@ class SongsResource {
   /**
    * Creates new song.
    */
-  Future create(Song song) {
+  Future create(Song song, {bool copy}) {
     _normalize(song);
 
     var songbooks = [];
-    song.songbooks.forEach((songbook) {
-      songbooks.add({
-          'id': songbook.id
+    if(!copy){    // ještě se zamyslet - svoje zpěvníky zkopírovat chci, protože se zruší převzetí...
+      song.songbooks.forEach((songbook) {
+        songbooks.add({
+            'id': songbook.id
+        });
       });
-    });
+    }
 
     var tags = [];
     song.tags.forEach((tag) {
@@ -27,7 +29,12 @@ class SongsResource {
       });
     });
 
-    return _api.post('songs', data: {
+    var params = {};
+    if(copy){
+      params = {'takenFrom': song.id};
+    }
+
+    return _api.post('songs', params: params, data: {
         'title': song.title,
         'album': song.album,
         'author': song.author,
@@ -58,16 +65,16 @@ class SongsResource {
       params = {'search': search};
     }
     else if(randomPublic != null){
-        params = {'randomPublic': randomPublic};
-      }
-      else if(admin != null){
-          params = {'admin': admin};
-        }
-        else {
-          if(searchPublic == '')
-            searchPublic = ' ';
-          params = {'searchPublic': searchPublic};
-        }
+      params = {'randomPublic': randomPublic};
+    }
+    else if(admin != null){
+      params = {'admin': admin};
+    }
+    else {
+      if(searchPublic == '')
+        searchPublic = ' ';
+      params = {'searchPublic': searchPublic};
+    }
     return _api.get('songs', params: params).then((HttpResponse response) {
       var songs = response.data.map((data) {
         var tags = [];
@@ -106,7 +113,7 @@ class SongsResource {
                       response.data['public'], originalAuthor: response.data['originalAuthor'], note: response.data['note'],
                       lyrics: response.data['lyrics'], chords: chords, id: response.data['id'],
                       username: response.data['username'], songbooks: songbooks,
-                      tags: tags, rating: response.data['rating']['rating'],
+                      tags: tags, rating: response.data['rating']['rating'], taken: response.data['taken'],
                       numOfRating: response.data['rating']['numOfRating']);
     });
   }
@@ -202,39 +209,22 @@ class SongsResource {
   }*/
 
   /**
-   * Creates new song which is taken from other user.
+   * Enables given user access to song.
    */
-  Future takeSong(Song song) {
-    _normalize(song);
-
-    var songbooks = [];
-
-    var tags = [];
-    song.tags.forEach((tag) {
-      tags.add({
-          'tag': tag.tag
-      });
-    });
-
-    var params;
-    params = {'takenFrom': song.id};
-
-    return _api.post('songs', params: params, data: {
-        'title': song.title,
-        'album': song.album,
-        'author': song.author,
-        'originalAuthor': song.originalAuthor,
-        'year': song.year,
-        'note': song.note,
-        'public': song.public,
-        'lyrics': song.lyrics,
-        'chords': JSON.encode(song.chords),
-        'songbooks': songbooks,
-        'tags': tags
+  Future shareSong(int songId, int userId) {
+    return _api.post('songs/' + songId.toString()  + "/sharing", data: {
+        'user': userId
     }).then((HttpResponse response) {
-      song.id = response.data['id'];
-      print(song.id);
-      return new Future.value(song);
+      return new Future.value(response.data['id']);
+    });
+  }
+
+  /**
+   * Enables active user tagging song and adding it to songbooks.
+   */
+  Future takeSong(Song song) { // bude změněno
+    return _api.post('songs/' + song.id.toString()  + "/taking").then((HttpResponse response) {
+      return new Future.value(response.data['id']);
     });
   }
 

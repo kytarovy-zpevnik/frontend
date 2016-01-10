@@ -6,6 +6,7 @@ class MessageService {
   List<Message> _stack = [];
 
   void showStacked() {
+    print('showStacked!');
     _messages.clear();
     _stack.forEach((message) {
       _messages.add(message);
@@ -45,6 +46,7 @@ class MessageService {
    * Displays success message with title and text on next view.
    */
   void prepareSuccess(String title, String text) {
+    print('prepareSuccess!');
     _stack.add(new Message('success', title, text));
   }
 

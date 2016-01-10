@@ -24,37 +24,13 @@ class Routes {
         'createWish': appRoute(
             path: '/wish/create',
             view: 'html/views/wish_edit.html'),
+
         'songs': appRoute(
             path: '/songs',
             view: 'html/views/songs.html'),
         'addSongsToSongbook': appRoute(
             path: '/songs/songbook/:songbookId',
             view: 'html/views/songs.html'),
-        'public-songs': appRoute(
-            path: '/public-songs',
-            view: 'html/views/songs_public.html'),
-        'songbooks': appRoute(
-            path: '/songbooks',
-            view: 'html/views/songbooks.html'),
-        'public-songbooks': appRoute(
-            path: '/public-songbooks',
-            view: 'html/views/songbooks_public.html'),
-        'sign': appRoute(
-            path: '/sign',
-            view: 'html/views/sign_in.html'),
-        'resetPassword': appRoute(
-            path: '/reset-password',
-            mount: {
-                'step1': appRoute(
-                    path: '/step1',
-                    view: 'html/views/reset_password.html'),
-                'step2': appRoute(
-                    path: '/step2/:token',
-                    view: 'html/views/set_new_password.html')
-            }),
-        'importSong': appRoute(
-            path: '/song/import',
-            view: 'html/views/song_edit.html'),
         'createSong': appRoute(
             path: '/song/create',
             view: 'html/views/song_edit.html'),
@@ -72,15 +48,16 @@ class Routes {
                     view: 'html/views/song_edit.html'),
                 'ratings': appRoute(
                     path: '/ratings',
-                    view: 'html/views/song_ratings.html'),
-                'rating': appRoute(
-                    path: '/rating/edit',
-                    view: 'html/views/song_rating_edit.html'),
-                'share': appRoute(
-                    path: '/sharing',
-                    view: 'html/views/song_sharing.html')
+                    view: 'html/views/song_ratings.html')
             }),
-        'editSongbook': appRoute(
+        'public-songs': appRoute(
+            path: '/public-songs',
+            view: 'html/views/songs_public.html'),
+
+        'songbooks': appRoute(
+            path: '/songbooks',
+            view: 'html/views/songbooks.html'),
+        'createSongbook': appRoute(
             path: '/songbook/create',
             view: 'html/views/songbook_edit.html'
         ),
@@ -95,20 +72,29 @@ class Routes {
                     view: 'html/views/songbook_edit.html'),
                 'ratings': appRoute(
                     path: '/ratings',
-                    view: 'html/views/songbook_ratings.html'),
-                'rating': appRoute(
-                    path: '/rating/edit',
-                    view: 'html/views/songbook_rating_edit.html'),
-                'share': appRoute(
-                    path: '/sharing',
-                    view: 'html/views/songbook_sharing.html')
+                    view: 'html/views/songbook_ratings.html')
             }),
+        'public-songbooks': appRoute(
+            path: '/public-songbooks',
+            view: 'html/views/songbooks_public.html'),
+
         'register': appRoute(
             path: '/register',
             view: 'html/views/register.html'),
-        'users': appRoute(
-            path: '/users',
-            view: 'html/views/users.html'),
+        'sign': appRoute(
+            path: '/sign',
+            view: 'html/views/sign_in.html'),
+        'resetPassword': appRoute(
+            path: '/reset-password',
+            mount: {
+                'step1': appRoute(
+                    path: '/step1',
+                    view: 'html/views/reset_password.html'),
+                'step2': appRoute(
+                    path: '/step2/:token',
+                    view: 'html/views/set_new_password.html')
+            }),
+
         'admin': appRoute(
             path: '/admin',
             view: 'html/views/admin.html'),
@@ -118,6 +104,10 @@ class Routes {
         'admin-songbooks': appRoute(
             path: '/admin-songbooks',
             view: 'html/views/songbooks_admin.html'),
+        'users': appRoute(
+            path: '/users',
+            view: 'html/views/users.html'),
+
         'notifications': appRoute(
             path: '/notifications',
             view: 'html/views/notifications.html'),

@@ -37,9 +37,14 @@ class SongbooksController {
     this.visibleSongbooks.clear();
     var user = _sessionService.session.user;
 
+    /* Až bude hotovo přebírání zpěvníků
     Future.wait([_songbookResource.readAll().then(_processSongbooks), // analogicky u dalších
     _userResource.readAllSharedSongbooks(user.id).then(_processSongbooks)]
-    ).then((List<Future> futures){querySelector('html').classes.remove('wait');});
+    ).then((List<Future> futures)*/
+    _songbookResource.readAll().then((List<Songbook> songbooks){
+      _processSongbooks(songbooks);
+      querySelector('html').classes.remove('wait');
+    });
   }
 
   void _processSongbooks(List<Songbook> songbooks) {
@@ -49,7 +54,8 @@ class SongbooksController {
     });
   }
 
-  /*void _processSharedSongbooks(List<Songbook> songbooks) {
+  /* Až bude hotovo přebírání zpěvníků
+  void _processSharedSongbooks(List<Songbook> songbooks) {
     songbooks.forEach((Songbook songbook) {
       this.songbooks.add(songbook);
       this.visibleSongbooks.add(songbook);

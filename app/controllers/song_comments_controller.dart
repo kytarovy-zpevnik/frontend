@@ -46,7 +46,7 @@ class SongCommentsController {
   }
 
   void commentEdit() {
-    _commentsResource.editComment(songId, editComment).then((_) {
+    _commentsResource.updateComment(songId, editComment).then((_) {
       _messageService.showSuccess('Změněno.', 'Komentář byl úspěšně změněn.');
       refresh();
       _router.go('song.view', {'id': this.songId});
@@ -72,8 +72,10 @@ class SongCommentsController {
   }
 
   _initialize(){
-    User currentUser = _sessionService.session.user;
-    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    if(_sessionService.session != null) {
+      User currentUser = _sessionService.session.user;
+      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    }
 
     this.comment = new Comment();
     this.editComment = new Comment();

@@ -8,7 +8,7 @@
                 <td>{{user.email}}</td>
                 <td>{{user.role.name}}</td>
                 <td>{{user.lastLogin}}</td>
-                <td ng-if="user.id != 1 && user.id != ctrl.currentUser.id">
+                <td ng-if="user.id != 1 && user.id != ctrl.user.id">
                     <span ng-if="user.role.slug == 'admin'">
                         <button class="btn btn-danger" ng-click="ctrl.toRegistered($index)">Odebrat admin práva</button>
                     </span>

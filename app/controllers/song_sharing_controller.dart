@@ -21,7 +21,7 @@ class SongSharingController {
 
   void save() {
     _userResource.read(userName).then((User user){
-      _songSharingResource.create(song.id, user.id).then((_) {
+      _songsResource.shareSong(song.id, user.id).then((_) {
         _messageService.prepareSuccess('Uloženo.', 'Píseň byla úspěšně nasdílena.');
         _router.go('song.view', {'id': song.id});
       }).catchError((ApiError e) {

@@ -50,14 +50,12 @@ class SongsController {
     this.visibleSongs.clear();
     var user = _sessionService.session.user;
 
-    /*_songResource.readAll().then(_processSongs);
-    _userResource.readAllSharedSongs(user.id).then((List<Song> songs){
-      _processSharedSongs(songs);
-      querySelector('html').classes.remove('wait');
-    });*/
+    /* Až bude hotovo přebírání písní
     Future.wait([_songResource.readAll().then(_processSongs), // analogicky u dalších
                 _userResource.readAllSharedSongs(user.id).then(_processSharedSongs)]
-    ).then((List<Future> futures){
+    ).then((List<Future> futures)*/
+    _songResource.readAll().then((List<Song> songs){
+      _processSongs(songs);
       if (_routeProvider.parameters.containsKey('songbookId')) {
         _songbooksResource.read(_routeProvider.parameters['songbookId']).then((Songbook songbook) {
           this.songbook = songbook;
@@ -79,12 +77,13 @@ class SongsController {
     });
   }
 
+  /* Až bude hotovo přebírání písní
   _processSharedSongs(List<Song> songs) {
     songs.forEach((Song song) {
       this.songs.add(song);
       this.visibleSongs.add(song);
     });
-  }
+  }*/
 
   _filterSongs(){
     this.visibleSongs.clear();

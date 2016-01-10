@@ -61,7 +61,8 @@ class SongbooksResource {
         }
         return new Songbook(data['id'], data['name'], note: data['note'], public: data['public'],
                             username: data['username'], tags: tags, archived: data['archived'],
-                            rating: data['rating'], numberOfSongs: data['songs']);
+                            numberOfSongs: data['songs'], rating: data['rating']['rating'],
+                            numOfRating: data['rating']['numOfRating']);
       });
 
       return new Future.value(songbooks);
@@ -100,8 +101,9 @@ class SongbooksResource {
       });
 
       return new Songbook(response.data['id'], response.data['name'], note: response.data['note'],
-                          public: response.data['public'], songs: songs,
-                          username: response.data['username'], tags: tags, rating: response.data['rating']);
+                          public: response.data['public'], songs: songs, tags: tags,
+                          username: response.data['username'], rating: response.data['rating']['rating'],
+                          numOfRating: response.data['rating']['numOfRating']);
     });
   }
 

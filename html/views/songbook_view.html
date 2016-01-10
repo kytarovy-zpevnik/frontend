@@ -1,7 +1,7 @@
 <div songbook songbook-comments>
     <div ng-if="ctrl.songbook != null">
         <div class="pull-right">
-            <span ng-if="ctrl.user.username == ctrl.songbook.username" style="position: relative">
+            <span ng-if="ctrl.user != null && ctrl.user.username == ctrl.songbook.username" style="position: relative">
                 <a class="btn btn-info" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-wrench"></span> Správa zpěvníku <span class="caret"></span>
                 </a>
@@ -18,7 +18,7 @@
                     </li>
                 </ul>
             </span>
-            <span ng-if="ctrl.user.username == ctrl.songbook.username" style="position: relative">
+            <span ng-if="ctrl.user != null && ctrl.user.username == ctrl.songbook.username" style="position: relative">
                 <a class="btn btn-default" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-th-list"></span> Možnosti zpěvníku <span class="caret"></span>
                 </a>
@@ -30,7 +30,7 @@
                     </li>
                 </ul>
             </span>
-            <span ng-if="ctrl.user.username == ctrl.songbook.username" style="position: relative">
+            <span ng-if="ctrl.user != null && ctrl.user.username == ctrl.songbook.username" style="position: relative">
                 <a class="btn btn-default" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-music"></span> Správa písní <span class="caret"></span>
                 </a>
@@ -99,12 +99,12 @@
 
         <h1>{{ctrl.songbook.name}}</h1>
         <div class="meta">
-            <span ng-if="ctrl.songbook.username == ctrl.user.username"><b>Váš vlastní </b></span>
-            <span ng-if="ctrl.songbook.username != ctrl.user.username"><b>Cizí </b></span>
+            <span ng-if="ctrl.user != null && ctrl.songbook.username == ctrl.user.username"><b>Váš vlastní </b></span>
+            <span ng-if="ctrl.user == null || ctrl.songbook.username != ctrl.user.username"><b>Cizí </b></span>
             <span ng-if="ctrl.songbook.public"><b>veřejný</b></span>
             <span ng-if="!ctrl.songbook.public"><b>privátní</b></span>
             <span><b> zpěvník</b><br /></span>
-            <span ng-if="ctrl.songbook.username != ctrl.user.username"><b>Vlastník:</b>
+            <span ng-if="ctrl.user == null || ctrl.songbook.username != ctrl.user.username"><b>Vlastník:</b>
             {{ctrl.songbook.username}}<br></span>
             <span><b>Počet písní:</b> {{ctrl.songbook.songs.length}}<br></span>
             <span><b>Průměrné hodnocení:</b>
@@ -116,6 +116,10 @@
                 <img ng-if="ctrl.songbook.rating >= 5" src="img/star.png" width="20" height="20">
                 <a href="#/songbook/{{ctrl.songbook.id}}/ratings"><small>(více)</small></a>
                 <br>
+                <span ng-if="ctrl.songbook.rating > 0">
+                    Hodnotil<span  ng-if="ctrl.songbook.numOfRating > 1 && ctrl.songbook.numOfRating < 5">i</span><span  ng-if="ctrl.songbook.numOfRating >= 5">o</span>
+                    {{ctrl.songbook.numOfRating}} uživatel<span  ng-if="ctrl.songbook.numOfRating > 1 && ctrl.songbook.numOfRating < 5">é</span><span  ng-if="ctrl.songbook.numOfRating >= 5">ů</span>.</span>
+                    <br>
             </span>
             <span ng-if="ctrl.songbook.tagsStr != '' || ctrl.songbook.privateTagsStr != ''"><b>Tagy:</b>
                 {{ctrl.songbook.tagsStr}}<span ng-if="ctrl.songbook.tagsStr != '' && ctrl.songbook.privateTagsStr != ''">, </span><span class="text-success">{{ctrl.songbook.privateTagsStr}}</span><br></span>
@@ -161,11 +165,12 @@
         <div class="comment" ng-repeat="comment in ctrl2.comments">
             <span><b>{{comment.username}} napsal: </b><p class="comment">{{comment.comment}}<p></span>
             <span><b>Vytvořeno: </b>{{comment.created}}</span>
-            <span ng-if="ctrl2.user.username == comment.username">
-                <span ng-if="ctrl2.editId != comment.id" ng-click="ctrl2.prepareEdit(comment.id)"><a>Upravit</a>
+            <span ng-if="ctrl2.user != null && ctrl2.user.username == comment.username">
+                <span ng-if="ctrl2.editId != comment.id" ng-click="ctrl2.prepareEdit(comment.id)">
+                    <a>Upravit</a>
                 </span>
             </span>
-            <span ng-if="((ctrl2.user.username == comment.username) || (ctrl2.user.role.slug == 'admin'))">
+            <span ng-if="ctrl2.user != null && (ctrl2.user.username == comment.username || ctrl2.user.role.slug == 'admin')">
                 <span ng-click="ctrl2.delete(comment.id)">
                     <a>Smazat</a>
                 </span>

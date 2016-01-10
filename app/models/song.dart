@@ -17,6 +17,7 @@ class Song {
   int rating = 0;
   int numOfRating = 0;
   int posInSongbook;
+  bool taken = false;
 
   String lyrics;
   Map<int, String> chords;
@@ -86,7 +87,9 @@ class Song {
     return contains;
   }
 
-  Song(this.title, this.album, this.author, this.year, this.public, {this.originalAuthor, this.note, this.username, this.id, this.lyrics: '', this.chords, this.songbooks, tags, this.archived, this.rating, this.numOfRating, this.posInSongbook}) {
+  Song(this.title, this.album, this.author, this.year, this.public,
+       {this.originalAuthor, this.note, this.username, this.id, this.lyrics: '', this.chords, this.songbooks,
+       tags, this.archived, this.rating, this.taken, this.numOfRating, this.posInSongbook}) {
     this.tags = tags;
     if (chords == null) chords = {};
     if (songbooks == null) songbooks = [];
