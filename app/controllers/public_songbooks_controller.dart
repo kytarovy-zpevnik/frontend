@@ -22,7 +22,7 @@ class PublicSongbooksController {
 
   PublicSongbooksController(this._sessionService, this._songbookResource, this._messageService) {
     querySelector('html').classes.add('wait');
-    _songbookResource.readAll(searchPublic: ' ').then((List<Songbook> songbooks){
+    _songbookResource.readAll(public: true).then((List<Songbook> songbooks){
       _processSongbooks(songbooks);
       querySelector('html').classes.remove('wait');
     });

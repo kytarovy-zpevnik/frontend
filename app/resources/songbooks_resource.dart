@@ -34,25 +34,25 @@ class SongbooksResource {
   /**
    * Reads all songbooks.
    */
-  Future<List<Songbook>> readAll({bool admin, bool randomPublic, String searchPublic, String search}) {
-    var params;
-    if (search != null) {
-      params = {'search': search};
+  Future<List<Songbook>> readAll({bool public, bool admin, bool random, String search, Map<String, String> filters}) {
+    Map params = {};
+    if (public != null) {
+      params = {'public': public};
     }
-    /*else if (searchAllPublic != null) {
-      params = {'searchAllPublic': searchAllPublic};
-    }*/
-    else if(randomPublic != null){
-        params = {'randomPublic': randomPublic};
+
+    if (admin != null) {
+      params.addAll({'admin': admin});
     }
-    else if(admin != null){
-      params = {'admin': admin};
+    else if(random != null){
+      params.addAll({'random': random});
     }
-    else {
-      if(searchPublic == '')
-        searchPublic = ' ';
-      params = {'searchPublic': searchPublic};
+    else if (search != null) {
+      params.addAll({'search': search});
     }
+    else if (filters != null) {
+      params.addAll(filters);
+    }
+
     return _api.get('songbooks', params: params).then((HttpResponse response) {
       var songbooks = response.data.map((data) {
         var tags = [];
