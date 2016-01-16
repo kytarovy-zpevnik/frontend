@@ -16,7 +16,7 @@ class PublicSongsController {
 
   set search(String search) {
     _search = search;
-    //_songResource.readAll(searchPublic: _search).then(_processSongs);
+    //_songResource.readAll(public: true, search: _search).then(_processSongs);
     _filterSongs();
   }
 
@@ -30,7 +30,7 @@ class PublicSongsController {
 
   PublicSongsController(this._sessionService, this._songResource, this._messageService) {
     querySelector('html').classes.add('wait');
-    _songResource.readAll(searchPublic: ' ').then((List<Song> songs){
+    _songResource.readAll(public: true).then((List<Song> songs){
       _processSongs(songs);
       querySelector('html').classes.remove('wait');
     });

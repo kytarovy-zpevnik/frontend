@@ -56,25 +56,25 @@ class SongsResource {
   /**
    * Read's all songs.
    */
-  Future<List<Song>> readAll({bool admin, bool randomPublic, String searchPublic, String search, Map<String, String> filters}) {
-    var params;
-    if (filters != null) {
-      params = filters;
+  Future<List<Song>> readAll({bool public, bool admin, bool random, String search, Map<String, String> filters}) {
+    Map params = {};
+    if (public != null) {
+      params = {'public': public};
+    }
+
+    if (admin != null) {
+      params.addAll({'admin': admin});
+    }
+    else if(random != null){
+      params.addAll({'random': random});
     }
     else if (search != null) {
-      params = {'search': search};
+      params.addAll({'search': search});
     }
-    else if(randomPublic != null){
-      params = {'randomPublic': randomPublic};
+    else if (filters != null) {
+      params.addAll(filters);
     }
-    else if(admin != null){
-      params = {'admin': admin};
-    }
-    else {
-      if(searchPublic == '')
-        searchPublic = ' ';
-      params = {'searchPublic': searchPublic};
-    }
+
     return _api.get('songs', params: params).then((HttpResponse response) {
       var songs = response.data.map((data) {
         var tags = [];

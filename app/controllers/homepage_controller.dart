@@ -14,7 +14,7 @@ class HomepageController {
     querySelector('html').classes.add('wait');
     Future.wait([
       _songbookResource.readAll(randomPublic: true).then(_processSongbooks),
-      _songResource.readAll(randomPublic: true).then(_processSongs)]
+      _songResource.readAll(public: true, random: true).then(_processSongs)]
     ).then((List<Future> futures){
       querySelector('html').classes.remove('wait');
     });
