@@ -417,7 +417,6 @@ class SongController {
   }
 
   void removeFromSongbook(Songbook songbook) {
-
     var toRemove;
     song.songbooks.forEach((songsongbook) {
       if (songsongbook.id == songbook.id) {
@@ -428,7 +427,7 @@ class SongController {
   }
 
   void saveSongbooks(){
-    _songsResource.update(song).then((_){
+    _songsResource.update(song, 'songbooks').then((_){
       _messageService.showSuccess('Aktualizován','Seznam zpěvníků obsahujících tuto píseň byl úspěšně aktualizován.');
     });
   }

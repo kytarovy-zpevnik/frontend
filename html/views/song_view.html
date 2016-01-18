@@ -33,7 +33,7 @@
                             <span class="glyphicon glyphicon-tag"></span> Soukromé tagy
                         </a>
                     </li>
-                    <li ng-if="ctrl.user.username == ctrl.song.username">
+                    <li ng-if="ctrl.user.username == ctrl.song.username || ctrl.song.taken">
                         <a data-toggle="modal" data-target="#songbook">
                             <span class="glyphicon glyphicon-book"></span> Zařadit do zpěvníku
                         </a>
