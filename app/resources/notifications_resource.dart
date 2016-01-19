@@ -10,7 +10,7 @@ class NotificationsResource {
   NotificationsResource(this._api);
 
   /**
-   * Returns all (or unread only) notifications for actually logged in user.
+   * Returns all (or unread only) notifications for currently logged user.
    */
   Future<List<Notification>> readAll([bool unreadOnly = false]) {
     var params = unreadOnly
@@ -29,6 +29,15 @@ class NotificationsResource {
    */
   Future updateAll(bool read) {
     return _api.put('notifications', data: {'read' : read}).then((_) {
+      return new Future.value();
+    });
+  }
+
+  /**
+   * Marks given notification as read.
+   */
+  Future update(Notification notification, bool read) {
+    return _api.put('notifications/' + notification.id.toString(), data: {'read' : read}).then((_) {
       return new Future.value();
     });
   }
