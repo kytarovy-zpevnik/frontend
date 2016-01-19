@@ -14,14 +14,18 @@ class Notification {
   String url = '';
 
   Notification(this.id, this.created, this.read, this.text, Map target) {
+    text = text.replaceAllMapped(new RegExp(r'"(.*?)"'), (Match match) {
+      return ("<b>" + match.group(0) + "</b>").replaceAll('"','');
+    });
+
     if (target != null && !target.isEmpty) {
       if (target.containsKey('song')) {
-        targetType = 'píseň';
+        targetType = 'glyphicon-music';
         targetName = target['song']['title'];
         url = '/song/' + target['song']['id'].toString() + '/view';
 
       } else if (target.containsKey('songbook')) {
-        targetType = 'zpěvník';
+        targetType = 'glyphicon-book';
         targetName = target['songbook']['name'];
         url = '/songbook/' + target['songbook']['id'].toString() + '/view';
       }
