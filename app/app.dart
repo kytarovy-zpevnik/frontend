@@ -68,6 +68,7 @@ part 'resources/wishes_resource.dart';
 
 part 'services/api.dart';
 part 'services/message_service.dart';
+part 'services/notification_service.dart';
 part 'services/session_service.dart';
 
 part 'routes.dart';
@@ -120,6 +121,7 @@ class AppModule extends Module {
 
     bind(Api);
     bind(MessageService);
+    bind(NotificationService);
     bind(SessionService);
 
     bind(RouteInitializerFn, toImplementation: Routes);
