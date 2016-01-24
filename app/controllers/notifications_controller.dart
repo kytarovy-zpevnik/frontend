@@ -6,7 +6,7 @@ class NotificationsController {
 
   //List<Notification> notifications = [];
 
-  var formatter = new DateFormat('d. M. yyyy H:m');
+  var formatter = new DateFormat('d.M.yyyy H:m');
 
   NotificationsController(this._notificationService);
 

@@ -6,8 +6,8 @@ part of app;
 class Rating {
   int id;
   String comment = '';
-  String created = '';
-  String modified = '';
+  DateTime modified;
+  DateTime created;
   int rating;
   int userId;
 

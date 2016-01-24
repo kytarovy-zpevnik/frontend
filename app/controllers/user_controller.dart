@@ -6,6 +6,8 @@ class UserController {
   final MessageService _messageService;
   final SessionService _sessionService;
 
+  var formatter = new DateFormat('d.M.yyyy H:m');
+
   List<User> users = [];
   User user;
 

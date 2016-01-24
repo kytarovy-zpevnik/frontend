@@ -37,7 +37,9 @@
                     <img ng-if="rating.rating >= 3" src="img/star.png" width="20" height="20">
                     <img ng-if="rating.rating >= 4" src="img/star.png" width="20" height="20">
                     <img ng-if="rating.rating >= 5" src="img/star.png" width="20" height="20">
-                    <span class="pull-right">{{rating.modified}}</span>
+                    <span class="pull-right">
+                        <b>{{rating.username}}</b>, {{ctrl.formatter.format(rating.modified)}}
+                    </span>
                 </div>
                 <br>
                 <p>{{rating.comment}}</p>

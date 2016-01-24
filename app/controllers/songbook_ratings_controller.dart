@@ -14,6 +14,8 @@ class SongbookRatingsController {
   int ratingSum;
   int avgRating;
 
+  var formatter = new DateFormat('d.M.yyyy H:m');
+
   User user;
   Songbook songbook;
   bool rated = false;

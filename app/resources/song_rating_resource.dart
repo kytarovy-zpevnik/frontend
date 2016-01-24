@@ -26,7 +26,9 @@ class SongRatingResource {
   Future<List<Rating>> readAllRating(int songId) {
     return _api.get('songs/' + songId.toString() + "/rating").then((HttpResponse response) {
       var ratings = response.data.map((data) {
-        return new Rating(id: data['id'], comment: data['comment'], rating: data['rating'], created: data['created'], modified: data['modified'], userId: data['user']);
+        return new Rating(id: data['id'], comment: data['comment'], rating: data['rating'],
+                        created: DateTime.parse(data['created']), modified: DateTime.parse(data['modified']),
+                        userId: data['user']['id'], username: data['user']['username']);
       });
 
       return new Future.value(ratings);

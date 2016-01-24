@@ -7,13 +7,15 @@
                 <td>{{user.username}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.role.name}}</td>
-                <td>{{user.lastLogin}}</td>
-                <td ng-if="user.id != 1 && user.id != ctrl.user.id">
-                    <span ng-if="user.role.slug == 'admin'">
-                        <button class="btn btn-danger" ng-click="ctrl.toRegistered($index)">Odebrat admin práva</button>
-                    </span>
-                    <span ng-if="user.role.slug == 'registered'">
-                        <button class="btn btn-success" ng-click="ctrl.toAdmin($index)">Udělit admin práva</button>
+                <td>{{ctrl.formatter.format(user.lastLogin)}}</td>
+                <td>
+                    <span ng-if="user.id != 1 && user.id != ctrl.user.id">
+                        <span ng-if="user.role.slug == 'admin'">
+                            <button class="btn btn-danger" ng-click="ctrl.toRegistered($index)">Odebrat admin práva</button>
+                        </span>
+                        <span ng-if="user.role.slug == 'registered'">
+                            <button class="btn btn-success" ng-click="ctrl.toAdmin($index)">Udělit admin práva</button>
+                        </span>
                     </span>
                 </td>
             </tr>

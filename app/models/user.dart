@@ -8,7 +8,7 @@ class User {
   final String username;
   final String email;
   final Role role;
-  final String lastLogin;
+  final DateTime lastLogin;
 
   User(this.id, this.username, this.email, this.role, this.lastLogin);
 }
