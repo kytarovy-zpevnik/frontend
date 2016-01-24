@@ -4,7 +4,7 @@
         <tbody>
         <tr ng-repeat="songbook in ctrl.songbooks">
             <td>{{songbook.id}}</td>
-            <td>{{songbook.name}}</td>
+            <td><a href="#/songbook/{{songbook.id}}/view">{{songbook.name}}</a></td>
             <td>{{songbook.username}}</td>
             <td ng-if="!songbook.archived">
                 <button class="btn btn-danger" ng-click="ctrl.delete(songbook)">Smazat</button>
