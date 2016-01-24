@@ -206,8 +206,8 @@
                         Hodnotil<span  ng-if="ctrl.song.numOfRating > 1 && ctrl.song.numOfRating < 5">i</span><span  ng-if="ctrl.song.numOfRating >= 5">o</span>
                         {{ctrl.song.numOfRating}} uživatel<span  ng-if="ctrl.song.numOfRating > 1 && ctrl.song.numOfRating < 5">é</span><span  ng-if="ctrl.song.numOfRating >= 5">ů</span>.
                     </span>
-                    <a href="#/song/{{ctrl.song.id}}/ratings?rate=true">Ohodnotit</a>
-                    <br>
+                    <a ng-if="ctrl.user != null && ctrl.song.username != ctrl.user.username" href="#/song/{{ctrl.song.id}}/ratings/rate">Ohodnotit</a>
+                    <br ng-if="ctrl.song.rating > 0 || (ctrl.user != null && ctrl.song.username != ctrl.user.username)">
                 </span>
                 <span ng-if="ctrl.song.tagsStr != '' || ctrl.song.privateTagsStr != ''"><b>Tagy:</b>
                 {{ctrl.song.tagsStr}}<span ng-if="ctrl.song.tagsStr != '' && ctrl.song.privateTagsStr != ''">, </span><span class="text-success">{{ctrl.song.privateTagsStr}}</span><br></span>

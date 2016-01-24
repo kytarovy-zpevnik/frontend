@@ -44,8 +44,9 @@ class SongbookRatingsController {
         _ratingResource.readAllRating(_routeProvider.parameters['id']).then(_processRatings)]
     ).then((List<Future> futures){
 
-      js.context.callMethod(r'$', ['#rating']).callMethod('modal', [new js.JsObject.jsify({'show': 'true'})]);
-
+      if(_routeProvider.routeName == "rate"){
+        js.context.callMethod(r'$', ['#rating']).callMethod('modal', [new js.JsObject.jsify({'show': 'true'})]);
+      }
       querySelector('html').classes.remove('wait');
     });
   }

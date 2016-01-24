@@ -48,6 +48,9 @@ class Routes {
                     view: 'html/views/song_edit.html'),
                 'ratings': appRoute(
                     path: '/ratings',
+                    view: 'html/views/song_ratings.html'),
+                'rate': appRoute(
+                    path: '/ratings/rate',
                     view: 'html/views/song_ratings.html')
             }),
         'public-songs': appRoute(
@@ -72,6 +75,9 @@ class Routes {
                     view: 'html/views/songbook_edit.html'),
                 'ratings': appRoute(
                     path: '/ratings',
+                    view: 'html/views/songbook_ratings.html'),
+                'rate': appRoute(
+                    path: '/ratings/rate',
                     view: 'html/views/songbook_ratings.html')
             }),
         'public-songbooks': appRoute(

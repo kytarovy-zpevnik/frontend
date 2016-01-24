@@ -45,9 +45,7 @@ class SongRatingsController {
         _ratingResource.readAllRating(_routeProvider.parameters['id']).then(_processRatings)]
     ).then((List<Future> futures){
 
-
-      print(Uri.base.toString());
-      if(Uri.base.queryParameters.containsKey('rate')){
+      if(_routeProvider.routeName == "rate"){
         js.context.callMethod(r'$', ['#rating']).callMethod('modal', [new js.JsObject.jsify({'show': 'true'})]);
       }
       querySelector('html').classes.remove('wait');

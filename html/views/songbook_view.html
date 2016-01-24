@@ -118,8 +118,10 @@
                 <br>
                 <span ng-if="ctrl.songbook.rating > 0">
                     Hodnotil<span  ng-if="ctrl.songbook.numOfRating > 1 && ctrl.songbook.numOfRating < 5">i</span><span  ng-if="ctrl.songbook.numOfRating >= 5">o</span>
-                    {{ctrl.songbook.numOfRating}} uživatel<span  ng-if="ctrl.songbook.numOfRating > 1 && ctrl.songbook.numOfRating < 5">é</span><span  ng-if="ctrl.songbook.numOfRating >= 5">ů</span>.</span>
-                    <br>
+                    {{ctrl.songbook.numOfRating}} uživatel<span  ng-if="ctrl.songbook.numOfRating > 1 && ctrl.songbook.numOfRating < 5">é</span><span  ng-if="ctrl.songbook.numOfRating >= 5">ů</span>.
+                </span>
+                <a ng-if="ctrl.user != null && ctrl.songbook.username != ctrl.user.username" href="#/songbook/{{ctrl.songbook.id}}/ratings/rate">Ohodnotit</a>
+                <br ng-if="ctrl.songbook.rating > 0 || (ctrl.user != null && ctrl.songbook.username != ctrl.user.username)">
             </span>
             <span ng-if="ctrl.songbook.tagsStr != '' || ctrl.songbook.privateTagsStr != ''"><b>Tagy:</b>
                 {{ctrl.songbook.tagsStr}}<span ng-if="ctrl.songbook.tagsStr != '' && ctrl.songbook.privateTagsStr != ''">, </span><span class="text-success">{{ctrl.songbook.privateTagsStr}}</span><br></span>
