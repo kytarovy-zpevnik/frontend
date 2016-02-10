@@ -107,6 +107,7 @@ class SongRatingsController {
         });
       });
     }
+    js.context.callMethod(r'$', ['#rating']).callMethod('modal', ['hide']);
   }
 
   void deleteRating(Rating rating){

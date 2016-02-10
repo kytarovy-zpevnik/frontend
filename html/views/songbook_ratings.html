@@ -65,28 +65,30 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h4 class="modal-title" id="tagLabel">Ohodnotit zpěvník {{ctrl.songbook.name}}</h4>
                 </div>
-                <div class="modal-body">
-                    <img ng-click="ctrl.newRating.rating = 1" ng-if="ctrl.newRating.rating >= 1" src="img/star.png" width="20" height="20">
-                    <img ng-click="ctrl.newRating.rating = 2" ng-if="ctrl.newRating.rating >= 2" src="img/star.png" width="20" height="20">
-                    <img ng-click="ctrl.newRating.rating = 3" ng-if="ctrl.newRating.rating >= 3" src="img/star.png" width="20" height="20">
-                    <img ng-click="ctrl.newRating.rating = 4" ng-if="ctrl.newRating.rating >= 4" src="img/star.png" width="20" height="20">
-                    <img ng-click="ctrl.newRating.rating = 5" ng-if="ctrl.newRating.rating >= 5" src="img/star.png" width="20" height="20">
+                <form class="rating" role="form" ng-submit="ctrl.saveRating()">
+                    <div class="modal-body">
+                        <img ng-click="ctrl.newRating.rating = 1" ng-if="ctrl.newRating.rating >= 1" src="img/star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 2" ng-if="ctrl.newRating.rating >= 2" src="img/star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 3" ng-if="ctrl.newRating.rating >= 3" src="img/star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 4" ng-if="ctrl.newRating.rating >= 4" src="img/star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 5" ng-if="ctrl.newRating.rating >= 5" src="img/star.png" width="20" height="20">
 
-                    <img ng-click="ctrl.newRating.rating = 1" ng-if="ctrl.newRating.rating < 1" src="img/empty_star.png" width="20" height="20">
-                    <img ng-click="ctrl.newRating.rating = 2" ng-if="ctrl.newRating.rating < 2" src="img/empty_star.png" width="20" height="20">
-                    <img ng-click="ctrl.newRating.rating = 3" ng-if="ctrl.newRating.rating < 3" src="img/empty_star.png" width="20" height="20">
-                    <img ng-click="ctrl.newRating.rating = 4" ng-if="ctrl.newRating.rating < 4" src="img/empty_star.png" width="20" height="20">
-                    <img ng-click="ctrl.newRating.rating = 5" ng-if="ctrl.newRating.rating < 5" src="img/empty_star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 1" ng-if="ctrl.newRating.rating < 1" src="img/empty_star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 2" ng-if="ctrl.newRating.rating < 2" src="img/empty_star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 3" ng-if="ctrl.newRating.rating < 3" src="img/empty_star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 4" ng-if="ctrl.newRating.rating < 4" src="img/empty_star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 5" ng-if="ctrl.newRating.rating < 5" src="img/empty_star.png" width="20" height="20">
 
-                    <div class="form-group">
-                        <label for="input-note">Komentář</label>
-                        <input type="text" required class="form-control" id="input-note" ng-model="ctrl.newRating.comment">
+                        <div class="form-group">
+                            <label for="input-note">Komentář</label>
+                            <input type="text" required class="form-control" id="input-note" ng-model="ctrl.newRating.comment">
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
-                    <button ng-click="ctrl.saveRating()" type="button" class="btn btn-primary" data-dismiss="modal">Odeslat</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+                        <button type="submit" class="btn btn-primary">Odeslat</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
