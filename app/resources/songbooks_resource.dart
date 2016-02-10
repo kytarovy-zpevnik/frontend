@@ -153,6 +153,17 @@ class SongbooksResource {
   }
 
   /**
+   * Enables given user access to private songbook.
+   */
+  Future shareSongbook(int songbookId, int userId) {
+    return _api.post('songbooks/' + songbookId.toString()  + "/sharing", data: {
+        'user': userId
+    }).then((HttpResponse response) {
+      return new Future.value(response.data['id']);
+    });
+  }
+
+  /**
    * Sets empty values to null.
    */
   void _normalize(Songbook songbook) {

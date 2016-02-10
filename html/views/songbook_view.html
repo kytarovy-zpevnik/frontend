@@ -37,14 +37,19 @@
                     </ul>
                 </span>
             </span>
-            <span ng-if="ctrl.user != null && ctrl.user.username == ctrl.songbook.username" style="position: relative">
+            <span style="position: relative">
                 <a class="btn btn-default" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-th-list"></span> Možnosti zpěvníku <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li>
+                    <li ng-if="ctrl.user.username == ctrl.songbook.username">
                         <a data-toggle="modal" data-target="#tag">
                             <span class="glyphicon glyphicon-tag"></span> Soukromé tagy
+                        </a>
+                    </li>
+                    <li ng-if="ctrl.user.username == ctrl.songbook.username && !ctrl.songbook.public">
+                        <a data-toggle="modal" data-target="#share">
+                            <span class="glyphicon glyphicon-share-alt"></span> Sdílet
                         </a>
                     </li>
                 </ul>
@@ -84,6 +89,28 @@
                     <div class="modal-footer">
                         <button ng-click="ctrl.delete()" type="button" class="btn btn-default" data-dismiss="modal">Ano</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Ne</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- share modal -->
+        <div class="modal fade" id="share" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="shareLabel">Sdílet</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="targetUser">Cílový uživatel</label>
+                            <input type="text" class="form-control" id="targetUser" ng-model="ctrl.targetUser">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+                        <button ng-click="ctrl.share()" type="button" class="btn btn-primary" data-dismiss="modal">Sdílet</button>
                     </div>
                 </div>
             </div>

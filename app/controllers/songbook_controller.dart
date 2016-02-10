@@ -2,17 +2,20 @@ part of app;
 
 @Controller(selector: '[songbook]', publishAs: 'ctrl')
 class SongbookController {
-  SongbooksResource _songbooksResource;
-  MessageService _messageService;
+  final SongbooksResource _songbooksResource;
+  final UserResource _userResource;
+  final MessageService _messageService;
   final SessionService _sessionService;
-  RouteProvider _routeProvider;
-  Router _router;
+  final RouteProvider _routeProvider;
+  final Router _router;
 
   Songbook songbook;
   User user;
   bool create;
 
-  SongbookController(this._sessionService, this._songbooksResource, this._messageService, this._routeProvider, this._router) {
+  String targetUser = '';
+
+  SongbookController(this._sessionService, this._songbooksResource, this._userResource, this._messageService, this._routeProvider, this._router) {
     create = !_routeProvider.parameters.containsKey('id');
 
       querySelector('html').classes.add('wait');
@@ -63,6 +66,26 @@ class SongbookController {
         _router.go('songbook.view', {'id': songbook.id});
       });
     }
+  }
+
+  void share(){
+    _userResource.read(targetUser).then((User user){
+      _songbooksResource.shareSongbook(songbook.id, user.id).then((_) {
+        _messageService.showSuccess('Uloženo.', 'Zpěvník byl úspěšně nasdílen.');
+      }).catchError((ApiError e) {
+        switch (e.error) {
+          case 'DUPLICATE_SHARING':
+            _messageService.showError('Opakované sdílení.', 'S tímto uživatelem zpěvník ' + songbook.name + ' již sdílíte.');
+            break;
+        }
+      });
+    }).catchError((ApiError e) {
+      switch (e.error) {
+        case 'UNKNOWN_IDENTIFIER':
+          _messageService.showError('Neznámý uživatel.', 'Bohužel neznáme žádného uživatele, který by měl zadané uživatelské jméno.');
+          break;
+      }
+    });
   }
 
   void delete(){
