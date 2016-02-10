@@ -9,8 +9,15 @@ class SongbooksResource {
   /**
    * Creates new songbook.
    */
-  Future create(Songbook songbook) {
+  Future create(Songbook songbook, {bool copy}) {
     _normalize(songbook);
+
+    var songs = [];
+    songbook.songs.forEach((song) {
+      songs.add({
+          'id': song.id
+      });
+    });
 
     var tags = [];
     songbook.tags.forEach((tag) {
@@ -21,10 +28,11 @@ class SongbooksResource {
     });
 
     return _api.post('songbooks', data: {
-      'name': songbook.name,
-      'note': songbook.note,
-      'public': songbook.public,
-      'tags': tags
+        'name': songbook.name,
+        'note': songbook.note,
+        'public': songbook.public,
+        'songs': songs,
+        'tags': tags
     }).then((HttpResponse response) {
       songbook.id = response.data['id'];
       return new Future.value(songbook);

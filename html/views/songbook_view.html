@@ -57,6 +57,11 @@
                             <span class="glyphicon glyphicon-link"></span> Převzít zpěvník
                         </a>
                     </li>
+                    <li ng-if="ctrl.user.username != ctrl.songbook.username">
+                        <a ng-click="ctrl.copySongbook()">
+                            <span class="glyphicon glyphicon-duplicate"></span> Kopírovat zpěvník
+                        </a>
+                    </li>
                 </ul>
             </span>
         </div>
