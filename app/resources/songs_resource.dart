@@ -13,13 +13,11 @@ class SongsResource {
     _normalize(song);
 
     var songbooks = [];
-    if(!copy){    // ještě se zamyslet - svoje zpěvníky zkopírovat chci, protože se zruší převzetí...
-      song.songbooks.forEach((songbook) {
-        songbooks.add({
-            'id': songbook.id
-        });
+    song.songbooks.forEach((songbook) {
+      songbooks.add({
+          'id': songbook.id
       });
-    }
+    });
 
     var tags = [];
     song.tags.forEach((tag) {
@@ -113,8 +111,8 @@ class SongsResource {
                       response.data['public'], originalAuthor: response.data['originalAuthor'], note: response.data['note'],
                       lyrics: response.data['lyrics'], chords: chords, id: response.data['id'],
                       username: response.data['username'], songbooks: songbooks,
-                      tags: tags, rating: response.data['rating']['rating'], taken: response.data['taken'],
-                      numOfRating: response.data['rating']['numOfRating']);
+                      tags: tags, rating: response.data['rating']['rating'],
+                      numOfRating: response.data['rating']['numOfRating'], taken: response.data['taken']);
     });
   }
 
@@ -209,7 +207,7 @@ class SongsResource {
   }*/
 
   /**
-   * Enables given user access to song.
+   * Enables given user access to private song.
    */
   Future shareSong(int songId, int userId) {
     return _api.post('songs/' + songId.toString()  + "/sharing", data: {
@@ -220,7 +218,7 @@ class SongsResource {
   }
 
   /**
-   * Enables active user tagging song and adding it to songbooks.
+   * Enables active user tagging song owned by someone else and adding it to own songbooks.
    */
   Future takeSong(Song song) { // bude změněno
     return _api.post('songs/' + song.id.toString()  + "/taking").then((HttpResponse response) {

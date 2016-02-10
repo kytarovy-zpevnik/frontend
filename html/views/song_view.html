@@ -1,12 +1,12 @@
 <div song song-comments>
     <div ng-if="ctrl.song != null">
-        <div class="pull-right">
+        <div class="pull-right" ng-if="ctrl.user != null">
             <!--<span ng-if="ctrl.user.username != ctrl.song.username">
                 <a ng-click="ctrl.takeSong()" class="btn btn-info">
                     <span class="glyphicon glyphicon-pencil"></span> Převzít píseň
                 </a>
             </span>-->
-            <span ng-if="ctrl.user != null && ctrl.user.username == ctrl.song.username" style="position: relative">
+            <span ng-if="ctrl.user.username == ctrl.song.username" style="position: relative">
                 <a class="btn btn-info" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-wrench"></span> Správa písně <span class="caret"></span>
                 </a>
@@ -23,7 +23,7 @@
                     </li>
                 </ul>
             </span>
-            <span ng-if="ctrl.user != null" style="position: relative">
+            <span style="position: relative">
                 <a class="btn btn-default" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-th-list"></span> Možnosti písně <span class="caret"></span>
                 </a>

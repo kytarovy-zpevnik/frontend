@@ -1,22 +1,41 @@
 <div songbook songbook-comments>
     <div ng-if="ctrl.songbook != null">
-        <div class="pull-right">
-            <span ng-if="ctrl.user != null && ctrl.user.username == ctrl.songbook.username" style="position: relative">
-                <a class="btn btn-info" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-wrench"></span> Správa zpěvníku <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu" role="menu">
-                    <li>
-                        <a href="#/songbook/{{ctrl.songbook.id}}/edit">
-                            <span class="glyphicon glyphicon-pencil"></span> Editovat
-                        </a>
-                    </li>
-                    <li>
-                        <a data-toggle="modal" data-target="#delete">
-                            <span class="glyphicon glyphicon-trash"></span> Smazat
-                        </a>
-                    </li>
-                </ul>
+        <div class="pull-right" ng-if="ctrl.user != null">
+            <span ng-if="ctrl.user.username == ctrl.songbook.username">
+                <span style="position: relative">
+                    <a class="btn btn-info" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-wrench"></span> Správa zpěvníku <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="#/songbook/{{ctrl.songbook.id}}/edit">
+                                <span class="glyphicon glyphicon-pencil"></span> Editovat
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="modal" data-target="#delete">
+                                <span class="glyphicon glyphicon-trash"></span> Smazat
+                            </a>
+                        </li>
+                    </ul>
+                </span>
+                <span style="position: relative">
+                    <a class="btn btn-default" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-music"></span> Správa písní <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="#/song/create/songbook/{{ctrl.songbook.id}}">
+                                <span class="glyphicon glyphicon-plus"></span> Vytvořit píseň
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/songs/songbook/{{ctrl.songbook.id}}">
+                                <span class="glyphicon glyphicon-book"></span> Výběr písní
+                            </a>
+                        </li>
+                    </ul>
+                </span>
             </span>
             <span ng-if="ctrl.user != null && ctrl.user.username == ctrl.songbook.username" style="position: relative">
                 <a class="btn btn-default" data-toggle="dropdown">
@@ -26,23 +45,6 @@
                     <li>
                         <a data-toggle="modal" data-target="#tag">
                             <span class="glyphicon glyphicon-tag"></span> Soukromé tagy
-                        </a>
-                    </li>
-                </ul>
-            </span>
-            <span ng-if="ctrl.user != null && ctrl.user.username == ctrl.songbook.username" style="position: relative">
-                <a class="btn btn-default" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-music"></span> Správa písní <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu" role="menu">
-                    <li>
-                        <a href="#/song/create/songbook/{{ctrl.songbook.id}}">
-                            <span class="glyphicon glyphicon-plus"></span> Vytvořit píseň
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#/songs/songbook/{{ctrl.songbook.id}}">
-                            <span class="glyphicon glyphicon-book"></span> Výběr písní
                         </a>
                     </li>
                 </ul>
