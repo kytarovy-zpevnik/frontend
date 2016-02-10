@@ -103,7 +103,7 @@ class SongbooksResource {
       return new Songbook(response.data['id'], response.data['name'], note: response.data['note'],
                           public: response.data['public'], songs: songs, tags: tags,
                           username: response.data['username'], rating: response.data['rating']['rating'],
-                          numOfRating: response.data['rating']['numOfRating']);
+                          numOfRating: response.data['rating']['numOfRating'], taken: response.data['taken']);
     });
   }
 
@@ -159,6 +159,15 @@ class SongbooksResource {
     return _api.post('songbooks/' + songbookId.toString()  + "/sharing", data: {
         'user': userId
     }).then((HttpResponse response) {
+      return new Future.value(response.data['id']);
+    });
+  }
+
+  /**
+   * Enables active user tagging songbook owned by someone else.
+   */
+  Future takeSongbook(Songbook songbook) { // bude změněno
+    return _api.post('songbooks/' + songbook.id.toString()  + "/taking").then((HttpResponse response) {
       return new Future.value(response.data['id']);
     });
   }

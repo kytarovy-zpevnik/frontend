@@ -42,7 +42,7 @@
                     <span class="glyphicon glyphicon-th-list"></span> Možnosti zpěvníku <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li ng-if="ctrl.user.username == ctrl.songbook.username">
+                    <li ng-if="ctrl.user.username == ctrl.songbook.username || ctrl.songbook.taken">
                         <a data-toggle="modal" data-target="#tag">
                             <span class="glyphicon glyphicon-tag"></span> Soukromé tagy
                         </a>
@@ -50,6 +50,11 @@
                     <li ng-if="ctrl.user.username == ctrl.songbook.username && !ctrl.songbook.public">
                         <a data-toggle="modal" data-target="#share">
                             <span class="glyphicon glyphicon-share-alt"></span> Sdílet
+                        </a>
+                    </li>
+                    <li ng-if="ctrl.user.username != ctrl.songbook.username && !ctrl.songbook.taken">
+                        <a ng-click="ctrl.takeSongbook()">
+                            <span class="glyphicon glyphicon-link"></span> Převzít zpěvník
                         </a>
                     </li>
                 </ul>

@@ -88,6 +88,14 @@ class SongbookController {
     });
   }
 
+  void takeSongbook() {
+    _songbooksResource.takeSongbook(songbook).then((_) {
+      _messageService.showSuccess('Převzato.', 'Zpěvník byl úspěšně převzat.');
+      songbook.taken = true;
+      //_router.go('song.view', {'id': song.id});
+    });
+  }
+
   void delete(){
     _songbooksResource.delete(songbook).then((_){
       _messageService.prepareSuccess('Smazáno.', 'Zpěvník byl úspěšně smazán.');
