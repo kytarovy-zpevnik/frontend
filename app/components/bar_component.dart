@@ -26,7 +26,7 @@ class BarComponent {
 
   String get username => _sessionService.session.user.username;
 
-  void read(Notification notification){
+  void readNotification(Notification notification){
     _notificationService.readNotification(notification);
   }
 

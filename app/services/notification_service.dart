@@ -37,6 +37,7 @@ class NotificationService {
 
   Future loadNotifications(){
     _notifications.clear();
+    _unread.clear();
     return _notificationsResource.readAll().then((notifications) {
       notifications.forEach((notification) {
         _notifications.add(notification);

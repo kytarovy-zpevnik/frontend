@@ -39,7 +39,7 @@
                     <a title="Upozornění" data-toggle="dropdown">Upozornění <span ng-if="cmp.unread != 0" class="badge">{{cmp.unread}} </span><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li ng-repeat="notification in cmp.notifications">
-                            <a ng-if="notification.url.isNotEmpty" href="#{{notification.url}}" ng-click="cmp.read(notification)">
+                            <a ng-if="notification.url.isNotEmpty" href="#{{notification.url}}" ng-click="cmp.readNotification(notification)">
                                 <div ng-bind-html="notification.text"></div></a>
                             <span ng-if="notification.url.isEmpty" class="no-link">{{notification.text}}</span>
                         </li>
