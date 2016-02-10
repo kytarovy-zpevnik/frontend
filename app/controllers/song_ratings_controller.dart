@@ -19,11 +19,11 @@ class SongRatingsController {
   User user;
   Song song;
   bool rated = false;
+  bool admin = false;
 
   SongRatingsController(this._sessionService, this._ratingResource, this._songsResource, this._messageService, this._routeProvider) {
     querySelector('html').classes.add('wait');
     if (_sessionService.session == null) {
-      // analogicky u dalších controllerů
       _sessionService.initialized.then((_) {
         _initialize();
       });
@@ -109,10 +109,11 @@ class SongRatingsController {
     }
   }
 
-  void deleteRating(){
+  void deleteRating(Rating rating){
     querySelector('html').classes.add('wait');
-    _ratingResource.deleteRating(song.id, newRating).then((_) {
+    if(rating.id == newRating.id)
       rated = false;
+    _ratingResource.deleteRating(song.id, rating).then((_) {
       _ratingResource.readAllRating(_routeProvider.parameters['id']).then((List<Rating> ratings){
         _processRatings(ratings);
         _messageService.showSuccess('Odstraněno.', 'Hodnocení bylo úspěšně odebráno.');

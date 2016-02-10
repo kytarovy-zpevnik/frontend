@@ -2,7 +2,14 @@
     <div ng-if="ctrl.newRating != null">
         <div class="pull-right">
             <span ng-if="ctrl.user != null">
-                <a ng-if="ctrl.user.username != ctrl.songbook.username && ctrl.rated" ng-click="ctrl.deleteRating()" class="btn btn-default">
+                <span ng-if="ctrl.user.role.slug == 'admin'">
+                    <a ng-click="ctrl.admin = !ctrl.admin" class="btn btn-default">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        <span ng-if="!ctrl.admin">Promazat hodnocení</span>
+                        <span ng-if="ctrl.admin">Ukončit mazání</span>
+                    </a>
+                </span>
+                <a ng-if="ctrl.user.username != ctrl.songbook.username && ctrl.user.role.slug != 'admin' && ctrl.rated" ng-click="ctrl.deleteRating(ctrl.newRating)" class="btn btn-default">
                     <span class="glyphicon glyphicon-trash"></span>
                     Smazat hodnocení
                 </a>
@@ -43,6 +50,9 @@
                 </div>
                 <br>
                 <p>{{rating.comment}}</p>
+                <button ng-if="ctrl.admin" type="button" class="close" ng-click="ctrl.deleteRating(rating)">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
             </div>
         </div>
     </div>
