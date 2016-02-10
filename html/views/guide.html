@@ -1,0 +1,137 @@
+<div guide>
+    <h1>Uživatelská příručka</h1>
+
+    <h3 id="public_guide">Veřejný obsah</h3>
+    <p>Nepřihlášený uživatel si může prohlížet písně a zpěvníky, které byly vlastníkem označeny
+        jako veřejné. Může si číst i jejich <a ng-click="ctrl.scrollTo('#rating_guide')">hodnocení</a> 
+        a <a ng-click="ctrl.scrollTo('#comment_guide')">komentáře</a>,
+        ale nemůže hodnocení ani komentář přidat.</p>
+
+    <h3 id="registration_guide">Registrace a přihlášení</h3>
+    <p>Aplikace kytarový zpěvník je běžná aplikace pracující na zavedených standardech.
+        Registrace a přihlášení fungují zcela intuitivně tak, jak je uživatel zvyklý například z
+        webových portálů emailových služeb.</p>
+    <h4>Zapomenuté heslo</h4>
+    <p>Při zapomenutí hesla si můžete na Váš email nechat poslat zprávu,
+        ve které bude odkaz na nastavení nového hesla.</p>
+
+    <h3 id="content_guide">Procházení obsahu</h3>
+    <p>Procházení obsahu funguje také stejným způsobem, na který je každý uživatel webových služeb zvyklý.
+        Procházet lze pouze veřejný či svůj vlastní nebo <a ng-click="ctrl.scrollTo('#taking_guide')">převzatý</a> 
+        obsah. Písně i zpěvníky je možné si zobrazit ve výpisu, kde se dají filrovat a řadit. Z tohoto výpisu
+        je pak možné se prokliknout na detail písně či zpěvníku, nebo vytvořit nový obsah. Každý přihlášený 
+        uživatel může <a ng-click="ctrl.scrollTo('#comment_guide')">okomentovat</a> libovolnou píseň či zpěvník,
+        ke kterým má přístup.</p>
+
+    <h3 id="song_guide">Písně</h3>
+    <h4>Detail písně</h4>
+    <p>Vlatník písně má možnost ji upravit či smazat, opatřit libovolným počtem soukromých tagů a přidat do zpěvníku.
+        Pokud je píseň soukromá, může ji také <a ng-click="ctrl.scrollTo('#sharing_guide')">nasdílet</a>
+        jinému uživateli. Jakýkoli jiný uživatel, který má k písni přístup, ji může
+        <a ng-click="ctrl.scrollTo('#rating_guide')">ohodnotit</a> a v případě, že ho zaujme, ji může
+        <a ng-click="ctrl.scrollTo('#taking_guide')">převzít</a>
+        či <a ng-click="ctrl.scrollTo('#copy_guide')">zkopírovat</a>.</p>
+    <h4>Tvorba a úprava písně</h4>
+    <p>Při přidávání nové písně či změně nějaké stávající má uživatel možnost nastavit její atributy
+        popsané v následujícím odstavci.
+        <ul>
+            <li>Vlastnosti jako je název, autor, album a mnohé další, včetně 
+                <a ng-click="ctrl.scrollTo('#tag_guide')">tagů</a>.
+                Těchto vlastností je využíváno při vyhledávání a filtrování písní.</li>
+            <li>Nastavení, zda je píseň veřejná (uvidí ji všichni uživatelé), nebo soukromá.</li>
+            <li>Text písně a akordy je možné přidat několika způsoby. Buď lze využít importu
+                ve formátu agama či s akordy v závorkách, nebo vložit samotný text (např. zkopírovaný
+                z jiné stránky) a k nému následně přidat v editoru akordy. Ty lze přidat nad
+                jakýkoliv znak (písmeno, mezeru, pomlčku) a je možné napsat jich více za sebou oddělené
+                 mezerami, např. „E A D E“. Tyto způsoby je možné kombinovat - když vložíte text
+                např. ve fomátu agama, můžete následně upravit pozice jednotlivých akordů v editoru.</li>
+        </ul>
+    </p>
+    <h4>Transpozice písně</h4>
+    <p>Píseň lze při zobrazení libovolně transponovat pomocí tlačítek + a -. Transponují se všechny akordy,
+        které jsou správě napsané. Toto platí pouze pro aktuální zobrazení.
+        Pro permanetní transpozici je potřeba upravit píseň samotnou, resp. její akordy.</p>
+
+    <h3 id="songbook_guide">Zpěvníky</h3>
+    <h4>Detail zpěvníku</h4>
+    <p>Vlatník zpěvníku má možnost jej upravit či smazat, opatřit libovolným počtem soukromých tagů a přidat do něj
+        písně. Pokud je zpěvník soukromý, může jej také <a ng-click="ctrl.scrollTo('#sharing_guide')">nasdílet</a>
+        jinému uživateli. Jakýkoli jiný uživatel, který má ke zpěvníku přístup, jej může
+        <a ng-click="ctrl.scrollTo('#rating_guide')">ohodnotit</a><!-- a v případě, že ho zaujme,
+        ji může <a ng-click="ctrl.scrollTo('#taking_guide')">převzít</a>
+        či <a ng-click="ctrl.scrollTo('#copy_guide')">zkopírovat</a>-->.</p>
+    <h4>Tvorba zpěvníku</h4>
+    <p>Při přidávání nového zpěvníku či změně nějakého stávajícího má uživatel možnost nastavit jeho atributy
+        popsané v následujícím odstavci.
+        <ul>
+            <li>Název zpěvníku a <a ng-click="ctrl.scrollTo('#tag_guide')">tagy</a>.
+                Těchto vlastností je využíváno při vyhledávání a filtrování písní.</li>
+            <li>Nastavení, zda je zpěvník veřejný (uvidí ho všichni uživatelé), nebo soukromý.</li>
+        </ul>
+    </p>
+    <h4>Řazení písní do zpěvníku</h4>
+    <p>Při práci s detailem zpěvníku má uživatel možnost do něj přidat libovolný počet vlastních či
+        <a ng-click="ctrl.scrollTo('#taking_guide')">převzatých</a> písní. Také je možné vytvořit píseň přímo
+        ve zpěvníku. Každou píseň lze zařadit do libovolného počtu zpěvníků.</p>
+
+    <h3 id="tag_guide">Tagy</h3>
+    <p>Základní atributy písně lze doplnit o veřejné či soukromé tagy.
+        <ul>
+            <li>Veřejné tagy se zobrazují každému, kdo má k danému obsahu přístup a může je přidávat pouze
+                vlastník. Slouží především k dospecifikování dalších vlastností, jako je žánr apod.</li>
+            <li>Soukromé tagy se zobrazí pouze uživateli, kterému patří. Může je přidat vlastník nebo uživatel,
+                který daný obsah <a ng-click="ctrl.scrollTo('#taking_guide')">převzal</a>.
+                Je možné je využít k jakémukoli soukromému označení obsahu.</li>
+        </ul>
+    </p>
+
+    <h3 id="sharing_guide">Sdílení</h3>
+    <p>Uživatel se může rozhodnout sdílet svůj soukromý obsah s jiným uživatelem.
+        Pro tohoto uživatele se pak bude takto sdílená píseň či zpěvník chovat, jako by se jednalo o veřejný obsah.
+        Cílový uživatel je o sdílení informován pomocí <a href="#/guide#notification_guide">notifikace</a>.</p>
+
+    <h3 id="taking_guide">Převzetí</h3>
+    <p>Jakýkoli veřejný či <a ng-click="ctrl.scrollTo('#sharing_guide')">nasdílený obsah</a> je možné převzít.
+        Tato funkce umožňuje uživateli, který obsah převzal, opatřovat jej vlastními soukromými
+        <a ng-click="ctrl.scrollTo('#tag_guide')">tagy</a> a v případě písní také řadit do vlastních zpěvníků.
+        Nemá však žádnou kontrolu nad obsahem převzaté písně či zpěvníku. Vlastník je o převzetí informován pomocí
+        <a ng-click="ctrl.scrollTo('#notification_guide')">notifikace</a>.</p>
+
+    <h3 id="copy_guide">Kopírování</h3>
+    <p>Jakýkoli veřejný, <a ng-click="ctrl.scrollTo('#sharing_guide')">nasdílený</a> či už
+        <a ng-click="ctrl.scrollTo('#taking_guide')">převzatý</a> obsah je možné zkopírovat. Tím se vytvoří nová 
+        kopie dané písně či zpěvníku se stejnými základními atributy. Pokud uživatel zkopíruje obsah, který předtím
+        převzal, převzetí se zruší a zkopírují se také soukromé <a ng-click="ctrl.scrollTo('#tag_guide')">tagy</a>
+        tohoto uživatele a v případě písní i příslušnost k jeho zpěvníkům. Se zkopírovaným obsahem uživatel zachází
+        stejně, jako s vlastním. Vlastník je o vytvoření kopie informován pomocí
+        <a ng-click="ctrl.scrollTo('#notification_guide')">notifikace</a>.</p>
+
+    <h3 id="comment_guide">Komentáře</h3>
+    <p>Každou píseň a zpěvník, ke kterým má uživatel přístup, lze komentovat. Komentář lze upravit či smazat.
+        Administrátor může komentář pro nevhodnost odstranit. Vlastník je o novém komentáři informován pomocí
+        <a ng-click="ctrl.scrollTo('#notification_guide')">notifikace</a>.</p>
+
+    <h3 id="rating_guide">Hodnocení</h3>
+    <p>Každou píseň a zpěvník, ke kterým má uživatel přístup, lze hodnotit. Hodnotí se počtem hvězdiček (1-5)
+        a slovním komentářem. Hodnotit lze pouze jednou, je však možné své hodnocení upravit či smazat. Nelze
+        hodnotit vlastní obsah. Administrátor může hodnocení pro nevhodnost komentáře odstranit. Vlastník je o novém
+        hodnocení informován pomocí <a ng-click="ctrl.scrollTo('#notification_guide')">notifikace</a>.</p>
+
+    <h3 id="wish_guide">Přání</h3>
+    <p>Uživatel si müže do svého seznamu přání přidávat záznamy o písních, které by si rád zařadil do zpěvníku,
+        ale ještě nejsou v databázi. Při vzniku cizí veřejné písně, která se shoduje s jeho požadavky, je uživatel 
+        informován pomocí <a ng-click="ctrl.scrollTo('#notification_guide')">notifikace</a> a následně může tuto
+        píseň <a ng-click="ctrl.scrollTo('#taking_guide')">převzít</a>
+        či <a ng-click="ctrl.scrollTo('#copy_guide')">zkopírovat</a>.
+        Přání zůstává aktivní, dokud jej uživatel nasmaže.</p>
+
+    <h3 id="notification_guide">Upozornění</h3>
+    <p>Při každé akci, která se daného uživatele týká, je uživatel informován upozorněním. Všechna nepřečtená
+        upozornění se zobrazují na hlavní liště. Upozornění se považují za nepřečtená, dokud je uživatel neproklikne
+        nebo je všechná neoznačí jako přečtená.</p>
+
+    <!--<h3>Export a Import písní</h3>
+    <p>Každou uživateli přístupnou píseň lze exportovat ve formátu agama.
+    Každou píseň ve formátu agama lze naimportovat jako vlastní píseň.</p>-->
+
+</div>

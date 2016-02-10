@@ -117,6 +117,9 @@ class Routes {
         'notifications': appRoute(
             path: '/notifications',
             view: 'html/views/notifications.html'),
+        'userGuide': appRoute(
+            path: '/guide',
+            view: 'html/views/guide.html'),
         'homepage': appRoute(
             defaultRoute: true,
             path: '/',

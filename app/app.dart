@@ -36,6 +36,7 @@ part 'controllers/songs_controller.dart';
 part 'controllers/user_controller.dart';
 part 'controllers/wish_controller.dart';
 part 'controllers/wishes_controller.dart';
+part 'controllers/guide_controller.dart';
 
 part 'models/api_error.dart';
 part 'models/comment.dart';
@@ -104,6 +105,7 @@ class AppModule extends Module {
     bind(UserController);
     bind(WishController);
     bind(WishesController);
+    bind(GuideController);
 
     bind(NotificationsResource);
     bind(ResetPasswordResource);
