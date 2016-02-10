@@ -62,40 +62,6 @@ class UserResource {
     });
   }
 
-  /**
-   * Reads all shared songbooks.
-   */
-  Future<List<Songbook>> readAllSharedSongbooks(int userId) {
-    return _api.get('users/' + userId.toString() + '/sharing?subject=songbook').then((HttpResponse response) {
-      var songbooks = response.data.map((data) {
-        var tags = [];
-        for (int i = 0; i < data['tags'].length; i++) {
-          tags.add(new SongbookTag(data['tags'][i]['tag'], data['tags'][i]['public']));
-        }
-        return new Songbook(data['id'], data['name'], note: data['note'], public: data['public'], username: data['username'], tags: tags, numberOfSongs: data['songs']);
-      });
-
-      return new Future.value(songbooks);
-    });
-  }
-
-  /**
-   * Reads all shared songs.
-   */
-  Future<List<Song>> readAllSharedSongs(int userId) {
-    return _api.get('users/' + userId.toString() + '/sharing?subject=song').then((HttpResponse response) {
-      var songs = response.data.map((data) {
-        var tags = [];
-        for (var i = 0; i < data['tags'].length; i++) {
-          tags.add(new SongTag(data['tags'][i]['tag'], data['tags'][i]['public']));
-        }
-        return new Song(data['title'], data['album'], data['author'], data['year'], data['public'], id: data['id'], username: data['username'], tags: tags);
-      });
-
-      return new Future.value(songs);
-    });
-  }
-
 }
 
 
