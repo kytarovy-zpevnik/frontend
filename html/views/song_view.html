@@ -172,6 +172,10 @@
         </div>
 
         <h1>{{ctrl.song.title}}</h1>
+        <div ng-if="ctrl.song.archived" class="alert alert-warning">
+            <strong>Tato píseň byla smazána.</strong>
+            Pokud ji chcete nadále používat, můžete si ji zkopírovat.
+        </div>
         <div class="pull-right">
             <div id="transpose" class="form-inline">
                 <span>

@@ -129,6 +129,10 @@
         </div>
 
         <h1>{{ctrl.songbook.name}}</h1>
+        <div ng-if="ctrl.songbook.archived" class="alert alert-warning">
+            <strong>Tento zpěvník byl smazán.</strong>
+            Pokud ho chcete nadále používat, můžete si jej zkopírovat.
+        </div>
         <div class="meta">
             <span ng-if="ctrl.user != null && ctrl.songbook.username == ctrl.user.username"><b>Váš vlastní </b></span>
             <span ng-if="ctrl.user == null || ctrl.songbook.username != ctrl.user.username"><b>Cizí </b></span>
