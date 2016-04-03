@@ -111,8 +111,9 @@ class SongsResource {
                       response.data['public'], originalAuthor: response.data['originalAuthor'], note: response.data['note'],
                       lyrics: response.data['lyrics'], chords: chords, id: response.data['id'],
                       username: response.data['username'], songbooks: songbooks,
-                      tags: tags, rating: response.data['rating']['rating'],
-                      numOfRating: response.data['rating']['numOfRating'], taken: response.data['taken']);
+                      tags: tags, archived: response.data['archived'], rating: response.data['rating']['rating'],
+                      numOfRating: response.data['rating']['numOfRating'],
+                      taken: response.data['taking']['taken'], copy: response.data['taking']['copy']);
     });
   }
 

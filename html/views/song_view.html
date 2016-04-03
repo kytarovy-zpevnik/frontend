@@ -176,6 +176,10 @@
             <strong>Tato píseň byla smazána.</strong>
             Pokud ji chcete nadále používat, můžete si ji zkopírovat.
         </div>
+        <div ng-if="ctrl.song.copy" class="alert alert-warning">
+            <strong>Píseň byla od Vaší poslední návštěvy upravena.</strong>
+            Můžete si zobrazit <a href="#/song/{{ctrl.song.id}}/old">předchozí verzi</a>, nebo <a ng-click="">ponechat tuto</a>.
+        </div>
         <div class="pull-right">
             <div id="transpose" class="form-inline">
                 <span>

@@ -18,6 +18,7 @@ class Song {
   int numOfRating = 0;
   int posInSongbook;
   bool taken = false;
+  int copy = null;
 
   String lyrics;
   Map<int, String> chords;
@@ -89,7 +90,7 @@ class Song {
 
   Song(this.title, this.album, this.author, this.year, this.public,
        {this.originalAuthor, this.note, this.username, this.id, this.lyrics: '', this.chords, this.songbooks,
-       tags, this.archived, this.rating, this.taken, this.numOfRating, this.posInSongbook}) {
+       tags, this.archived, this.rating, this.taken, this.copy, this.numOfRating, this.posInSongbook}) {
     this.tags = tags;
     if (chords == null) chords = {};
     if (songbooks == null) songbooks = [];
