@@ -483,12 +483,19 @@ class SongController {
     });
   }
 
-  void takeSong() {
-    _songsResource.takeSong(song).then((_) {
-      _messageService.showSuccess('Převzato.', 'Píseň byla úspěšně převzata.');
-      song.taken = true;
-      //_router.go('song.view', {'id': song.id});
-    });
+  void taking() {
+    if (song.taken) {
+      _songsResource.untakeSong(song).then((_) {
+        _messageService.showSuccess('Zrušeno.', 'Píseň byla úspěšně odebrána ze seznamu převzatých.');
+        song.taken = false;
+      });
+    }
+    else {
+      _songsResource.takeSong(song).then((_) {
+        _messageService.showSuccess('Převzato.', 'Píseň byla úspěšně převzata.');
+        song.taken = true;
+      });
+    }
   }
 
   void delete(){

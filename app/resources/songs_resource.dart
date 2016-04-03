@@ -220,10 +220,17 @@ class SongsResource {
   /**
    * Enables active user tagging song owned by someone else and adding it to own songbooks.
    */
-  Future takeSong(Song song) { // bude změněno
+  Future takeSong(Song song) {
     return _api.post('songs/' + song.id.toString()  + "/taking").then((HttpResponse response) {
       return new Future.value(response.data['id']);
     });
+  }
+
+  /**
+   * Cancel taking made by takeSong method
+   */
+  Future untakeSong(Song song) {
+    return _api.delete('songs/' + song.id.toString()  + "/taking");
   }
 
   /**

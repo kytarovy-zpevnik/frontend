@@ -95,12 +95,19 @@ class SongbookController {
     });
   }
 
-  void takeSongbook() {
-    _songbooksResource.takeSongbook(songbook).then((_) {
-      _messageService.showSuccess('Převzato.', 'Zpěvník byl úspěšně převzat.');
-      songbook.taken = true;
-      //_router.go('song.view', {'id': song.id});
-    });
+  void taking() {
+    if (songbook.taken) {
+      _songbooksResource.untakeSongbook(songbook).then((_) {
+        _messageService.showSuccess('Zrušeno.', 'Zpěvník byl úspěšně odebrán ze seznamu převzatých.');
+        songbook.taken = false;
+      });
+    }
+    else {
+      _songbooksResource.takeSongbook(songbook).then((_) {
+        _messageService.showSuccess('Převzato.', 'Zpěvník byl úspěšně převzat.');
+        songbook.taken = true;
+      });
+    }
   }
 
   void delete(){

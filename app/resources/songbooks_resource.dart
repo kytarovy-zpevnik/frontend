@@ -181,6 +181,13 @@ class SongbooksResource {
   }
 
   /**
+   * Cancel taking made by takeSongbook method
+   */
+  Future untakeSongbook(Songbook songbook) {
+    return _api.delete('songbooks/' + songbook.id.toString()  + "/taking");
+  }
+
+  /**
    * Sets empty values to null.
    */
   void _normalize(Songbook songbook) {

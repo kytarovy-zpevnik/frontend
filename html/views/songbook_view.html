@@ -52,9 +52,11 @@
                             <span class="glyphicon glyphicon-share-alt"></span> Sdílet
                         </a>
                     </li>
-                    <li ng-if="ctrl.user.username != ctrl.songbook.username && !ctrl.songbook.taken">
-                        <a ng-click="ctrl.takeSongbook()">
-                            <span class="glyphicon glyphicon-link"></span> Převzít zpěvník
+                    <li ng-if="ctrl.user.username != ctrl.songbook.username">
+                        <a ng-click="ctrl.taking()">
+                            <span class="glyphicon glyphicon-link"></span>
+                            <span ng-if="!ctrl.songbook.taken"> Převzít zpěvník</span>
+                            <span ng-if="ctrl.songbook.taken"> Zrušit převzetí</span>
                         </a>
                     </li>
                     <li ng-if="ctrl.user.username != ctrl.songbook.username">
