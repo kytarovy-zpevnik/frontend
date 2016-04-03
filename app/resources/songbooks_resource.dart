@@ -156,8 +156,7 @@ class SongbooksResource {
    * Deletes songbook by id.
    */
   Future delete(Songbook songbook) {
-    return _api.delete('songbooks/' + songbook.id.toString()).then((_){
-    });
+    return _api.delete('songbooks/' + songbook.id.toString());
   }
 
   /**

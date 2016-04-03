@@ -101,9 +101,6 @@ class Routes {
                     view: 'html/views/set_new_password.html')
             }),
 
-        'admin': appRoute(
-            path: '/admin',
-            view: 'html/views/admin.html'),
         'admin-songs': appRoute(
             path: '/admin-songs',
             view: 'html/views/songs_admin.html'),
