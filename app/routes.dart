@@ -43,6 +43,9 @@ class Routes {
                 'view': appRoute(
                     path: '/view',
                     view: 'html/views/song_view.html'),
+                'old': appRoute(
+                    path: '/old',
+                    view: 'html/views/song_view.html'),
                 'edit': appRoute(
                     path: '/edit',
                     view: 'html/views/song_edit.html'),

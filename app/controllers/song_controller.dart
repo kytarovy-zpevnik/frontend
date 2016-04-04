@@ -432,6 +432,13 @@ class SongController {
     });
   }
 
+  void discardCopy(){
+    _songsResource.update(song, 'copy').then((_){
+      song.copy = null;
+      _messageService.showSuccess('Uloženo','Nadále sledujete aktuální verzi písně.');
+    });
+  }
+
   void save() {
     if (create) {
       _songsResource.create(song).then((_) {
