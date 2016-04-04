@@ -42,7 +42,7 @@
                     <span class="glyphicon glyphicon-th-list"></span> Možnosti zpěvníku <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li ng-if="ctrl.user.username == ctrl.songbook.username || ctrl.songbook.taken">
+                    <li ng-if="(ctrl.user.username == ctrl.songbook.username || ctrl.songbook.taken) && !ctrl.songbook.archived">
                         <a data-toggle="modal" data-target="#tag">
                             <span class="glyphicon glyphicon-tag"></span> Soukromé tagy
                         </a>
