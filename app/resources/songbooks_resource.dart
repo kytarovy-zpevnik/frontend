@@ -27,7 +27,12 @@ class SongbooksResource {
       });
     });
 
-    return _api.post('songbooks', data: {
+    var params = {};
+    if(copy){
+      params = {'takenFrom': songbook.id};
+    }
+
+    return _api.post('songbooks', params: params, data: {
         'name': songbook.name,
         'note': songbook.note,
         'public': songbook.public,
