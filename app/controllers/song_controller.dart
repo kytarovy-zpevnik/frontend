@@ -134,7 +134,7 @@ class SongController {
 
     } else {
 
-      _songsResource.read(_routeProvider.parameters['id']).then((Song song) {
+      _songsResource.read(_routeProvider.parameters['id'], old: (_routeProvider.routeName == "old")).then((Song song) {
         this.song = song;
         computeLyrics();
         if(this.user != null){
@@ -433,9 +433,11 @@ class SongController {
   }
 
   void discardCopy(){
-    _songsResource.update(song, 'copy').then((_){
+    _songsResource.discardCopy(song).then((_){
       song.copy = null;
-      _messageService.showSuccess('Uloženo','Nadále sledujete aktuální verzi písně.');
+      song.old = false;
+      _messageService.prepareSuccess('Uloženo.', 'Nadále sledujete aktuální verzi písně.');
+      _router.go('song.view', {'id': song.id});
     });
   }
 

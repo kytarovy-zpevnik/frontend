@@ -92,8 +92,12 @@ class SongsResource {
   /**
    * Reads song by id.
    */
-  Future<Song> read(int id) {
-    return _api.get('songs/' + id.toString()).then((HttpResponse response) {
+  Future<Song> read(int id, {bool old}) {
+    var params = {};
+    if(old){
+      params = {'old': old};
+    }
+    return _api.get('songs/' + id.toString(), params: params).then((HttpResponse response) {
       var chords = JSON.decode(response.data['chords']);
       if (chords == null) {
         chords = {
@@ -112,7 +116,7 @@ class SongsResource {
                       lyrics: response.data['lyrics'], chords: chords, id: response.data['id'],
                       username: response.data['username'], songbooks: songbooks,
                       tags: tags, archived: response.data['archived'], rating: response.data['rating']['rating'],
-                      numOfRating: response.data['rating']['numOfRating'],
+                      numOfRating: response.data['rating']['numOfRating'], old: old,
                       taken: response.data['taking']['taken'], copy: response.data['taking']['copy']);
     });
   }
@@ -231,6 +235,13 @@ class SongsResource {
    */
   Future untakeSong(Song song) {
     return _api.delete('songs/' + song.id.toString()  + "/taking");
+  }
+
+  /**
+   * Discard copy made when owner updated taken song
+   */
+  Future discardCopy(Song song) {
+    return _api.put('songs/' + song.id.toString()  + "/taking");
   }
 
   /**
