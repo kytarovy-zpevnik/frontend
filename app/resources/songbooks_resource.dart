@@ -47,7 +47,7 @@ class SongbooksResource {
   /**
    * Reads all songbooks.
    */
-  Future<List<Songbook>> readAll({bool public, bool admin, bool random, String search, Map<String, String> filters}) {
+  Future<List<Songbook>> readAll({bool public, bool admin, bool random, String search, Map<String, String> filters, bool justOwned}) {
     Map params = {};
     if (public != null) {
       params = {'public': public};
@@ -64,6 +64,10 @@ class SongbooksResource {
     }
     else if (filters != null) {
       params.addAll(filters);
+    }
+
+    if (justOwned != null) {
+      params.addAll({'justOwned': justOwned});
     }
 
     return _api.get('songbooks', params: params).then((HttpResponse response) {
