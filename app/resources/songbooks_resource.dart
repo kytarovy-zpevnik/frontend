@@ -171,9 +171,9 @@ class SongbooksResource {
   /**
    * Enables given user access to private songbook.
    */
-  Future shareSongbook(int songbookId, int userId) {
+  Future shareSongbook(int songbookId, String user) {
     return _api.post('songbooks/' + songbookId.toString()  + "/sharing", data: {
-        'user': userId
+        'user': user
     }).then((HttpResponse response) {
       return new Future.value(response.data['id']);
     });

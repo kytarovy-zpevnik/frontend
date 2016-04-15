@@ -466,19 +466,14 @@ class SongController {
   }
 
   void share(){
-    _userResource.read(targetUser).then((User user){
-      _songsResource.shareSong(song.id, user.id).then((_) {
-        _messageService.showSuccess('Uloženo.', 'Píseň byla úspěšně nasdílena.');
-      }).catchError((ApiError e) {
-        switch (e.error) {
-          case 'DUPLICATE_SHARING':
-            _messageService.showError('Opakované sdílení.', 'S tímto uživatelem píseň ' + song.title + ' již sdílíte.');
-            break;
-        }
-      });
+    _songsResource.shareSong(song.id, targetUser).then((_) {
+      _messageService.showSuccess('Uloženo.', 'Píseň byla úspěšně nasdílena.');
     }).catchError((ApiError e) {
       switch (e.error) {
-        case 'UNKNOWN_IDENTIFIER':
+        case 'DUPLICATE_SHARING':
+          _messageService.showError('Opakované sdílení.', 'S tímto uživatelem píseň ' + song.title + ' již sdílíte.');
+          break;
+        case 'UNKNOWN_USER':
           _messageService.showError('Neznámý uživatel.', 'Bohužel neznáme žádného uživatele, který by měl zadané uživatelské jméno.');
           break;
       }

@@ -213,9 +213,9 @@ class SongsResource {
   /**
    * Enables given user access to private song.
    */
-  Future shareSong(int songId, int userId) {
+  Future shareSong(int songId, String user) {
     return _api.post('songs/' + songId.toString()  + "/sharing", data: {
-        'user': userId
+        'user': user
     }).then((HttpResponse response) {
       return new Future.value(response.data['id']);
     });
