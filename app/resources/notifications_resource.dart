@@ -35,6 +35,23 @@ class NotificationsResource {
   }
 
   /**
+   * Deletes all given notifications.
+   */
+  Future deleteAll(List notifications) {
+    var ids = [];
+    notifications.forEach((notification) {
+      ids.add({
+          'id': notification.id
+      });
+    });
+
+    return _api.delete('notifications', data: {
+        'notifications': ids
+    });
+
+  }
+
+  /**
    * Marks given notification as read.
    */
   Future update(Notification notification, bool read) {

@@ -64,4 +64,13 @@ class NotificationService {
     });
   }
 
+  Future deleteNotifications(List notifications) {
+    _notificationsResource.deleteAll(notifications).then((_) {
+      notifications.forEach((Notification notification){
+        this.notifications.remove(notification);
+        this._unread.remove(notification);
+      });
+    });
+  }
+
 }
