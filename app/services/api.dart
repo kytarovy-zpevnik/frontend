@@ -42,12 +42,25 @@ class Api {
    */
   Future delete(String resource, {
     Map<String, dynamic> data, Map<String, dynamic> params, Map<String, dynamic> headers
-  }) => _http.delete(_getResourceUrl(resource), data: JSON.encode(data), params: params, headers: _addSessionTokenHeader(headers)).then(_success).catchError(_error);
+  }) => _http.delete(_getResourceUrl(resource), data: JSON.encode(data), params: params, headers: _addContentTypeHeader(_addSessionTokenHeader(headers))).then(_success).catchError(_error);
 
   /**
    * Returns resource's url.
    */
   String _getResourceUrl(String resource) => _apiHost.apiHost + '/' + resource;
+
+  /**
+   * Adds content type to headers.
+   */
+  Map<String, dynamic> _addContentTypeHeader(Map<String, dynamic> headers) {
+    if (headers == null) {
+      headers = {};
+    }
+
+    headers['Content-Type'] = 'application/json;charset=utf-8';
+
+    return headers;
+  }
 
   /**
    * Adds session token to headers.
