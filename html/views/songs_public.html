@@ -30,43 +30,44 @@
             </tbody>
             <thead>
             <tr>
-                <th><a ng-click="ctrl.sortBy('title')">
+                <th class="col-md-2"><a ng-click="ctrl.sortBy('title')">
                         <span ng-if="ctrl.sort == 'title'">
                             <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
                             <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
                         </span>
                     Název
                 </a></th>
-                <th><a ng-click="ctrl.sortBy('author')">
+                <th class="col-md-2"><a ng-click="ctrl.sortBy('author')">
                         <span ng-if="ctrl.sort == 'author'">
                             <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
                             <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
                         </span>
                     Autor
                 </a></th>
-                <th><a ng-click="ctrl.sortBy('album')">
+                <th class="col-md-2"><a ng-click="ctrl.sortBy('album')">
                         <span ng-if="ctrl.sort == 'album'">
                             <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
                             <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
                         </span>
                     Album
                 </a></th>
-                <th><a ng-click="ctrl.sortBy('year')">
+                <th class="col-md-1"><a ng-click="ctrl.sortBy('year')">
                         <span ng-if="ctrl.sort == 'year'">
                             <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
                             <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
                         </span>
                     Rok
                 </a></th>
-                <th><a ng-click="ctrl.sortBy('owner')">
+                <th class="col-md-1"><a ng-click="ctrl.sortBy('owner')">
                         <span ng-if="ctrl.sort == 'owner'">
                             <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
                             <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
                         </span>
                     Vlastník
                 </a></th>
-                <th>Tagy</th>
-                <th>Průměrné hodnocení</th>
+                <th class="col-md-2">Tagy</th>
+                <th class="col-md-2">Průměrné hodnocení</th>
+                <th class="col-md-1"></th>
             </tr>
             </thead>
         </table>
