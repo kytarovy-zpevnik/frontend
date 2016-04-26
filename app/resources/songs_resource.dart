@@ -72,7 +72,7 @@ class SongsResource {
       var songs = response.data.map((data) {
         var tags = [];
         for (var i = 0; i < data['tags'].length; i++) {
-          tags.add(new SongTag(data['tags'][i]['tag'], data['tags'][i]['public']));
+          tags.add(new Tag(data['tags'][i]['tag'], data['tags'][i]['public']));
         }
         return new Song(data['title'], data['album'], data['author'], data['year'],
                         data['public'], id: data['id'], username: data['username'],
@@ -104,7 +104,7 @@ class SongsResource {
       }
       var tags = [];
       for (var i = 0; i < response.data['tags'].length; i++) {
-        tags.add(new SongTag(response.data['tags'][i]['tag'], response.data['tags'][i]['public']));
+        tags.add(new Tag(response.data['tags'][i]['tag'], response.data['tags'][i]['public']));
       }
       return new Song(response.data['title'], response.data['album'], response.data['author'], response.data['year'],
                       response.data['public'], originalAuthor: response.data['originalAuthor'], note: response.data['note'],

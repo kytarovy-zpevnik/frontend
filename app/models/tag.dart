@@ -1,13 +1,13 @@
 part of app;
 
 /**
- * SongTag model.
+ * Tag model.
  */
-class SongTag {
+class Tag {
   String tag;
   bool public;
 
-  SongTag(this.tag, this.public) {
+  Tag(this.tag, this.public) {
   }
 
   toString() => tag;

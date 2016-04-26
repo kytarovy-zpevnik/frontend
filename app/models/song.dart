@@ -29,22 +29,22 @@ class Song {
   String tagsStr = '';
   String privateTagsStr = '';
 
-  List<SongTag> get tags {
+  List<Tag> get tags {
     var songTags = [];
     if(tagsStr != ''){
       tagsStr.split(",").forEach((tag) {
-        songTags.add(new SongTag(tag.trim(), true));
+        songTags.add(new Tag(tag.trim(), true));
       });
     }
     if(privateTagsStr != ''){
       privateTagsStr.split(",").forEach((tag) {
-        songTags.add(new SongTag(tag.trim(), false));
+        songTags.add(new Tag(tag.trim(), false));
       });
     }
     return songTags;
   }
 
-  set tags(List<SongTag> tags){
+  set tags(List<Tag> tags){
     tagsStr = '';
     privateTagsStr = '';
     if(tags != null) {

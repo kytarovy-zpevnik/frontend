@@ -70,7 +70,7 @@ class SongbooksResource {
       var songbooks = response.data.map((data) {
         var tags = [];
         for (var i = 0; i < data['tags'].length; i++) {
-          tags.add(new SongbookTag(data['tags'][i]['tag'], data['tags'][i]['public']));
+          tags.add(new Tag(data['tags'][i]['tag'], data['tags'][i]['public']));
         }
         return new Songbook(data['id'], data['name'], note: data['note'], public: data['public'],
                             username: data['username'], tags: tags, archived: data['archived'],
@@ -89,14 +89,14 @@ class SongbooksResource {
     return _api.get('songbooks/' + id.toString()).then((HttpResponse response) {
       var tags = [];
       for (var i = 0; i < response.data['tags'].length; i++) {
-        tags.add(new SongbookTag(response.data['tags'][i]['tag'], response.data['tags'][i]['public']));
+        tags.add(new Tag(response.data['tags'][i]['tag'], response.data['tags'][i]['public']));
       }
 
       var songs = [];
       for(var j = 0; j < response.data['songs'].length; j++) {
         var songTags = [];
         for (var i = 0; i < response.data['songs'][j]['tags'].length; i++) {
-          songTags.add(new SongTag(response.data['songs'][j]['tags'][i]['tag'], response.data['songs'][j]['tags'][i]['public']));
+          songTags.add(new Tag(response.data['songs'][j]['tags'][i]['tag'], response.data['songs'][j]['tags'][i]['public']));
         }
         songs.add(new Song(response.data['songs'][j]['title'], response.data['songs'][j]['album'],
                           response.data['songs'][j]['author'], response.data['songs'][j]['year'],

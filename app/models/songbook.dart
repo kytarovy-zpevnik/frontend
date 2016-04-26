@@ -18,22 +18,22 @@ class Songbook {
   int numberOfSongs = 0;
   bool taken = false;
 
-  List<SongbookTag> get tags {
+  List<Tag> get tags {
     var songbookTags = [];
     if(tagsStr != ''){
       tagsStr.split(",").forEach((tag) {
-        songbookTags.add(new SongbookTag(tag.trim(), true));
+        songbookTags.add(new Tag(tag.trim(), true));
       });
     }
     if(privateTagsStr != ''){
       privateTagsStr.split(",").forEach((tag) {
-        songbookTags.add(new SongbookTag(tag.trim(), false));
+        songbookTags.add(new Tag(tag.trim(), false));
       });
     }
     return songbookTags;
   }
 
-  set tags(List<SongbookTag> tags){
+  set tags(List<Tag> tags){
     tagsStr = '';
     privateTagsStr = '';
     if(tags != null) {
