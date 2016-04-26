@@ -38,6 +38,7 @@ part 'controllers/guide_controller.dart';
 
 part 'models/api_error.dart';
 part 'models/comment.dart';
+part 'models/filters.dart';
 part 'models/message.dart';
 part 'models/notification.dart';
 part 'models/rating.dart';

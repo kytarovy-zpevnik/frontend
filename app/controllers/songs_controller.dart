@@ -16,6 +16,7 @@ class SongsController {
   String get search => _search;
   bool advSearchVisible = false;
   Map<String, String> filters = {};
+  Filters filters;
 
   bool loaded = false;
   Songbook songbook = null;
@@ -52,6 +53,7 @@ class SongsController {
     this.songs.clear();
     this.visibleSongs.clear();
     var user = _sessionService.session.user;
+    filters = new Filters();
 
     loadSongs().then((_){
       if (_routeProvider.parameters.containsKey('songbookId')) {
@@ -70,7 +72,7 @@ class SongsController {
 
   Future loadSongs() {
     querySelector('html').classes.add('wait');
-    return _songsResource.readAll(songs.length, sort, revert ? 'desc' : 'asc').then((List<Song> songs) {
+    return _songsResource.readAll(songs.length, sort, revert ? 'desc' : 'asc', filters: filters.filters).then((List<Song> songs) {
       _processSongs(songs);
       if(songs.length != 20)
         existsNext = false;
@@ -86,6 +88,13 @@ class SongsController {
       this.sort = sort;
       revert = false;
     }
+    this.songs.clear();
+    this.visibleSongs.clear();
+    existsNext = true;
+    loadSongs();
+  }
+
+  void advancedSearch() {
     this.songs.clear();
     this.visibleSongs.clear();
     existsNext = true;

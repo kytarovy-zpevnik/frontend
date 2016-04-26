@@ -69,6 +69,37 @@
                 <th class="col-md-2">Průměrné hodnocení</th>
                 <th class="col-md-1"></th>
             </tr>
+            <tr>
+                <th class="col-md-2">
+                    <label for="input-title" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-title" ng-model="ctrl.filters.title">
+                </th>
+                <th class="col-md-2">
+                    <label for="input-author" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-author" ng-model="ctrl.filters.author">
+                </th>
+                <th class="col-md-2">
+                    <label for="input-album" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-album" ng-model="ctrl.filters.album">
+                </th>
+                <th class="col-md-1">
+                    <label for="input-year" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-year" ng-model="ctrl.filters.year">
+                </th>
+                <th class="col-md-1">
+                    <label for="input-owner" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-owner" ng-model="ctrl.filters.owner">
+                </th>
+                <th class="col-md-2">
+                    <label for="input-tag" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-tag" ng-model="ctrl.filters.tag">
+                </th>
+                <th class="col-md-2">
+                </th>
+                <th class="col-md-1">
+                    <button class="btn btn-default" ng-click="ctrl.advancedSearch()"><span class="glyphicon glyphicon-search"></span></button>
+                </th>
+            </tr>
             </thead>
         </table>
         <div ng-if="ctrl.existsNext && !ctrl.songs.isEmpty" class="centerButton">

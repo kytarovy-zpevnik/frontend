@@ -13,6 +13,7 @@ class PublicSongsController {
   String get search => _search;
   bool advSearchVisible = false;
   Map<String, String> filters = {};
+  Filters filters;
 
   bool loaded = false;
 
@@ -36,6 +37,7 @@ class PublicSongsController {
   PublicSongsController(this._sessionService, this._songsResource, this._messageService) {
     this.songs.clear();
     this.visibleSongs.clear();
+    filters = new Filters();
 
     loadSongs().then((_){
       loaded = true;
@@ -44,7 +46,7 @@ class PublicSongsController {
 
   Future loadSongs() {
     querySelector('html').classes.add('wait');
-    return _songsResource.readAll(songs.length, sort, revert ? 'desc' : 'asc', public: true).then((List<Song> songs) {
+    return _songsResource.readAll(songs.length, sort, revert ? 'desc' : 'asc', public: true, filters: filters.filters).then((List<Song> songs) {
       _processSongs(songs);
       if(songs.length != 20)
         existsNext = false;
@@ -60,6 +62,13 @@ class PublicSongsController {
       this.sort = sort;
       revert = false;
     }
+    this.songs.clear();
+    this.visibleSongs.clear();
+    existsNext = true;
+    loadSongs();
+  }
+
+  void advancedSearch() {
     this.songs.clear();
     this.visibleSongs.clear();
     existsNext = true;
