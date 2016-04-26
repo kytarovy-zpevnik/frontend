@@ -27,12 +27,7 @@ class SongsResource {
       });
     });
 
-    var params = {};
-    if(copy){
-      params = {'takenFrom': song.id};
-    }
-
-    return _api.post('songs', params: params, data: {
+    return _api.post('songs', data: {
         'title': song.title,
         'album': song.album,
         'author': song.author,
@@ -46,7 +41,6 @@ class SongsResource {
         'tags': tags
     }).then((HttpResponse response) {
       song.id = response.data['id'];
-      print(song.id);
       return new Future.value(song);
     });
   }
@@ -218,6 +212,16 @@ class SongsResource {
         'user': user
     }).then((HttpResponse response) {
       return new Future.value(response.data['id']);
+    });
+  }
+
+  /**
+   * Creates new song as a copy of given song.
+   * */
+  Future copySong(Song song) {
+    return _api.post('songs/' + song.id.toString()  + "/copy").then((HttpResponse response) {
+      song.id = response.data['id'];
+      return new Future.value(song);
     });
   }
 

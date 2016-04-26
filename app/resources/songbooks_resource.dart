@@ -27,12 +27,7 @@ class SongbooksResource {
       });
     });
 
-    var params = {};
-    if(copy){
-      params = {'takenFrom': songbook.id};
-    }
-
-    return _api.post('songbooks', params: params, data: {
+    return _api.post('songbooks', data: {
         'name': songbook.name,
         'note': songbook.note,
         'public': songbook.public,
@@ -176,6 +171,16 @@ class SongbooksResource {
         'user': user
     }).then((HttpResponse response) {
       return new Future.value(response.data['id']);
+    });
+  }
+
+  /**
+   * Creates new songbook as a copy of given songbook.
+   * */
+  Future copySongbook(Songbook songbook) {
+    return _api.post('songbooks/' + songbook.id.toString()  + "/copy").then((HttpResponse response) {
+      songbook.id = response.data['id'];
+      return new Future.value(songbook);
     });
   }
 

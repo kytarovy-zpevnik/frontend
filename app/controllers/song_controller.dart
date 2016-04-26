@@ -481,7 +481,7 @@ class SongController {
   }
 
   void copySong() {
-    _songsResource.create(song, copy: true).then((_) {
+    _songsResource.copySong(song).then((_) {
       _messageService.prepareSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
       _router.go('song.view', {'id': song.id});
     });

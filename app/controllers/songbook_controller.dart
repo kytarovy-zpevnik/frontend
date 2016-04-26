@@ -84,7 +84,7 @@ class SongbookController {
   }
 
   void copySongbook() {
-    _songbooksResource.create(songbook, copy: true).then((_) {
+    _songbooksResource.copySongbook(songbook).then((_) {
       _messageService.prepareSuccess('Vytvořeno.', 'Nový zpěvník byl úspěšně vytvořen.');
       _router.go('songbook.view', {'id': songbook.id});
     });

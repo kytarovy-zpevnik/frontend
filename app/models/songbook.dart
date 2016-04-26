@@ -10,7 +10,7 @@ class Songbook {
   String username = '';
   bool public = false;
   bool archived = false;
-  List songs = [];
+  List<Song> songs;
   String tagsStr = '';
   String privateTagsStr = '';
   int rating = 0;
@@ -73,5 +73,6 @@ class Songbook {
   Songbook(this.id, this.name, {this.note, this.public, this.songs, this.username, tags, this.archived,
             this.rating, this.taken, this.numOfRating, this.numberOfSongs}) {
     this.tags = tags;
+    if (songs == null) songs = [];
   }
 }
