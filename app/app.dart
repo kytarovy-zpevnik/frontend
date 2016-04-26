@@ -11,7 +11,6 @@ import 'dart:js' as js;
 part 'components/bar_component.dart';
 part 'components/chord_position.dart';
 part 'components/messages_component.dart';
-part 'components/song_search.dart';
 
 part 'controllers/admin_songbooks_controller.dart';
 part 'controllers/admin_songs_controller.dart';
@@ -56,10 +55,8 @@ part 'resources/reset_password_resource.dart';
 part 'resources/session_resource.dart';
 part 'resources/song_comments_resource.dart';
 part 'resources/song_rating_resource.dart';
-part 'resources/song_sharing_resource.dart';
 part 'resources/songbook_comments_resource.dart';
 part 'resources/songbook_rating_resource.dart';
-part 'resources/songbook_sharing_resource.dart';
 part 'resources/songbooks_resource.dart';
 part 'resources/songs_resource.dart';
 part 'resources/user_resource.dart';
@@ -78,7 +75,6 @@ class AppModule extends Module {
     bind(BarComponent);
     bind(ChordPosition);
     bind(MessagesComponent);
-    bind(SongSearch);
 
     bind(AdminSongbooksController);
     bind(AdminSongsController);
@@ -108,10 +104,8 @@ class AppModule extends Module {
     bind(SessionResource);
     bind(SongCommentsResource);
     bind(SongRatingResource);
-    bind(SongSharingResource);
     bind(SongbookCommentsResource);
     bind(SongbookRatingResource);
-    bind(SongbookSharingResource);
     bind(SongbooksResource);
     bind(SongsResource);
     bind(UserResource);

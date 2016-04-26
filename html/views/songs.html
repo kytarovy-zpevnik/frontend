@@ -5,7 +5,6 @@
                 <div class="form-group">
                     <input ng-model="ctrl.search" type="text" class="form-control" placeholder="Filtrovat písně">
                 </div>
-                <!--<button type="button" class="btn" ng-click="ctrl.toggleAdvSearch()"><span class="glyphicon glyphicon-zoom-in"></span></button>-->
                 <span ng-if="ctrl.songbook == null">
                     <a href="#/song/create" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Vytvořit píseň</a>
                 </span>
@@ -120,8 +119,5 @@
         <div ng-if="ctrl.existsNext && !ctrl.songs.isEmpty" class="centerButton">
             <button class="btn btn-default" ng-click="ctrl.loadSongs()">Načíst další</button>
         </div>
-        <!--
-        <song_search visible="ctrl.advSearchVisible" ctrl="ctrl" filters="ctrl.filters"></song_search>
-        -->
     </div>
 </div>

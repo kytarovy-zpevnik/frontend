@@ -11,8 +11,6 @@ class PublicSongsController {
   List visibleSongs = [];
   String _search = '';
   String get search => _search;
-  bool advSearchVisible = false;
-  Map<String, String> filters = {};
   Filters filters;
 
   bool loaded = false;
@@ -25,14 +23,6 @@ class PublicSongsController {
     _search = search;
     _filterSongs();
   }
-
-  /*toggleAdvSearch() {
-    advSearchVisible = !(advSearchVisible);
-  }
-
-  advSearch() {
-    _songResource.readAll(filters: filters).then(_processSongs);
-  }*/
 
   PublicSongsController(this._sessionService, this._songsResource, this._messageService) {
     this.songs.clear();
