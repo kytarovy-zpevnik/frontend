@@ -48,12 +48,13 @@ class SongsResource {
   /**
    * Read's all songs.
    */
-  Future<List<Song>> readAll({bool public, bool admin, bool random, String search, Map<String, String> filters}) {
-    Map params = {};
-    if (public != null) {
-      params = {'public': public};
-    }
+  Future<List<Song>> readAll(int offset, String sort, String order, {bool public, bool admin, bool random, String search, Map<String, String> filters}) {
+    Map params = {'length': 20};
+      params.addAll({'offset': offset, 'sort': sort, 'order': order});
 
+    if (public != null) {
+      params.addAll({'public': public});
+    }
     if (admin != null) {
       params.addAll({'admin': admin});
     }

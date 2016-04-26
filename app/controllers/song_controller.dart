@@ -138,8 +138,7 @@ class SongController {
         this.song = song;
         computeLyrics();
         if(this.user != null){
-          _songbooksResource.readAll(justOwned: true).then((List<Songbook> songbooks) {
-            //this.allSongbooks = songbooks;
+          _songbooksResource.readAll(0, null, null, justOwned: true).then((List<Songbook> songbooks) {
             songbooks.forEach((Songbook songbook){
               this.allSongbooks.add(songbook);
             });

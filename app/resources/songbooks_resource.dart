@@ -42,12 +42,13 @@ class SongbooksResource {
   /**
    * Reads all songbooks.
    */
-  Future<List<Songbook>> readAll({bool public, bool admin, bool random, String search, Map<String, String> filters, bool justOwned}) {
-    Map params = {};
-    if (public != null) {
-      params = {'public': public};
-    }
+  Future<List<Songbook>> readAll(int offset, String sort, String order, {bool public, bool admin, bool random, String search, Map<String, String> filters, bool justOwned}) {
+    Map params = {'length': 20};
+    params.addAll({'offset': offset, 'sort': sort, 'order': order});
 
+    if (public != null) {
+      params.addAll({'public': public});
+    }
     if (admin != null) {
       params.addAll({'admin': admin});
     }

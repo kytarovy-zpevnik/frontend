@@ -7,8 +7,46 @@ class AdminSongbooksController {
 
   List<Songbook> songbooks = [];
 
+  bool loaded = false;
+
+  bool existsNext = true;
+  String sort = 'id';
+  bool revert = false;
+
   AdminSongbooksController(this._songbooksResource, this._messageService) {
-    _loadSongbooks();
+    this.songbooks.clear();
+    loadSongbooks().then((_){
+      loaded = true;
+    });
+  }
+
+  Future loadSongbooks() {
+    querySelector('html').classes.add('wait');
+    return _songbooksResource.readAll(songbooks.length, sort, revert ? 'desc' : 'asc', admin: true).then((List<Songbook> songbooks) {
+      _processSongs(songbooks);
+      if(songbooks.length != 20)
+        existsNext = false;
+      querySelector('html').classes.remove('wait');
+      return new Future.value(null);
+    });
+  }
+
+  void sortBy(String sort) {
+    if(this.sort == sort)
+      revert = !revert;
+    else {
+      this.sort = sort;
+      revert = false;
+    }
+    this.songbooks.clear();
+    existsNext = true;
+    loadSongbooks();
+  }
+
+  _processSongs(List<Songbook> songbooks) {
+    songbooks.forEach((Songbook songbook) {
+      this.songbooks.add(songbook);
+    });
   }
 
   void delete(Songbook songbook) {
@@ -19,15 +57,5 @@ class AdminSongbooksController {
   void restore(Songbook songbook) {
     songbook.archived = false;
     _songbooksResource.delete(songbook);
-  }
-
-  void _loadSongbooks() {
-    querySelector('html').classes.add('wait');
-    _songbooksResource.readAll(admin: true).then((List<Songbook> songbooks){
-      songbooks.forEach((Songbook songbook) {
-        this.songbooks.add(songbook);
-      });
-      querySelector('html').classes.remove('wait');
-    });
   }
 }

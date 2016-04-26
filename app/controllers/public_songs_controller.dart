@@ -3,8 +3,9 @@ part of app;
 @Controller(selector: '[public-songs]', publishAs: 'ctrl')
 class PublicSongsController {
 
-  final SongsResource _songResource;
+  final SongsResource _songsResource;
   final MessageService _messageService;
+  SessionService _sessionService;
 
   List songs = [];
   List visibleSongs = [];
@@ -12,33 +13,60 @@ class PublicSongsController {
   String get search => _search;
   bool advSearchVisible = false;
   Map<String, String> filters = {};
-  SessionService _sessionService;
+
+  bool loaded = false;
+
+  bool existsNext = true;
+  String sort = 'title';
+  bool revert = false;
 
   set search(String search) {
     _search = search;
-    //_songResource.readAll(public: true, search: _search).then(_processSongs);
     _filterSongs();
   }
 
-  toggleAdvSearch() {
+  /*toggleAdvSearch() {
     advSearchVisible = !(advSearchVisible);
   }
 
   advSearch() {
     _songResource.readAll(filters: filters).then(_processSongs);
-  }
+  }*/
 
-  PublicSongsController(this._sessionService, this._songResource, this._messageService) {
-    querySelector('html').classes.add('wait');
-    _songResource.readAll(public: true).then((List<Song> songs){
-      _processSongs(songs);
-      querySelector('html').classes.remove('wait');
+  PublicSongsController(this._sessionService, this._songsResource, this._messageService) {
+    this.songs.clear();
+    this.visibleSongs.clear();
+
+    loadSongs().then((_){
+      loaded = true;
     });
   }
 
-  _processSongs(List<Song> songs) {
+  Future loadSongs() {
+    querySelector('html').classes.add('wait');
+    return _songsResource.readAll(songs.length, sort, revert ? 'desc' : 'asc', public: true).then((List<Song> songs) {
+      _processSongs(songs);
+      if(songs.length != 20)
+        existsNext = false;
+      querySelector('html').classes.remove('wait');
+      return new Future.value(null);
+    });
+  }
+
+  void sortBy(String sort) {
+    if(this.sort == sort)
+      revert = !revert;
+    else {
+      this.sort = sort;
+      revert = false;
+    }
     this.songs.clear();
     this.visibleSongs.clear();
+    existsNext = true;
+    loadSongs();
+  }
+
+  _processSongs(List<Song> songs) {
     songs.forEach((Song song) {
       this.songs.add(song);
       this.visibleSongs.add(song);

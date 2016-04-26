@@ -3,7 +3,7 @@ part of app;
 @Controller(selector: '[songs]', publishAs: 'ctrl')
 class SongsController {
 
-  final SongsResource _songResource;
+  final SongsResource _songsResource;
   final SongbooksResource _songbooksResource;
   final MessageService _messageService;
   SessionService _sessionService;
@@ -20,23 +20,26 @@ class SongsController {
   bool loaded = false;
   Songbook songbook = null;
 
+  bool existsNext = true;
+  String sort = 'title';
+  bool revert = false;
+
   set search(String search) {
     _search = search;
-    //_songResource.readAll(search: search).then(_processSongs);
     _filterSongs();
   }
 
-  toggleAdvSearch() {
+  /*toggleAdvSearch() {
     advSearchVisible = !(advSearchVisible);
   }
 
   advSearch() {
     _songResource.readAll(filters: filters).then(_processSongs);
-  }
+  }*/
 
-  SongsController(this._sessionService, this._songResource, this._songbooksResource, this._messageService, this._userResource, this._routeProvider) {
+  SongsController(this._sessionService, this._songsResource, this._songbooksResource, this._messageService, this._userResource, this._routeProvider) {
     querySelector('html').classes.add('wait');
-    if (_sessionService.session == null) {  // analogicky u dalších controllerů
+    if (_sessionService.session == null) {
       _sessionService.initialized.then((_) {
         _initialize();
       });
@@ -45,18 +48,14 @@ class SongsController {
     }
   }
 
-  _initialize(){  // analogicky u dalších controllerů
+  _initialize(){
     this.songs.clear();
     this.visibleSongs.clear();
     var user = _sessionService.session.user;
 
-    /* Až bude hotovo přebírání písní
-    Future.wait([_songResource.readAll().then(_processSongs), // analogicky u dalších
-                _userResource.readAllSharedSongs(user.id).then(_processSharedSongs)]
-    ).then((List<Future> futures)*/
-    _songResource.readAll().then((List<Song> songs){
-      _processSongs(songs);
+    loadSongs().then((_){
       if (_routeProvider.parameters.containsKey('songbookId')) {
+        querySelector('html').classes.add('wait');
         _songbooksResource.read(_routeProvider.parameters['songbookId']).then((Songbook songbook) {
           this.songbook = songbook;
           loaded = true;
@@ -65,9 +64,32 @@ class SongsController {
       }
       else {
         loaded = true;
-        querySelector('html').classes.remove('wait');
       }
     });
+  }
+
+  Future loadSongs() {
+    querySelector('html').classes.add('wait');
+    return _songsResource.readAll(songs.length, sort, revert ? 'desc' : 'asc').then((List<Song> songs) {
+      _processSongs(songs);
+      if(songs.length != 20)
+        existsNext = false;
+      querySelector('html').classes.remove('wait');
+      return new Future.value(null);
+    });
+  }
+
+  void sortBy(String sort) {
+    if(this.sort == sort)
+      revert = !revert;
+    else {
+      this.sort = sort;
+      revert = false;
+    }
+    this.songs.clear();
+    this.visibleSongs.clear();
+    existsNext = true;
+    loadSongs();
   }
 
   _processSongs(List<Song> songs) {
@@ -77,15 +99,7 @@ class SongsController {
     });
   }
 
-  /* Až bude hotovo přebírání písní
-  _processSharedSongs(List<Song> songs) {
-    songs.forEach((Song song) {
-      this.songs.add(song);
-      this.visibleSongs.add(song);
-    });
-  }*/
-
-  _filterSongs(){
+  _filterSongs() {
     this.visibleSongs.clear();
     this.songs.forEach((Song song){
       if(song.contains(_search))
@@ -95,9 +109,6 @@ class SongsController {
 
   void addToSongbook(Song song) {
     songbook.songs.add(song);
-    /*_songbooksResource.update(songbook).then((_){
-      _messageService.showSuccess("Přidána", "Písnička byla úspěšně přidána do zpěvníku.");
-    });*/
   }
 
   void removeFromSongbook(Song song) {
@@ -109,9 +120,6 @@ class SongsController {
       }
     });
     songbook.songs.remove(toRemove);
-    /*_songbooksResource.update(songbook).then((_){
-      _messageService.showSuccess('Odebrána','Píseň byla úspěšně odebrána ze zpěvníku.');
-    });*/
   }
 
   void saveSongbook(){

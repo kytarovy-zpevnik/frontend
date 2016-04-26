@@ -3,7 +3,7 @@ part of app;
 @Controller(selector: '[songbooks]', publishAs: 'ctrl')
 class SongbooksController {
 
-  final SongbooksResource _songbookResource;
+  final SongbooksResource _songbooksResource;
   final MessageService _messageService;
   SessionService _sessionService;
   final UserResource _userResource;
@@ -15,13 +15,18 @@ class SongbooksController {
 
   String get search => _search;
 
+  bool loaded = false;
+
+  bool existsNext = true;
+  String sort = 'name';
+  bool revert = false;
+
   set search(String search) {
     _search = search;
-    //_songbookResource.readAll(search).then(_processSongbooks);
     _filterSongbooks();
   }
 
-  SongbooksController(this._sessionService, this._songbookResource, this._messageService, this._userResource) {
+  SongbooksController(this._sessionService, this._songbooksResource, this._messageService, this._userResource) {
     querySelector('html').classes.add('wait');
     if (_sessionService.session == null) {  // analogicky u dalších controllerů
       _sessionService.initialized.then((_) {
@@ -37,14 +42,34 @@ class SongbooksController {
     this.visibleSongbooks.clear();
     var user = _sessionService.session.user;
 
-    /* Až bude hotovo přebírání zpěvníků
-    Future.wait([_songbookResource.readAll().then(_processSongbooks), // analogicky u dalších
-    _userResource.readAllSharedSongbooks(user.id).then(_processSongbooks)]
-    ).then((List<Future> futures)*/
-    _songbookResource.readAll().then((List<Songbook> songbooks){
-      _processSongbooks(songbooks);
-      querySelector('html').classes.remove('wait');
+    loadSongbooks().then((_){
+      loaded = true;
     });
+
+  }
+
+  Future loadSongbooks() {
+    querySelector('html').classes.add('wait');
+    return _songbooksResource.readAll(songbooks.length, sort, revert ? 'desc' : 'asc').then((List<Songbook> songbooks) {
+      _processSongbooks(songbooks);
+      if(songbooks.length != 20)
+        existsNext = false;
+      querySelector('html').classes.remove('wait');
+      return new Future.value(null);
+    });
+  }
+
+  void sortBy(String sort) {
+    if(this.sort == sort)
+      revert = !revert;
+    else {
+      this.sort = sort;
+      revert = false;
+    }
+    this.songbooks.clear();
+    this.visibleSongbooks.clear();
+    existsNext = true;
+    loadSongbooks();
   }
 
   void _processSongbooks(List<Songbook> songbooks) {
@@ -53,14 +78,6 @@ class SongbooksController {
       this.visibleSongbooks.add(songbook);
     });
   }
-
-  /* Až bude hotovo přebírání zpěvníků
-  void _processSharedSongbooks(List<Songbook> songbooks) {
-    songbooks.forEach((Songbook songbook) {
-      this.songbooks.add(songbook);
-      this.visibleSongbooks.add(songbook);
-    });
-  }*/
 
   _filterSongbooks(){
     this.visibleSongbooks.clear();
