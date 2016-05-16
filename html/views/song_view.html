@@ -1,6 +1,6 @@
 <div song song-comments>
-    <div ng-if="ctrl.song != null">
-        <div class="pull-right" ng-if="ctrl.user != null">
+<div ng-if="ctrl.song != null">
+<div class="pull-right" ng-if="ctrl.user != null">
             <span ng-if="ctrl.user.username == ctrl.song.username" style="position: relative">
                 <a class="btn btn-info" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-wrench"></span> Správa písně <span class="caret"></span>
@@ -25,7 +25,7 @@
                 <ul class="dropdown-menu" role="menu">
                     <li ng-if="(ctrl.user.username == ctrl.song.username || ctrl.song.taken) && !ctrl.song.archived">
                         <a data-toggle="modal" data-target="#tag">
-                            <span class="glyphicon glyphicon-tag"></span> Soukromé tagy
+                            <span class="glyphicon glyphicon-tag"></span> Soukromé tagy
                         </a>
                     </li>
                     <li ng-if="(ctrl.user.username == ctrl.song.username || ctrl.song.taken) && !ctrl.song.archived">
@@ -52,86 +52,86 @@
                     </li>
                 </ul>
             </span>
-            <!-- XML EXPORT -->
-            <!--<span>
-                <a ng-click="ctrl.export('agama')" class="btn btn-default" data-toggle="modal" data-target="#export"><span class="glyphicon glyphicon-open"></span> Exportovat</a>
-            </span>-->
+    <!-- XML EXPORT -->
+    <!--<span>
+        <a ng-click="ctrl.export('agama')" class="btn btn-default" data-toggle="modal" data-target="#export"><span class="glyphicon glyphicon-open"></span> Exportovat</a>
+    </span>-->
 
-        </div>
+</div>
 
-        <!-- tag modal -->
-        <div class="modal fade" id="tag" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="tagLabel">Přidat vlastní tagy</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="tags">Tagy oddělené čárkami</label>
-                            <input type="text" class="form-control" id="tags" ng-model="ctrl.song.privateTagsStr">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
-                        <button ng-click="ctrl.addTags()" type="button" class="btn btn-primary" data-dismiss="modal">Odeslat</button>
-                    </div>
+<!-- tag modal -->
+<div class="modal fade" id="tag" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="tagLabel">Přidat vlastní tagy</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="tags">Tagy oddělené čárkami</label>
+                    <input type="text" class="form-control" id="tags" ng-model="ctrl.song.privateTagsStr">
                 </div>
             </div>
-        </div>
-
-        <!-- songbook modal -->
-        <div class="modal fade" id="songbook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog smaller-modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="songbookLabel">Zařadit píseň do zpěvníku</h4>
-                    </div>
-                    <div class="modal-body">
-                        <ul class="list-unstyled">
-                            <li ng-repeat="songbook in ctrl.allSongbooks">
-                                <a ng-if="ctrl.song.isInSongbook(songbook.id)" ng-click="ctrl.removeFromSongbook(songbook)">
-                                    <i class="glyphicon glyphicon-ok"></i>
-                                    <span class="toggle-on-label">{{songbook.name}}</span>
-                                </a>
-                                <a ng-if="!ctrl.song.isInSongbook(songbook.id)" ng-click="ctrl.addToSongbook(songbook)">
-                                    <span class="toggle-off-label">{{songbook.name}}</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" ng-click="ctrl.saveSongbooks()" data-dismiss="modal">Uložit změny</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
-                    </div>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+                <button ng-click="ctrl.addTags()" type="button" class="btn btn-primary" data-dismiss="modal">Odeslat</button>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- delete modal -->
-        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="deleteLabel">Opravdu chcete píseň {{ctrl.song.title}} smazat?</h4>
-                    </div>
-                    <div class="modal-footer">
-                        <button ng-click="ctrl.delete()" type="button" class="btn btn-default" data-dismiss="modal">Ano</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Ne</button>
-                    </div>
-                </div>
+<!-- songbook modal -->
+<div class="modal fade" id="songbook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog smaller-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="songbookLabel">Zařadit píseň do zpěvníku</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="list-unstyled">
+                    <li ng-repeat="songbook in ctrl.allSongbooks">
+                        <a ng-if="ctrl.song.isInSongbook(songbook.id)" ng-click="ctrl.removeFromSongbook(songbook)">
+                            <i class="glyphicon glyphicon-ok"></i>
+                            <span class="toggle-on-label">{{songbook.name}}</span>
+                        </a>
+                        <a ng-if="!ctrl.song.isInSongbook(songbook.id)" ng-click="ctrl.addToSongbook(songbook)">
+                            <span class="toggle-off-label">{{songbook.name}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-click="ctrl.saveSongbooks()" data-dismiss="modal">Uložit změny</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- XML export modal -->
-        <!--<div class="modal fade" id="export" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<!-- delete modal -->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="deleteLabel">Opravdu chcete píseň {{ctrl.song.title}} smazat?</h4>
+            </div>
+            <div class="modal-footer">
+                <button ng-click="ctrl.delete()" type="button" class="btn btn-default" data-dismiss="modal">Ano</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Ne</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- XML export modal -->
+<!--<div class="modal fade" id="export" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <h4 class="modal-title" id="exportLabel">Export ve formátu agama</h4>
                     </div>
                     <div class="modal-body">
@@ -144,43 +144,43 @@
             </div>
         </div>-->
 
-        <!-- share modal -->
-        <div class="modal fade" id="share" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="shareLabel">Sdílet</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="targetUser">Cílový uživatel</label>
-                            <input type="text" class="form-control" id="targetUser" ng-model="ctrl.targetUser">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
-                        <button ng-click="ctrl.share()" type="button" class="btn btn-primary" data-dismiss="modal">Sdílet</button>
-                    </div>
+<!-- share modal -->
+<div class="modal fade" id="share" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="shareLabel">Sdílet</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="targetUser">Cílový uživatel</label>
+                    <input type="text" class="form-control" id="targetUser" ng-model="ctrl.targetUser">
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+                <button ng-click="ctrl.share()" type="button" class="btn btn-primary" data-dismiss="modal">Sdílet</button>
+            </div>
         </div>
+    </div>
+</div>
 
-        <h1>{{ctrl.song.title}}</h1>
-        <div ng-if="ctrl.song.archived" class="alert alert-warning">
-            <strong>Tato píseň byla smazána.</strong>
-            Pokud ji chcete nadále používat, můžete si ji zkopírovat.
-        </div>
-        <div ng-if="ctrl.song.copy && !ctrl.song.old" class="alert alert-warning">
-            <strong>Píseň byla od Vaší poslední návštěvy upravena.</strong>
-            Můžete si zobrazit <a href="#/song/{{ctrl.song.id}}/old">předchozí verzi</a>, nebo <a ng-click="ctrl.discardCopy()">ponechat tuto</a>.
-        </div>
-        <div ng-if="ctrl.song.old" class="alert alert-warning">
-            <strong>Toto je původní verze písně před její úpravou.</strong>
-            Můžete si ji <a ng-click="ctrl.copySong()">zkopírovat</a>, nebo <a ng-click="ctrl.discardCopy()">přijmout aktuální verzi</a>.
-        </div>
-        <div class="pull-right">
-            <div id="transpose" class="form-inline">
+<h1>{{ctrl.song.title}}</h1>
+<div ng-if="ctrl.song.archived" class="alert alert-warning">
+    <strong>Tato píseň byla smazána.</strong>
+    Pokud ji chcete nadále používat, můžete si ji zkopírovat.
+</div>
+<div ng-if="ctrl.song.copy && !ctrl.song.old" class="alert alert-warning">
+    <strong>Píseň byla od Vaší poslední návštěvy upravena.</strong>
+    Můžete si zobrazit <a href="#/song/{{ctrl.song.id}}/old">předchozí verzi</a>, nebo <a ng-click="ctrl.discardCopy()">ponechat tuto</a>.
+</div>
+<div ng-if="ctrl.song.old" class="alert alert-warning">
+    <strong>Toto je původní verze písně před její úpravou.</strong>
+    Můžete si ji <a ng-click="ctrl.copySong()">zkopírovat</a>, nebo <a ng-click="ctrl.discardCopy()">přijmout aktuální verzi</a>.
+</div>
+<div class="pull-right">
+    <div id="transpose" class="form-inline">
                 <span>
                     <b>Transponovat: </b><br />
                     <a class="btn btn-primary glyphicon-minus" ng-click="ctrl.transpose(-1)"></a>
@@ -190,16 +190,16 @@
                     </div>
                     <a class="btn btn-primary glyphicon-plus" ng-click="ctrl.transpose(1)"></a>
                 </span>
-            </div>
-        </div>
+    </div>
+</div>
 
-        <div class="central">
-            <div class="meta">
-                <span ng-if="ctrl.user != null && ctrl.song.username == ctrl.user.username"><b>Vaše vlastní </b></span>
-                <span ng-if="ctrl.user == null || ctrl.song.username != ctrl.user.username"><b>Cizí </b></span>
-                <span ng-if="ctrl.song.public"><b>veřejná</b></span>
-                <span ng-if="!ctrl.song.public"><b>privátní</b></span>
-                <span><b> píseň</b><br /></span>
+<div class="central">
+    <div class="meta">
+        <span ng-if="ctrl.user != null && ctrl.song.username == ctrl.user.username"><b>Vaše vlastní </b></span>
+        <span ng-if="ctrl.user == null || ctrl.song.username != ctrl.user.username"><b>Cizí </b></span>
+        <span ng-if="ctrl.song.public"><b>veřejná</b></span>
+        <span ng-if="!ctrl.song.public"><b>privátní</b></span>
+        <span><b> píseň</b><br /></span>
                 <span ng-if="ctrl.user == null || ctrl.song.username != ctrl.user.username"><b>Vlastník:</b>
                 {{ctrl.song.username}}<br></span>
                 <span><b>Průměrné hodnocení:</b>
@@ -222,8 +222,8 @@
                 {{ctrl.song.tagsStr}}<span ng-if="ctrl.song.tagsStr != '' && ctrl.song.privateTagsStr != ''">, </span><span class="text-success">{{ctrl.song.privateTagsStr}}</span><br></span>
                 <span ng-if="ctrl.song.note != null"><b>Poznámka:</b>
                 {{ctrl.song.note}}<br></span>
-            </div>
-            <div class="meta">
+    </div>
+    <div class="meta">
                 <span ng-if="ctrl.song.author != null"><b>Autor:</b>
                 {{ctrl.song.author}}<br></span>
                 <span ng-if="ctrl.song.originalAuthor != null"><b>Původní autor:</b>
@@ -232,28 +232,28 @@
                 {{ctrl.song.album}}<br></span>
                 <span ng-if="ctrl.song.year != null"><b>Rok:</b>
                 {{ctrl.song.year}}<br></span>
-            </div>
+    </div>
 
-            <section ng-repeat="section in ctrl.lyrics">
-                <span class="title{{section['padding'] ? ' padded' : ''}}">{{section['title']}}&nbsp;</span>
+    <section ng-repeat="section in ctrl.lyrics">
+        <span class="title{{section['padding'] ? ' padded' : ''}}">{{section['title']}}&nbsp;</span>
 
-                <p ng-repeat="line in section['lines']" class="line">
-                    <chpos ng-repeat="substring in line" offset="substring['offset']" text="substring['text']" hypen="substring['hypen']" padding="substring['isChord']" chord="ctrl.song.chords[substring['offset'].toString()]"></chpos>
-                </p>
-            </section>
-        </div>
+        <p ng-repeat="line in section['lines']" class="line">
+            <chpos ng-repeat="substring in line" offset="substring['offset']" text="substring['text']" hypen="substring['hypen']" padding="substring['isChord']" chord="ctrl.song.chords[substring['offset'].toString()]"></chpos>
+        </p>
+    </section>
+</div>
 
 
 
-        <h3>Komentáře</h3>
+<h3>Komentáře</h3>
 
-        <div ng-if="ctrl2.comments.isEmpty">
-            Žádné komentáře k zobrazení.
-        </div>
+<div ng-if="ctrl2.comments.isEmpty">
+    Žádné komentáře k zobrazení.
+</div>
 
-        <div class="comment" ng-repeat="comment in ctrl2.comments">
-            <span><b>{{comment.username}} napsal: </b><p class="comment">{{comment.comment}}</p></span>
-            <span>{{ctrl2.formatter.format(comment.modified)}}</span>
+<div class="comment" ng-repeat="comment in ctrl2.comments">
+    <span><b>{{comment.username}} napsal: </b><p class="comment">{{comment.comment}}</p></span>
+    <span>{{ctrl2.formatter.format(comment.modified)}}</span>
             <span ng-if="ctrl2.user != null && ctrl2.user.username == comment.username">
                 <span ng-if="ctrl2.comment.id != comment.id">
                     <a ng-click="ctrl2.prepareEdit(comment)">Upravit</a>
@@ -264,25 +264,19 @@
                     Smazat
                 </a>
             </span>
-            <form ng-if="ctrl2.comment.id == comment.id" class="comment" role="form" ng-submit="ctrl2.save()">
-                <textarea class="form-control comment" required ng-model="ctrl2.comment.comment">
-                </textarea>
-                </br>
-                <button type="submit" class="btn btn-success">Uložit</button>
-            </form>
-        </div>
-
-        <form ng-if="ctrl2.user != null && ctrl2.comment.id == -1" role="form" ng-submit="ctrl2.save()">
-            <textarea placeholder="Přidejte komentář" class="form-control comment" required ng-model="ctrl2.comment.comment">
-            </textarea>
-            </br>
-            <button type="submit" class="btn btn-success">Uložit</button>
-        </form>
-    </div>
+    <form ng-if="ctrl2.comment.id == comment.id" class="comment" role="form" ng-submit="ctrl2.save()">
+        <textarea class="form-control comment" required ng-model="ctrl2.comment.comment">
+        </textarea>
+        </br>
+        <button type="submit" class="btn btn-success">Uložit</button>
+    </form>
 </div>
 
-
-
-
-
-
+<form ng-if="ctrl2.user != null && ctrl2.comment.id == -1" role="form" ng-submit="ctrl2.save()">
+    <textarea placeholder="Přidejte komentář" class="form-control comment" required ng-model="ctrl2.comment.comment">
+    </textarea>
+    </br>
+    <button type="submit" class="btn btn-success">Uložit</button>
+</form>
+</div>
+</div>
