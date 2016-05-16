@@ -34,7 +34,13 @@
                         </span>
                     Název
                 </a></th>
-                <th>Počet písní</th>
+                <th class="col-md-1"><a ng-click="ctrl.sortBy('numOfSongs')">
+                        <span ng-if="ctrl.sort == 'numOfSongs'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Počet písní
+                </a></th>
                 <th><a ng-click="ctrl.sortBy('owner')">
                         <span ng-if="ctrl.sort == 'owner'">
                             <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
@@ -43,12 +49,45 @@
                     Vlastník
                 </a></th>
                 <th>Tagy</th>
-                <th>Průměrné hodnocení</th>
+                <th class="col-md-2"><a ng-click="ctrl.sortBy('rating')">
+                        <span ng-if="ctrl.sort == 'rating'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Průměrné hodnocení
+                </a></th>
+                <th class="col-md-1"></th>
+            </tr>
+            <tr>
+                <th class="col-md-2">
+                    <label for="input-name" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-name" ng-model="ctrl.filters.name">
+                </th>
+                <th class="col-md-1">
+                </th>
+                <th class="col-md-2">
+                    <label for="input-owner" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-owner" ng-model="ctrl.filters.owner">
+                </th>
+                <th class="col-md-2">
+                    <label for="input-tag" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-tag" ng-model="ctrl.filters.tag">
+                </th>
+                <th class="col-md-2">
+                </th>
+                <th class="col-md-1">
+                    <button class="btn btn-default" ng-click="ctrl.advancedSearch()"><span class="glyphicon glyphicon-search"></span></button>
+                </th>
             </tr>
             </thead>
         </table>
-        <div ng-if="ctrl.existsNext && !ctrl.songbooks.isEmpty" class="centerButton">
-            <button class="btn btn-default" ng-click="ctrl.loadSongbooks()">Načíst další</button>
+        <div class="centerButton">
+            <span ng-if="ctrl.songbooks.isEmpty">
+                Žádné zpěvníky k zobrazení.
+            </span>
+            <span ng-if="ctrl.existsNext && !ctrl.songbooks.isEmpty">
+                <button class="btn btn-default" ng-click="ctrl.loadSongbooks()">Načíst další</button>
+            </span>
         </div>
     </div>
 </div>

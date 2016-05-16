@@ -1,7 +1,7 @@
 <div songbook songbook-comments>
     <div ng-if="ctrl.songbook != null">
         <div class="pull-right" ng-if="ctrl.user != null">
-            <span ng-if="ctrl.user.username == ctrl.songbook.username">
+            <span ng-if="ctrl.user.username == ctrl.songbook.username && !ctrl.orderChanging">
                 <span style="position: relative">
                     <a class="btn btn-info" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-wrench"></span> Správa zpěvníku <span class="caret"></span>
@@ -34,10 +34,19 @@
                                 <span class="glyphicon glyphicon-book"></span> Výběr písní
                             </a>
                         </li>
+                        <li>
+                            <a ng-click="ctrl.changeOrder()">
+                                <span class="glyphicon glyphicon-sort"></span> Upravit pořadí
+                            </a>
+                        </li>
                     </ul>
                 </span>
             </span>
-            <span style="position: relative">
+            <span ng-if="ctrl.user.username == ctrl.songbook.username && ctrl.orderChanging">
+                <button class="btn btn-default" ng-click="ctrl.changeOrder()">Zpět</button>
+                <button class="btn btn-success" ng-click="ctrl.saveOrder()">Uložit</button>
+            </span>
+            <span style="position: relative" ng-if="!ctrl.orderChanging">
                 <a class="btn btn-default" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-th-list"></span> Možnosti zpěvníku <span class="caret"></span>
                 </a>
@@ -149,7 +158,7 @@
                 <img ng-if="ctrl.songbook.rating >= 3" src="img/star.png" width="20" height="20">
                 <img ng-if="ctrl.songbook.rating >= 4" src="img/star.png" width="20" height="20">
                 <img ng-if="ctrl.songbook.rating >= 5" src="img/star.png" width="20" height="20">
-                <a href="#/songbook/{{ctrl.songbook.id}}/ratings"><small>(více)</small></a>
+                <a ng-if="!ctrl.orderChanging" href="#/songbook/{{ctrl.songbook.id}}/ratings"><small>(více)</small></a>
                 <br>
                 <span ng-if="ctrl.songbook.rating > 0">
                     Hodnotil<span  ng-if="ctrl.songbook.numOfRating > 1 && ctrl.songbook.numOfRating < 5">i</span><span  ng-if="ctrl.songbook.numOfRating >= 5">o</span>
@@ -168,13 +177,24 @@
         <table class="table table-striped">
             <tbody>
             <tr ng-repeat="song in ctrl.songbook.songs">
-                <td>{{$index + 1}}</td>
-                <td><a href="#/song/{{song.id}}/view">{{song.title}}</a></td>
+                <td>{{song.posInSongbook}}</td>
+                <td>
+                    <a ng-if="!ctrl.orderChanging" href="#/song/{{song.id}}/view">{{song.title}}</a>
+                    <span ng-if="ctrl.orderChanging">{{song.title}}</span>
+                </td>
                 <td>{{song.author}}</td>
                 <td>{{song.album}}</td>
                 <td>{{song.year}}</td>
                 <td>{{song.username}}</td>
                 <td>{{song.tagsStr}}<span ng-if="song.tagsStr != '' && song.privateTagsStr != ''">, </span><span class="text-success">{{song.privateTagsStr}}</span></td>
+                <td ng-if="ctrl.orderChanging">
+                    <button class="btn btn-default" ng-click="ctrl.moveSong(song, -1)">
+                        <span class="glyphicon glyphicon-arrow-up"></span>
+                    </button>
+                    <button class="btn btn-default" ng-click="ctrl.moveSong(song, 1)">
+                        <span class="glyphicon glyphicon-arrow-down"></span>
+                    </button>
+                </td>
             </tr>
             </tbody>
             <thead>
@@ -186,38 +206,48 @@
                 <th>Rok</th>
                 <th>Vlastník</th>
                 <th>Tagy</th>
+                <th></th>
             </tr>
             </thead>
         </table>
+        <div class="centerButton">
+            <span ng-if="ctrl.songbook.songs.isEmpty">
+                Žádné písně k zobrazení.
+            </span>
+        </div>
 
         <h3>Komentáře</h3>
 
-        <form role="form" ng-submit="ctrl2.save()">
-            <textarea placeholder="Přidejte komentář" class="form-control comment" required id="input-comment" ng-model="ctrl2.comment.comment">
-            </textarea>
-            </br>
-            <button type="submit" class="btn btn-success">Uložit</button>
-        </form>
+        <div ng-if="ctrl2.comments.isEmpty">
+            Žádné komentáře k zobrazení.
+        </div>
 
         <div class="comment" ng-repeat="comment in ctrl2.comments">
             <span><b>{{comment.username}} napsal: </b><p class="comment">{{comment.comment}}<p></span>
-            <span><b>Vytvořeno: </b>{{comment.created}}</span>
-            <span ng-if="ctrl2.user != null && ctrl2.user.username == comment.username">
-                <span ng-if="ctrl2.editId != comment.id" ng-click="ctrl2.prepareEdit(comment.id)">
-                    <a>Upravit</a>
+            <span>{{ctrl2.formatter.format(comment.modified)}}</span>
+            <span ng-if="ctrl2.user != null && ctrl2.user.username == comment.username && !ctrl.orderChanging">
+                <span ng-if="ctrl2.comment.id != comment.id">
+                    <a ng-click="ctrl2.prepareEdit(comment)">Upravit</a>
                 </span>
             </span>
-            <span ng-if="ctrl2.user != null && (ctrl2.user.username == comment.username || ctrl2.user.role.slug == 'admin')">
-                <span ng-click="ctrl2.delete(comment.id)">
-                    <a>Smazat</a>
-                </span>
+            <span ng-if="ctrl2.user != null && (ctrl2.user.username == comment.username || ctrl2.user.role.slug == 'admin') && !ctrl.orderChanging">
+                <a ng-click="ctrl2.delete(comment)">
+                    Smazat
+                </a>
             </span>
-            <form ng-if="ctrl2.editId == comment.id" class="comment" role="form" ng-submit="ctrl2.commentEdit()">
-                <textarea class="form-control comment" required id="edit-comment-{{comment.id}}" ng-model="ctrl2.editComment.comment">
+            <form ng-if="ctrl2.comment.id == comment.id" class="comment" role="form" ng-submit="ctrl2.save()">
+                <textarea class="form-control comment" required ng-model="ctrl2.comment.comment">
                 </textarea>
                 </br>
                 <button type="submit" class="btn btn-success">Uložit</button>
             </form>
         </div>
+
+        <form ng-if="ctrl2.user != null && ctrl2.comment.id == -1 && !ctrl.orderChanging" role="form" ng-submit="ctrl2.save()">
+            <textarea placeholder="Přidejte komentář" class="form-control comment" required ng-model="ctrl2.comment.comment">
+            </textarea>
+            </br>
+            <button type="submit" class="btn btn-success">Uložit</button>
+        </form>
     </div>
 </div>

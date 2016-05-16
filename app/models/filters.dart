@@ -11,6 +11,9 @@ class Filters {
   String _album;
   String _author;
   String _year;
+
+  String _name;
+
   String _owner;
   String _tag;
 
@@ -36,6 +39,12 @@ class Filters {
   set year(String year) {
     _setFilter('year', year);
     _year = year;
+  }
+
+  get name => _name;
+  set name(String name) {
+    _setFilter('name', name);
+    _name = name;
   }
 
   get owner => _owner;

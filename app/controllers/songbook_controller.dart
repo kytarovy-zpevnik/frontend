@@ -15,17 +15,19 @@ class SongbookController {
 
   String targetUser = '';
 
+  bool orderChanging = false;
+
   SongbookController(this._sessionService, this._songbooksResource, this._userResource, this._messageService, this._routeProvider, this._router) {
     create = !_routeProvider.parameters.containsKey('id');
 
-      querySelector('html').classes.add('wait');
-      if (_sessionService.session == null) {  // analogicky u dalších controllerů
-        _sessionService.initialized.then((_) {
-          _initialize();
-        });
-      } else {
+    querySelector('html').classes.add('wait');
+    if (_sessionService.session == null) {  // analogicky u dalších controllerů
+      _sessionService.initialized.then((_) {
         _initialize();
-      }
+      });
+    } else {
+      _initialize();
+    }
   }
 
   _initialize(){
@@ -109,6 +111,58 @@ class SongbookController {
     _songbooksResource.delete(songbook).then((_){
       _messageService.prepareSuccess('Smazáno.', 'Zpěvník byl úspěšně smazán.');
       _router.go('songbooks', {});
+    });
+  }
+
+  void changeOrder() {
+    ElementList cols = querySelectorAll('.draggableSong');
+    if (!orderChanging) {
+      orderChanging = true;
+      songbook.songs.sort((Song a, Song b) {
+        if (a.posInSongbook > b.posInSongbook)
+          return 1;
+        if (b.posInSongbook > a.posInSongbook)
+          return -1;
+        return 0;
+      });
+    }
+    else {
+      orderChanging = false;
+      songbook.songs.clear();
+      _songbooksResource.read(_routeProvider.parameters['id']).then((Songbook songbook) {
+        this.songbook = songbook;
+      });
+    }
+  }
+
+  void saveOrder() {
+    orderChanging = false;
+    _songbooksResource.update(songbook, 'songs').then((_) {
+      _messageService.showSuccess("Aktualizován", "Seznam písní ve zpěvníku byl úspěšně aktualizován.");
+    });
+  }
+
+  void moveSong(Song song, int dir) {
+    song.posInSongbook += dir;
+    print(song.posInSongbook);
+    if(song.posInSongbook > songbook.songs.length || song.posInSongbook < 1){
+      songbook.songs.forEach((Song songIn){
+        if(songIn.id == song.id)
+          return;
+        songIn.posInSongbook += dir;
+      });
+
+      song.posInSongbook -= dir * (songbook.songs.length);
+    }
+    else {
+      songbook.songs.elementAt(song.posInSongbook-1).posInSongbook -= dir;
+    }
+    songbook.songs.sort((Song a, Song b){
+      if(a.posInSongbook > b.posInSongbook)
+        return 1;
+      if(b.posInSongbook > a.posInSongbook)
+        return -1;
+      return 0;
     });
   }
 }

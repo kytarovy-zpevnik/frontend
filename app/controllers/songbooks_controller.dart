@@ -10,10 +10,9 @@ class SongbooksController {
 
   List songbooks = [];
   List visibleSongbooks = [];
-
   String _search = '';
-
   String get search => _search;
+  Filters filters;
 
   bool loaded = false;
 
@@ -41,6 +40,7 @@ class SongbooksController {
     this.songbooks.clear();
     this.visibleSongbooks.clear();
     var user = _sessionService.session.user;
+    filters = new Filters();
 
     loadSongbooks().then((_){
       loaded = true;
@@ -50,7 +50,7 @@ class SongbooksController {
 
   Future loadSongbooks() {
     querySelector('html').classes.add('wait');
-    return _songbooksResource.readAll(songbooks.length, sort, revert ? 'desc' : 'asc').then((List<Songbook> songbooks) {
+    return _songbooksResource.readAll(songbooks.length, sort, revert ? 'desc' : 'asc', filters: filters.filters).then((List<Songbook> songbooks) {
       _processSongbooks(songbooks);
       if(songbooks.length != 20)
         existsNext = false;
@@ -66,6 +66,13 @@ class SongbooksController {
       this.sort = sort;
       revert = false;
     }
+    this.songbooks.clear();
+    this.visibleSongbooks.clear();
+    existsNext = true;
+    loadSongbooks();
+  }
+
+  void advancedSearch() {
     this.songbooks.clear();
     this.visibleSongbooks.clear();
     existsNext = true;

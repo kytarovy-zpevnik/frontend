@@ -80,7 +80,13 @@
                     Vlastník
                 </a></th>
                 <th class="col-md-2">Tagy</th>
-                <th class="col-md-2">Průměrné hodnocení</th>
+                <th class="col-md-2"><a ng-click="ctrl.sortBy('rating')">
+                    <span ng-if="ctrl.sort == 'rating'">
+                        <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                        <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                    </span>
+                    Průměrné hodnocení
+                </a></th>
                 <th class="col-md-1"></th>
             </tr>
             <tr>
@@ -116,8 +122,13 @@
             </tr>
             </thead>
         </table>
-        <div ng-if="ctrl.existsNext && !ctrl.songs.isEmpty" class="centerButton">
-            <button class="btn btn-default" ng-click="ctrl.loadSongs()">Načíst další</button>
+        <div class="centerButton">
+            <span ng-if="ctrl.songs.isEmpty">
+                Žádné písně k zobrazení.
+            </span>
+            <span ng-if="ctrl.existsNext && !ctrl.songs.isEmpty">
+                <button class="btn btn-default" ng-click="ctrl.loadSongs()">Načíst další</button>
+            </span>
         </div>
     </div>
 </div>

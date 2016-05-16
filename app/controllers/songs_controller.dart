@@ -122,7 +122,7 @@ class SongsController {
   }
 
   void saveSongbook(){
-    _songbooksResource.update(songbook).then((_){
+    _songbooksResource.update(songbook, 'songs').then((_){
       _messageService.showSuccess("Aktualizován", "Seznam písní ve zpěvníku byl úspěšně aktualizován.");
     });
   }

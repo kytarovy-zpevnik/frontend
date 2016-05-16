@@ -105,13 +105,6 @@ class SongbooksResource {
                           archived: response.data['songs'][j]['archived'],
                           posInSongbook: response.data['songs'][j]['position']));
       }
-      songs.sort((Song a, Song b){ // tady neni sort potreba, ale urcite bude potreba pri zmene poradi
-        if(a.posInSongbook > b.posInSongbook)
-          return 1;
-        if(b.posInSongbook > a.posInSongbook)
-          return -1;
-        return 0;
-      });
 
       return new Songbook(response.data['id'], response.data['name'], note: response.data['note'],
                           public: response.data['public'], songs: songs, tags: tags,

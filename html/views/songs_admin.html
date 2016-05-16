@@ -68,8 +68,13 @@
             </tr>
             </thead>
         </table>
-        <div ng-if="ctrl.existsNext && !ctrl.songs.isEmpty" class="centerButton">
-            <button class="btn btn-default" ng-click="ctrl.loadSongs()">Načíst další</button>
+        <div class="centerButton">
+            <span ng-if="ctrl.songs.isEmpty">
+                Žádné písně k zobrazení.
+            </span>
+            <span ng-if="ctrl.existsNext && !ctrl.songs.isEmpty">
+                <button class="btn btn-default" ng-click="ctrl.loadSongs()">Načíst další</button>
+            </span>
         </div>
     </div>
 </div>
