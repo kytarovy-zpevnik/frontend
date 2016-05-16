@@ -19,7 +19,7 @@ class NotificationsResource {
     return _api.get('notifications', params: params).then((HttpResponse response) {
       var notifications = response.data.map((data) {
         return new Notification(data['id'], DateTime.parse(data['created']),
-                              data['read'], data['text'], data['target']);
+                              data['read'], data['username'], data['action'], data['target']);
       });
       return new Future.value(notifications);
     });
