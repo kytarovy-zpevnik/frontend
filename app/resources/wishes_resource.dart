@@ -27,7 +27,8 @@ class WishesResource {
   Future<List<Wish>> readAll() {
     return _api.get('wishes').then((HttpResponse response) {
       var wishes = response.data.map((data) {
-        return new Wish(id: data['id'], name: data['name'], interpret: data['interpret'], note: data['note'], created: data['created'], modified: data['modified']);
+        return new Wish(id: data['id'], name: data['name'], interpret: data['interpret'], note: data['note'],
+                        created: DateTime.parse(data['created']), modified: DateTime.parse(data['modified']));
       });
 
       return new Future.value(wishes);
@@ -39,14 +40,17 @@ class WishesResource {
    */
   Future<Wish> read(int id) {
     return _api.get('wishes/' + id.toString()).then((HttpResponse response) {
-      return new Wish(id: response.data['id'], name: response.data['name'], interpret: response.data['interpret'], note: response.data['note'], created: response.data['created'], modified: response.data['modified']);
+      return new Wish(id: response.data['id'], name: response.data['name'],
+                      interpret: response.data['interpret'], note: response.data['note'],
+                      created: DateTime.parse(response.data['created']),
+                      modified: DateTime.parse(response.data['modified']));
     });
   }
 
   /**
    * Updates wish by od.
    */
-  Future edit(Wish wish) {
+  Future update(Wish wish) {
     _normalize(wish);
     return _api.put('wishes/' + wish.id.toString(), data: {
         'name': wish.name,
@@ -60,7 +64,7 @@ class WishesResource {
    * Deletes wish by id.
    */
   Future delete(Wish wish) {
-    return _api.put('wishes/' + wish.id.toString()).then((_){
+    return _api.delete('wishes/' + wish.id.toString()).then((_){
     });
   }
 

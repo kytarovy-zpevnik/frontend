@@ -1,13 +1,17 @@
 <div wishes>
     <div class="pull-right">
-        <form class="form-inline" role="search">
-            <a href="#/wish/create" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Nové přání</a>
-        </form>
+        <a href="#/wish/create" class="btn btn-success">
+            <span class="glyphicon glyphicon-plus"></span>
+            Nové přání
+        </a>
     </div>
 
     <h1>Má přání</h1>
-    <div class="row" ng-repeat="wish in ctrl.wishes">
-        <span><h3><a href="#/wish/{{wish.id}}/view">{{wish.name}}</a></h3></span>
+    <div class="row" ng-repeat="row in ctrl.wishes">
+        <div class="col-md-3" ng-repeat="wish in row">
+            <h3><a href="#/wish/{{wish.id}}/view">{{wish.name}}</a></h3>
+            {{ctrl.formatter.format(wish.modified)}}
+        </div>
     </div>
 
 
