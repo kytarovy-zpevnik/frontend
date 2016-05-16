@@ -20,6 +20,9 @@ class SessionService {
           _completer.complete();
         });
     }
+    else {
+      _completer.complete();
+    }
   }
 
   Session get session => _session;
