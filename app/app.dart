@@ -5,6 +5,7 @@ import 'package:angular/routing/module.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
+import 'dart:math';
 import 'package:intl/intl.dart';
 import 'dart:js' as js;
 

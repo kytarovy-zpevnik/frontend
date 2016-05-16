@@ -14,7 +14,7 @@ class SongbookRatingsController {
   int ratingSum;
   int avgRating;
 
-  var formatter = new DateFormat('d.M.yyyy H:m');
+  var formatter = new DateFormat('d.M.yyyy HH:mm');
 
   User user;
   Songbook songbook;

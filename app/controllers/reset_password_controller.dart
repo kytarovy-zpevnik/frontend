@@ -15,7 +15,8 @@ class ResetPasswordController {
   
   void reset() {
     _resetPasswordResource.reset(identifier).then((_) {
-      _messageService.showSuccess('Úspěch.', 'Zaslali jsme Vám email pro nastavení hesla.');
+      _messageService.prepareSuccess('Úspěch.', 'Zaslali jsme Vám email pro nastavení hesla.');
+      _router.go('homepage', {});
     }).catchError((ApiError e){
       switch(e.error) {
         case 'UNKNOWN_IDENTIFIER':
