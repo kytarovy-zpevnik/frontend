@@ -81,10 +81,10 @@
                 </div>
                 <div class="tab-chords">
                     <section ng-repeat="section in ctrl.lyrics">
-                        <span class="title">{{section['title']}}&nbsp;</span>
+                        <span class="title{{section['padding'] ? ' padded' : ''}}">{{section['title']}}&nbsp;</span>
 
                         <p ng-repeat="line in section['lines']" class="line">
-                            <chpos ng-repeat="char in line" offset="char['offset']" ctrl="ctrl" char="char['char']" hypen="$index + 1 < line.length && line[$index + 1]['char'] != ' '" chord="ctrl.song.chords[char['offset'].toString()]"></chpos>
+                            <chpos ng-repeat="substring in line" ctrl="ctrl" offset="substring['offset']" text="substring['text']" hypen="substring['hypen']" padding="substring['isChord']" chord="ctrl.song.chords[substring['offset'].toString()]"></chpos>
                         </p>
                     </section>
                 </div>

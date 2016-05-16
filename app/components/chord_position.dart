@@ -12,21 +12,23 @@ class ChordPosition implements AttachAware {
   @NgTwoWay('ctrl')
   SongEditController ctrl = null;
 
-  @NgOneWay('char')
-  String char;
+  @NgOneWay('text')
+  String text;
+
+  @NgOneWay('hypen')
+  bool hypen = true;
+
+  @NgOneWay('padding')
+  bool padding = true;
+
+  @NgOneWay('chord')
+  String chord = '';
 
   bool chordEditor = false;
 
   String input = '';
 
-  @NgOneWay('chord')
-  String chord = '';
-
-  @NgOneWay('editable')
-  bool editable = true;
-
-  @NgOneWay('hypen')
-  bool hypen = true;
+  int editorOffset;
 
   ChordPosition() {
   }
@@ -38,9 +40,10 @@ class ChordPosition implements AttachAware {
 
   void showChordEditor(int index) {
     if (ctrl != null) {
+      editorOffset = offset + index;
       ctrl.hideChordEditors();
 
-      if (ctrl.song.chords.containsKey(offset.toString())) {
+      if (editorOffset == offset) {
         input = ctrl.song.chords[offset.toString()];
       }
       chordEditor = true;
@@ -50,14 +53,15 @@ class ChordPosition implements AttachAware {
   void setChord() {
     if (ctrl != null) {
       if (input.isEmpty) {
-        if (ctrl.song.chords.containsKey(offset.toString())) 
+        if (editorOffset == offset) {
           ctrl.song.chords.remove(offset.toString());
+        }
       } else {
-        ctrl.song.chords[offset.toString()] = input;
+        ctrl.song.chords[editorOffset.toString()] = input;
       }
 
       chordEditor = false;
-      chord = input;
+      ctrl.computeLyrics();
     }
   }
 
