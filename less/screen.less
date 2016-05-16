@@ -5,10 +5,6 @@ html, body {
   height: 100%;
 }
 
-input#search-query {
-  width: 20em;
-}
-
 div.content {
   margin-top: 80px;
 }
@@ -73,7 +69,7 @@ div[songbook] {
   }
 }
 
-div[song] {
+div[song], div[song-edit] {
   p {
     padding-left: 6em;
     margin-bottom: 3em;
@@ -220,7 +216,7 @@ div[song] {
     }
   }
 
-  &[edit] {
+  &[song-edit] {
     section {
       font-size: 1.3em;
     }

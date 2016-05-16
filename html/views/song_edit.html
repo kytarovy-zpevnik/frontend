@@ -1,4 +1,4 @@
-<div song edit>
+<div song-edit>
     <div class="btn-group pull-right">
         <span ng-if="ctrl.create">
             <span ng-if="ctrl.createInSongbook != null">
@@ -77,7 +77,7 @@
             </label>
             <div ng-if="ctrl.radio == '0'">
                 <div class="form-group lyrics">
-                    <textarea type="text" required class="form-control monospaced" id="input-lyrics" ng-model="ctrl.song.lyrics" ng-change="ctrl.computeLyrics()"></textarea>
+                    <textarea type="text" required class="form-control monospaced" id="input-lyrics" ng-model="ctrl.songLyrics"></textarea>
                 </div>
                 <div class="tab-chords">
                     <section ng-repeat="section in ctrl.lyrics">

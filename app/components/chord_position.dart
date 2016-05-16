@@ -5,12 +5,12 @@ part of app;
     templateUrl: 'html/templates/chord_position.html',
     publishAs: 'cmp',
     useShadowDom: false)
-class ChordPosition {
+class ChordPosition implements AttachAware {
   @NgOneWay('offset')
   int offset;
 
   @NgTwoWay('ctrl')
-  SongController ctrl;
+  SongEditController ctrl = null;
 
   @NgOneWay('char')
   String char;
@@ -28,15 +28,17 @@ class ChordPosition {
   @NgOneWay('hypen')
   bool hypen = true;
 
-  SongController _songCtrl;
-
-  ChordPosition(this._songCtrl) {
-    _songCtrl.addChpos(this);
+  ChordPosition() {
   }
 
-  void showChordEditor() {
-    if (editable) {
-      _songCtrl.hideChordEditors();
+  void attach() {
+    if(ctrl != null)
+      ctrl.addChpos(this);
+  }
+
+  void showChordEditor(int index) {
+    if (ctrl != null) {
+      ctrl.hideChordEditors();
 
       if (ctrl.song.chords.containsKey(offset.toString())) {
         input = ctrl.song.chords[offset.toString()];
@@ -46,16 +48,17 @@ class ChordPosition {
   }
 
   void setChord() {
-    if (input.isEmpty) {
-      if (ctrl.song.chords.containsKey(offset.toString())) {
-        ctrl.song.chords.remove(offset.toString());
+    if (ctrl != null) {
+      if (input.isEmpty) {
+        if (ctrl.song.chords.containsKey(offset.toString())) 
+          ctrl.song.chords.remove(offset.toString());
+      } else {
+        ctrl.song.chords[offset.toString()] = input;
       }
-    } else {
-      ctrl.song.chords[offset.toString()] = input;
-    }
 
-    chord = input;
-    chordEditor = false;
+      chordEditor = false;
+      chord = input;
+    }
   }
 
   void hideChordEditor() {
