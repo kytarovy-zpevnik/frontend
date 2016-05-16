@@ -25,7 +25,8 @@ class SongCommentsResource {
   Future<List<Comment>> readAllComments(int songId) {
     return _api.get('songs/' + songId.toString() + "/comment").then((HttpResponse response) {
       var comments = response.data.map((data) {
-        return new Comment(id: data['id'], comment: data['comment'], created: data['created'], modified: data['modified'], username: data['username']);
+        return new Comment(id: data['id'], comment: data['comment'], created: DateTime.parse(data['created']),
+                            modified: DateTime.parse(data['modified']), username: data['username']);
       });
 
       return new Future.value(comments);
@@ -37,7 +38,10 @@ class SongCommentsResource {
    */
   Future<Comment> readComment(int id, int commentId) {
     return _api.get('songs/' + id.toString()  + "/comment/" + commentId.toString()).then((HttpResponse response) {
-      return new Comment(id: response.data['id'], comment: response.data['comment'], created: response.data['created'], modified: response.data['modified'], username: response.data['username']);
+      return new Comment(id: response.data['id'], comment: response.data['comment'],
+                          created: DateTime.parse(response.data['created']),
+                          modified: DateTime.parse(response.data['modified']),
+                          username: response.data['username']);
     });
   }
 

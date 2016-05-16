@@ -247,33 +247,37 @@
 
         <h3>Komentáře</h3>
 
-        <form role="form" ng-submit="ctrl2.save()" ng-if="ctrl2.user != null">
-            <textarea placeholder="Přidejte komentář" class="comment form-control" required id="input-comment" ng-model="ctrl2.comment.comment">
-            </textarea>
-            </br>
-            <button type="submit" class="btn btn-success">Uložit</button>
-        </form>
+        <div ng-if="ctrl2.comments.isEmpty">
+            Žádné komentáře k zobrazení.
+        </div>
 
         <div class="comment" ng-repeat="comment in ctrl2.comments">
             <span><b>{{comment.username}} napsal: </b><p class="comment">{{comment.comment}}</p></span>
-            <span><b>Vytvořeno: </b>{{comment.created}}</span>
+            <span>{{ctrl2.formatter.format(comment.modified)}}</span>
             <span ng-if="ctrl2.user != null && ctrl2.user.username == comment.username">
-                <span ng-if="ctrl2.editId != comment.id"
-                    ng-click="ctrl2.prepareEdit(comment.id)"><a>Upravit</a>
+                <span ng-if="ctrl2.comment.id != comment.id">
+                    <a ng-click="ctrl2.prepareEdit(comment)">Upravit</a>
                 </span>
             </span>
             <span ng-if="ctrl2.user != null && (ctrl2.user.username == comment.username || ctrl2.user.role.slug == 'admin')">
-                <span ng-click="ctrl2.delete(comment.id)">
-                    <a>Smazat</a>
-                </span>
+                <a ng-click="ctrl2.delete(comment)">
+                    Smazat
+                </a>
             </span>
-            <form ng-if="ctrl2.editId == comment.id" class="comment" role="form" ng-submit="ctrl2.commentEdit()">
-                <textarea class="form-control comment" required id="edit-comment-{{comment.id}}" ng-model="ctrl2.editComment.comment">
+            <form ng-if="ctrl2.comment.id == comment.id" class="comment" role="form" ng-submit="ctrl2.save()">
+                <textarea class="form-control comment" required ng-model="ctrl2.comment.comment">
                 </textarea>
                 </br>
                 <button type="submit" class="btn btn-success">Uložit</button>
             </form>
         </div>
+
+        <form ng-if="ctrl2.user != null && ctrl2.comment.id == -1" role="form" ng-submit="ctrl2.save()">
+            <textarea placeholder="Přidejte komentář" class="form-control comment" required ng-model="ctrl2.comment.comment">
+            </textarea>
+            </br>
+            <button type="submit" class="btn btn-success">Uložit</button>
+        </form>
     </div>
 </div>
 
