@@ -24,7 +24,6 @@ class SongController {
 
   void computeLyrics() {
     if (song != null) {
-
       this.lyrics = song.computeLyrics();
     }
   }
@@ -85,6 +84,7 @@ class SongController {
 
         return chromaticScale[key];
       });
+
     });
   }
 

@@ -61,6 +61,7 @@ class UserResource {
       return new User(response.data['id'], response.data['username'], response.data['email'], role, response.data['lastLogin']);
     });
   }
+
 }
 
 

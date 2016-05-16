@@ -12,8 +12,7 @@
     </div>
 
     <h1>
-        <span ng-if="ctrl.create && !ctrl.import">Nová píseň</span>
-        <span ng-if="ctrl.create && ctrl.import">Importovat píseň</span>
+        <span ng-if="ctrl.create">Nová píseň</span>
         <span ng-if="!ctrl.create">Editace písně</span>
         <span ng-if="ctrl.song.title != ''" class="text-muted"> {{ctrl.song.title}}</span>
     </h1>
@@ -99,13 +98,6 @@
                 <div class="form-group lyrics">
                     <textarea type="text" class="form-control monospaced" id="input-txt" ng-model="ctrl.textExport"></textarea>
                 </div>
-            </div>
-        </div>
-
-        <div ng-if="ctrl.tab == 3">
-            <div class="form-group">
-                <label for="input-agama">Text s akordy ve formátu agama</label>
-                <textarea type="text" required class="form-control monospaced" id="input-agama" ng-model="ctrl.agama"></textarea>
             </div>
         </div>
 
