@@ -61,40 +61,6 @@ class UserResource {
       return new User(response.data['id'], response.data['username'], response.data['email'], role, response.data['lastLogin']);
     });
   }
-
-<<<<<<< HEAD
-  /**
-   * Reads all shared songbooks.
-   */
-  Future<List<Songbook>> readAllSharedSongbooks(int userId) {
-    return _api.get('users/' + userId.toString() + '/sharing?subject=songbook').then((HttpResponse response) {
-      var songbooks = response.data.map((data) {
-        var tags = [];
-        for (var i = 0; i < response.data['tags'].length; i++) {
-          tags.add(new SongbookTag(response.data['tags'][i]['tag']));
-        }
-        return new Songbook(data['id'], data['name'], data['note'], public: data['public'], username: data['username'], tags: tags);
-      });
-
-      return new Future.value(songbooks);
-    });
-  }
-
-  /**
-   * Reads all shared songs.
-   */
-  Future<List<Song>> readAllSharedSongs(int userId) {
-    return _api.get('users/' + userId.toString() + '/sharing?subject=song').then((HttpResponse response) {
-      var songs = response.data.map((data) {
-        return new Song(data['title'], data['album'], data['author'], data['originalAuthor'], data['year'], data['note'], data['public'], id: data['id'], username: data['username']);
-      });
-
-      return new Future.value(songs);
-    });
-  }
-
-=======
->>>>>>> development
 }
 
 
