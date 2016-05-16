@@ -23,13 +23,12 @@ class SongbookRatingResource {
   /**
    * Reads all songbook ratings.
    */
-  Future<List<Rating>> readAllRating(int songbookId, [bool checkIfRated = false]) {
-    var params = checkIfRated
-    ? {'checkRated': checkIfRated}
-    : {};
-    return _api.get('songbooks/' + songbookId.toString() + "/rating", params: params).then((HttpResponse response) {
+  Future<List<Rating>> readAllRating(int songbookId) {
+    return _api.get('songbooks/' + songbookId.toString() + "/rating").then((HttpResponse response) {
       var ratings = response.data.map((data) {
-        return new Rating(id: data['id'], comment: data['comment'], rating: data['rating'], created: data['created'], modified: data['modified']);
+        return new Rating(id: data['id'], comment: data['comment'], rating: data['rating'],
+                        created: DateTime.parse(data['created']), modified: DateTime.parse(data['modified']),
+                        userId: data['user']['id'], username: data['user']['username']);
       });
 
       return new Future.value(ratings);
@@ -37,18 +36,9 @@ class SongbookRatingResource {
   }
 
   /**
-   * Reads songbook rating by id.
-   */
-  Future<Rating> readRating(int songbookId, int id) {
-    return _api.get('songbooks/' + songbookId.toString()  + "/rating/" + id.toString()).then((HttpResponse response) {
-      return new Rating(id: response.data['id'], comment: response.data['comment'], rating: response.data['rating'], created: response.data['created'], modified: response.data['modified']);
-    });
-  }
-
-  /**
    * Updates songbook rating by id.
    */
-  Future editRating(int songbookId, Rating rating) {
+  Future updateRating(int songbookId, Rating rating) {
     _normalize(rating);
     return _api.put('songbooks/' + songbookId.toString()  + "/rating/" + rating.id.toString()  , data: {
         'comment': rating.comment,
@@ -61,7 +51,7 @@ class SongbookRatingResource {
    * Deletes songbook rating by id.
    */
   Future deleteRating(int songbookId, Rating rating) {
-    return _api.put('songbooks/' + songbookId.toString()  + '/rating/' + rating.id.toString()).then((_){
+    return _api.delete('songbooks/' + songbookId.toString()  + '/rating/' + rating.id.toString()).then((_){
     });
   }
 

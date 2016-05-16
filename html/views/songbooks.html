@@ -1,26 +1,93 @@
 <div songbooks>
-    <div class="pull-right">
-        <form class="form-inline" role="search">
-            <input ng-model="ctrl.search" type="text" class="form-control" placeholder="Hledat zpěvníky">
-            <a href="#/songbook/create" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Nový zpěvník</a>
-        </form>
-    </div>
-    <h1>Zpěvníky</h1>
-    <h2>Vlastní</h2>
-    <div class="row" ng-repeat="songbook in ctrl.songbooks">
-        <div class="col-md-12">
-            <h3><a href="#/songbook/{{songbook.id}}/view">{{songbook.name}}</a></h3>
-            <span ng-if="songbook.note != null"><b>Poznámka:</b>
-                {{songbook.note}}<br></span>
-            <span ng-if="songbook.tagsStr != ''"><b>Tagy:</b>
-                {{songbook.tagsStr}}<br></span>
-            <br>
+    <div ng-if="ctrl.loaded">
+        <div class="pull-right">
+            <form class="form-inline" role="search">
+                <input ng-model="ctrl.search" type="text" class="form-control" placeholder="Filtrovat zpěvníky">
+                <a href="#/songbook/create" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Nový zpěvník</a>
+            </form>
         </div>
-    </div>
-    <h2>Sdílené</h2>
-    <div class="row" ng-repeat="songbook in ctrl.sharedSongbooks">
-        <div class="col-md-12">
-            <h3><a href="#/songbook/{{songbook.id}}/view">{{songbook.name}}</a></h3>
+        <h1>Vlastní a převzaté  zpěvníky</h1>
+        <table class="table table-striped">
+            <tbody>
+                <tr ng-repeat="songbook in ctrl.visibleSongbooks">
+                    <td><a href="#/songbook/{{songbook.id}}/view">{{songbook.name}}</a></td>
+                    <td>{{songbook.numberOfSongs}}</td>
+                    <td>{{songbook.username}}</td>
+                    <td>{{songbook.tagsStr}}<span ng-if="songbook.tagsStr != '' && songbook.privateTagsStr != ''">, </span><span class="text-success">{{songbook.privateTagsStr}}</span></td>
+                    <td>
+                        <span ng-if="songbook.rating < 1">Zatím nehodnoceno</span>
+                        <img ng-if="songbook.rating >= 1" src="img/star.png" width="20" height="20">
+                        <img ng-if="songbook.rating >= 2" src="img/star.png" width="20" height="20">
+                        <img ng-if="songbook.rating >= 3" src="img/star.png" width="20" height="20">
+                        <img ng-if="songbook.rating >= 4" src="img/star.png" width="20" height="20">
+                        <img ng-if="songbook.rating >= 5" src="img/star.png" width="20" height="20">
+                        <br>
+                    </td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <th class="col-md-2"><a ng-click="ctrl.sortBy('name')">
+                    <span ng-if="ctrl.sort == 'name'">
+                        <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                        <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                    </span>
+                        Název
+                    </a></th>
+                    <th class="col-md-1"><a ng-click="ctrl.sortBy('numOfSongs')">
+                        <span ng-if="ctrl.sort == 'numOfSongs'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                        Počet písní
+                    </a></th>
+                    <th class="col-md-2"><a ng-click="ctrl.sortBy('owner')">
+                    <span ng-if="ctrl.sort == 'owner'">
+                        <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                        <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                    </span>
+                        Vlastník
+                    </a></th>
+                    <th class="col-md-2">Tagy</th>
+                    <th class="col-md-2"><a ng-click="ctrl.sortBy('rating')">
+                        <span ng-if="ctrl.sort == 'rating'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                        Průměrné hodnocení
+                    </a></th>
+                    <th class="col-md-1"></th>
+                </tr>
+                <tr>
+                    <th class="col-md-2">
+                        <label for="input-name" class="sr-only"></label>
+                        <input type="text" class="form-control" id="input-name" ng-model="ctrl.filters.name">
+                    </th>
+                    <th class="col-md-1">
+                    </th>
+                    <th class="col-md-2">
+                        <label for="input-owner" class="sr-only"></label>
+                        <input type="text" class="form-control" id="input-owner" ng-model="ctrl.filters.owner">
+                    </th>
+                    <th class="col-md-2">
+                        <label for="input-tag" class="sr-only"></label>
+                        <input type="text" class="form-control" id="input-tag" ng-model="ctrl.filters.tag">
+                    </th>
+                    <th class="col-md-2">
+                    </th>
+                    <th class="col-md-1">
+                        <button class="btn btn-default" ng-click="ctrl.advancedSearch()"><span class="glyphicon glyphicon-search"></span></button>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <div class="centerButton">
+            <span ng-if="ctrl.songbooks.isEmpty">
+                Žádné zpěvníky k zobrazení.
+            </span>
+            <span ng-if="ctrl.existsNext && !ctrl.songbooks.isEmpty">
+                <button class="btn btn-default" ng-click="ctrl.loadSongbooks()">Načíst další</button>
+            </span>
         </div>
     </div>
 </div>

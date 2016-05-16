@@ -2,45 +2,57 @@ part of app;
 
 @Controller(selector: '[songbook]', publishAs: 'ctrl')
 class SongbookController {
-  SongbooksResource _songbooksResource;
-  MessageService _messageService;
+  final SongbooksResource _songbooksResource;
+  final UserResource _userResource;
+  final MessageService _messageService;
   final SessionService _sessionService;
-  RouteProvider _routeProvider;
-  Router _router;
+  final RouteProvider _routeProvider;
+  final Router _router;
 
   Songbook songbook;
   User user;
   bool create;
 
-  SongbookController(this._sessionService, this._songbooksResource, this._messageService, this._routeProvider, this._router) {
+  String targetUser = '';
 
-      create = !_routeProvider.parameters.containsKey('id');
+  bool orderChanging = false;
+
+  SongbookController(this._sessionService, this._songbooksResource, this._userResource, this._messageService, this._routeProvider, this._router) {
+    create = !_routeProvider.parameters.containsKey('id');
+
+    querySelector('html').classes.add('wait');
+    if (_sessionService.session == null) {  // analogicky u dalších controllerů
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
+  }
+
+  _initialize(){
+    if(_sessionService.session != null) {
       User currentUser = _sessionService.session.user;
       this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
-      if(create) {
-        this.songbook = new Songbook('','','', public: false);
-      }
+    }
 
-      else {
-        _songbooksResource.read(_routeProvider.parameters['id']).then((Songbook songbook) {
-          List songs = [];
-          List row;
-          var index = 0;
-          songbook.songs.forEach((Song song) {
-            if (index % 4 == 0) {
-              row = [];
-              row.add(song);
-              songs.add(row);
-            }
-            else {
-              row.add(song);
-            }
-            index++;
-          });
+    if(create) {
+      this.songbook = new Songbook('','', public: false);
+      querySelector('html').classes.remove('wait');
+    }
+    else {
+      _songbooksResource.read(_routeProvider.parameters['id']).then((Songbook songbook) {
+        this.songbook = songbook;
+        querySelector('html').classes.remove('wait');
+      });
+    }
+  }
 
-          this.songbook = new Songbook(songbook.id, songbook.name, songbook.note, username: songbook.username, public: songbook.public, songs: songs, tags: songbook.tags);
-        });
-      }
+  void addTags(){
+    _songbooksResource.update(songbook, 'tags').then((_) {
+      _messageService.prepareSuccess('Uloženo.', 'Tagy byly ke zpěvníku úspěšně přidány.');
+      _router.go('songbook.view', {'id': songbook.id});
+    });
   }
 
   void save() {
@@ -51,10 +63,106 @@ class SongbookController {
       });
     }
     else {
-      _songbooksResource.edit(songbook).then((_){
+      _songbooksResource.update(songbook).then((_){
         _messageService.prepareSuccess('Uloženo.', 'Zpěvník byl úspěšně uložen.');
         _router.go('songbook.view', {'id': songbook.id});
       });
     }
+  }
+
+  void share(){
+    _songbooksResource.shareSongbook(songbook.id, targetUser).then((_) {
+      _messageService.showSuccess('Uloženo.', 'Zpěvník byl úspěšně nasdílen.');
+    }).catchError((ApiError e) {
+      switch (e.error) {
+        case 'DUPLICATE_SHARING':
+          _messageService.showError('Opakované sdílení.', 'S tímto uživatelem zpěvník ' + songbook.name + ' již sdílíte.');
+          break;
+        case 'UNKNOWN_USER':
+          _messageService.showError('Neznámý uživatel.', 'Bohužel neznáme žádného uživatele, který by měl zadané uživatelské jméno.');
+          break;
+      }
+    });
+  }
+
+  void copySongbook() {
+    _songbooksResource.copySongbook(songbook).then((_) {
+      _messageService.prepareSuccess('Vytvořeno.', 'Nový zpěvník byl úspěšně vytvořen.');
+      _router.go('songbook.view', {'id': songbook.id});
+    });
+  }
+
+  void taking() {
+    if (songbook.taken) {
+      _songbooksResource.untakeSongbook(songbook).then((_) {
+        _messageService.showSuccess('Zrušeno.', 'Zpěvník byl úspěšně odebrán ze seznamu převzatých.');
+        songbook.taken = false;
+      });
+    }
+    else {
+      _songbooksResource.takeSongbook(songbook).then((_) {
+        _messageService.showSuccess('Převzato.', 'Zpěvník byl úspěšně převzat.');
+        songbook.taken = true;
+      });
+    }
+  }
+
+  void delete(){
+    _songbooksResource.delete(songbook).then((_){
+      _messageService.prepareSuccess('Smazáno.', 'Zpěvník byl úspěšně smazán.');
+      _router.go('songbooks', {});
+    });
+  }
+
+  void changeOrder() {
+    ElementList cols = querySelectorAll('.draggableSong');
+    if (!orderChanging) {
+      orderChanging = true;
+      songbook.songs.sort((Song a, Song b) {
+        if (a.posInSongbook > b.posInSongbook)
+          return 1;
+        if (b.posInSongbook > a.posInSongbook)
+          return -1;
+        return 0;
+      });
+    }
+    else {
+      orderChanging = false;
+      songbook.songs.clear();
+      _songbooksResource.read(_routeProvider.parameters['id']).then((Songbook songbook) {
+        this.songbook = songbook;
+      });
+    }
+  }
+
+  void saveOrder() {
+    orderChanging = false;
+    _songbooksResource.update(songbook, 'songs').then((_) {
+      _messageService.showSuccess("Aktualizován", "Seznam písní ve zpěvníku byl úspěšně aktualizován.");
+    });
+  }
+
+  void moveSong(Song song, int dir) {
+    song.posInSongbook += dir;
+    print(song.posInSongbook);
+    if(song.posInSongbook > songbook.songs.length || song.posInSongbook < 1){
+      songbook.songs.forEach((Song songIn){
+        if(songIn.id == song.id)
+          return;
+        songIn.posInSongbook += dir;
+      });
+
+      song.posInSongbook -= dir * (songbook.songs.length);
+    }
+    else {
+      songbook.songs.elementAt(song.posInSongbook-1).posInSongbook -= dir;
+    }
+    songbook.songs.sort((Song a, Song b){
+      if(a.posInSongbook > b.posInSongbook)
+        return 1;
+      if(b.posInSongbook > a.posInSongbook)
+        return -1;
+      return 0;
+    });
   }
 }

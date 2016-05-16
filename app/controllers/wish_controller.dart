@@ -13,54 +13,55 @@ class WishController {
   bool create;
   User user;
 
-  Set songs = [];
-  String _searchByName = '';
-  String _searchByInterpret = '';
-  String get searchByName => _searchByName;
-  String get searchByInterpret => _searchByInterpret;
+  List songs = [];
 
-  set searchByName(String search) {
-    _searchByName = search;
-    _songResource.readAll(searchPublic: search).then(_processSongs);
-  }
-
-  set searchByInterpret(String search) {
-    _searchByInterpret = search;
-    _songResource.readAll(searchPublic: search).then(_processSongs);
-  }
-
-  _processSongs(Set<Song> songs) {
-    var add = true;
-    songs.forEach((Song song) {
-      if (song.username != this.user.username) {
-        this.songs.forEach((Song songInSet) {
-          if (song.id == songInSet.id) {
-            add = false;
-          }
-        });
-        if (add) {
-          this.songs.add(song);
-        }
-      }
-    });
-  }
-
+  var formatter = new DateFormat('d.M.yyyy HH:mm');
 
   WishController(this._sessionService, this._wishesResource, this._songResource, this._messageService, this._routeProvider, this._router) {
     create = !_routeProvider.parameters.containsKey('id');
+
+    querySelector('html').classes.add('wait');
+    if (_sessionService.session == null) {  // analogicky u dalších controllerů
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
+  }
+
+  _initialize(){
+    if(_sessionService.session != null) {
+      User currentUser = _sessionService.session.user;
+      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    }
+    this.songs.clear();
+
     if(create) {
       this.wish = new Wish();
+      querySelector('html').classes.remove('wait');
     }
     else {
       _wishesResource.read(_routeProvider.parameters['id']).then((Wish wish) {
-        this.wish = new Wish(id: wish.id, name: wish.name, interpret: wish.interpret, note: wish.note, created: wish.created, modified: wish.modified);
-        //_sessionService.initialized.then((_) {
-          user = _sessionService.session.user;
-          this.user = new User(user.id, user.username, user.email, user.role, user.lastLogin);
-          refresh();
-        //});
+        this.wish = wish;
+        if(_routeProvider.routeName == "edit")
+          querySelector('html').classes.remove('wait');
+        else {
+          Map filters = {'title': wish.name, 'author': wish.interpret};
+          _songResource.readAll(0, null, null, public: true, filters: filters).then((List<Song> songs){
+            _processSongs(songs);
+            querySelector('html').classes.remove('wait');
+          });
+        }
       });
     }
+  }
+
+  _processSongs(List<Song> songs) {
+    songs.forEach((Song song) {
+      if (song.username != this.user.username)
+        this.songs.add(song);
+    });
   }
 
   void save() {
@@ -71,16 +72,18 @@ class WishController {
       });
     }
     else {
-      _wishesResource.edit(wish).then((_){
-        _messageService.prepareSuccess('Uloženo.', 'Přání bylo úspěšně uloženo.');
+      _wishesResource.update(wish).then((_){
+        _messageService.prepareSuccess('Upraveno.', 'Přání bylo úspěšně upraveno.');
         _router.go('wish.view', {'id': wish.id});
       });
     }
   }
 
-  void refresh() {
-    this.songs.clear();
-    this.searchByName = wish.name;
-    this.searchByInterpret = wish.interpret;
+  void delete(){
+    _wishesResource.delete(wish).then((_){
+      _messageService.prepareSuccess('Smazáno.', 'Přání bylo úspěšně smazáno.');
+      _router.go('wishes', {});
+    });
   }
+
 }

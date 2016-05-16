@@ -3,59 +3,80 @@ part of app;
 @Controller(selector: '[public-songs]', publishAs: 'ctrl')
 class PublicSongsController {
 
-  final SongsResource _songResource;
+  final SongsResource _songsResource;
   final MessageService _messageService;
+  SessionService _sessionService;
 
-  User user;
   List songs = [];
+  List visibleSongs = [];
   String _search = '';
   String get search => _search;
-  bool advSearchVisible = false;
-  Map<String, String> filters = {};
-  SessionService _sessionService;
+  Filters filters;
+
+  bool loaded = false;
+
+  bool existsNext = true;
+  String sort = 'title';
+  bool revert = false;
 
   set search(String search) {
     _search = search;
-    if (_search == '') {
-      _songResource.readAll(searchAllPublic: false).then(_processSongs);
-    }
+    _filterSongs();
+  }
+
+  PublicSongsController(this._sessionService, this._songsResource, this._messageService) {
+    this.songs.clear();
+    this.visibleSongs.clear();
+    filters = new Filters();
+
+    loadSongs().then((_){
+      loaded = true;
+    });
+  }
+
+  Future loadSongs() {
+    querySelector('html').classes.add('wait');
+    return _songsResource.readAll(songs.length, sort, revert ? 'desc' : 'asc', public: true, filters: filters.filters).then((List<Song> songs) {
+      _processSongs(songs);
+      if(songs.length != 20)
+        existsNext = false;
+      querySelector('html').classes.remove('wait');
+      return new Future.value(null);
+    });
+  }
+
+  void sortBy(String sort) {
+    if(this.sort == sort)
+      revert = !revert;
     else {
-      _songResource.readAll(searchPublic: search).then(_processSongs);
+      this.sort = sort;
+      revert = false;
     }
-
+    this.songs.clear();
+    this.visibleSongs.clear();
+    existsNext = true;
+    loadSongs();
   }
 
-  toggleAdvSearch() {
-    advSearchVisible = !(advSearchVisible);
-  }
-
-  advSearch() {
-    _songResource.readAll(filters: filters).then(_processSongs);
-  }
-
-  PublicSongsController(this._sessionService, this._songResource, this._messageService) {
-    _songResource.readAll(searchAllPublic: false).then(_processSongs);
-    user = _sessionService.session.user;
-    this.user = new User(user.id, user.username, user.email, user.role, user.lastLogin);
+  void advancedSearch() {
+    this.songs.clear();
+    this.visibleSongs.clear();
+    existsNext = true;
+    loadSongs();
   }
 
   _processSongs(List<Song> songs) {
-    this.songs.clear();
-    List row;
-    var index = 0;
     songs.forEach((Song song) {
-      if (song.username == this.user.username) {
-        index--;
-      }
-      else if(index % 4 == 0){
-        row = [];
-        row.add(song);
-        this.songs.add(row);
-      }
-      else{
-        row.add(song);
-      }
-      index++;
+      this.songs.add(song);
+      this.visibleSongs.add(song);
+    });
+  }
+
+  _filterSongs(){
+    this.visibleSongs.clear();
+    this.songs.forEach((Song song){
+      if(song.contains(_search))
+        visibleSongs.add(song);
     });
   }
 }

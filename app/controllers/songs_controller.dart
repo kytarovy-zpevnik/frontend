@@ -3,68 +3,127 @@ part of app;
 @Controller(selector: '[songs]', publishAs: 'ctrl')
 class SongsController {
 
-  final SongsResource _songResource;
+  final SongsResource _songsResource;
+  final SongbooksResource _songbooksResource;
   final MessageService _messageService;
   SessionService _sessionService;
+  final RouteProvider _routeProvider;
   final UserResource _userResource;
 
   List songs = [];
-  List sharedSongs = [];
+  List visibleSongs = [];
   String _search = '';
   String get search => _search;
-  bool advSearchVisible = false;
-  Map<String, String> filters = {};
+  Filters filters;
+
+  bool loaded = false;
+  Songbook songbook = null;
+
+  bool existsNext = true;
+  String sort = 'title';
+  bool revert = false;
 
   set search(String search) {
     _search = search;
-    _songResource.readAll(search: search).then(_processSongs);
+    _filterSongs();
   }
 
-  toggleAdvSearch() {
-    advSearchVisible = !(advSearchVisible);
+  SongsController(this._sessionService, this._songsResource, this._songbooksResource, this._messageService, this._userResource, this._routeProvider) {
+    querySelector('html').classes.add('wait');
+    if (_sessionService.session == null) {
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
   }
 
-  advSearch() {
-    _songResource.readAll(filters: filters).then(_processSongs);
-  }
-
-  SongsController(this._sessionService, this._songResource, this._messageService, this._userResource) {
-    _songResource.readAll().then(_processSongs);
-    var user = _sessionService.session.user;
-    _userResource.readAllSharedSongs(user.id).then(_processSharedSongs);
-  }
-
-  _processSongs(List<Song> songs) {
+  _initialize(){
     this.songs.clear();
-    List row;
-    var index = 0;
-    songs.forEach((Song song) {
-      if(index % 4 == 0){
-        row = [];
-        row.add(song);
-        this.songs.add(row);
+    this.visibleSongs.clear();
+    var user = _sessionService.session.user;
+    filters = new Filters();
+
+    loadSongs().then((_){
+      if (_routeProvider.parameters.containsKey('songbookId')) {
+        querySelector('html').classes.add('wait');
+        _songbooksResource.read(_routeProvider.parameters['songbookId']).then((Songbook songbook) {
+          this.songbook = songbook;
+          loaded = true;
+          querySelector('html').classes.remove('wait');
+        });
       }
-      else{
-        row.add(song);
+      else {
+        loaded = true;
       }
-      index++;
     });
   }
 
-  _processSharedSongs(List<Song> songs) {
-    this.sharedSongs.clear();
-    List row;
-    var index = 0;
+  Future loadSongs() {
+    querySelector('html').classes.add('wait');
+    return _songsResource.readAll(songs.length, sort, revert ? 'desc' : 'asc', filters: filters.filters).then((List<Song> songs) {
+      _processSongs(songs);
+      if(songs.length != 20)
+        existsNext = false;
+      querySelector('html').classes.remove('wait');
+      return new Future.value(null);
+    });
+  }
+
+  void sortBy(String sort) {
+    if(this.sort == sort)
+      revert = !revert;
+    else {
+      this.sort = sort;
+      revert = false;
+    }
+    this.songs.clear();
+    this.visibleSongs.clear();
+    existsNext = true;
+    loadSongs();
+  }
+
+  void advancedSearch() {
+    this.songs.clear();
+    this.visibleSongs.clear();
+    existsNext = true;
+    loadSongs();
+  }
+
+  _processSongs(List<Song> songs) {
     songs.forEach((Song song) {
-      if(index % 4 == 0){
-        row = [];
-        row.add(song);
-        this.sharedSongs.add(row);
+      this.songs.add(song);
+      this.visibleSongs.add(song);
+    });
+  }
+
+  _filterSongs() {
+    this.visibleSongs.clear();
+    this.songs.forEach((Song song){
+      if(song.contains(_search))
+        visibleSongs.add(song);
+    });
+  }
+
+  void addToSongbook(Song song) {
+    songbook.songs.add(song);
+  }
+
+  void removeFromSongbook(Song song) {
+
+    var toRemove;
+    songbook.songs.forEach((songbooksong) {
+      if (songbooksong.id == song.id) {
+        toRemove = songbooksong;
       }
-      else{
-        row.add(song);
-      }
-      index++;
+    });
+    songbook.songs.remove(toRemove);
+  }
+
+  void saveSongbook(){
+    _songbooksResource.update(songbook, 'songs').then((_){
+      _messageService.showSuccess("Aktualizován", "Seznam písní ve zpěvníku byl úspěšně aktualizován.");
     });
   }
 

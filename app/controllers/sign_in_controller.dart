@@ -5,15 +5,27 @@ class SignInController {
   final SessionService _sessionService;
   final Router _router;
   final MessageService _messageService;
+  final NotificationService _notificationService;
 
   String identifier;
   String password;
   bool longLife = false;
+  bool loaded = false;
 
-  SignInController(this._sessionService, this._router, this._messageService);
+  SignInController(this._sessionService, this._router, this._messageService, this._notificationService){
+    _sessionService.checkSession().then((_) {
+      if(_sessionService.session != null)
+        _router.go('homepage', {});
+      else {
+        loaded = true;
+        querySelector('html').classes.remove('wait');
+      }
+    });
+  }
 
   void signIn() {
     _sessionService.establish(identifier, password, longLife).then((_) {
+      _notificationService.loadNotifications();
       _messageService.prepareSuccess('Přihlášen.', 'Přihlášení proběhlo úspěšně.');
       _router.go('homepage', {});
     }).catchError((ApiError e) {

@@ -1,22 +1,95 @@
 <div songbook_ratings songbook-ratings>
-
-    <div class="pull-right">
-        <form class="form-inline" role="search">
-            <a ng-if="ctrl.user.username != ctrl.songbook.username" href="#/songbook/{{ctrl.songbook.id}}/rating/edit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Ohodnotit</a>
+    <div ng-if="ctrl.newRating != null">
+        <div class="pull-right">
+            <span ng-if="ctrl.user != null">
+                <span ng-if="ctrl.user.role.slug == 'admin'">
+                    <a ng-click="ctrl.admin = !ctrl.admin" class="btn btn-default">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        <span ng-if="!ctrl.admin">Promazat hodnocení</span>
+                        <span ng-if="ctrl.admin">Ukončit mazání</span>
+                    </a>
+                </span>
+                <a ng-if="ctrl.user.username != ctrl.songbook.username && ctrl.user.role.slug != 'admin' && ctrl.rated" ng-click="ctrl.deleteRating(ctrl.newRating)" class="btn btn-default">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    Smazat hodnocení
+                </a>
+                <a ng-if="ctrl.user.username != ctrl.songbook.username" data-toggle="modal" data-target="#rating" class="btn btn-success">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span ng-if="!ctrl.rated">Přidat hodnocení</span>
+                    <span ng-if="ctrl.rated">Upravit hodnocení</span>
+                </a>
+            </span>
             <a href="#/songbook/{{ctrl.songbook.id}}/view" class="btn btn-default">Zpět</a>
-        </form>
+        </div>
+
+        <h1>Hodnocení zpěvníku {{ctrl.songbook.name}}</h1>
+        <div class="meta">
+            <span><b>Celkový počet hodnocení:</b>
+            {{ctrl.ratingSum}}<br></span>
+            <span><b>Průměr hodnocení:</b>
+                <span ng-if="ctrl.avgRating < 1">Zatím nehodnoceno</span>
+                <img ng-if="ctrl.avgRating >= 1" src="img/star.png" width="20" height="20">
+                <img ng-if="ctrl.avgRating >= 2" src="img/star.png" width="20" height="20">
+                <img ng-if="ctrl.avgRating >= 3" src="img/star.png" width="20" height="20">
+                <img ng-if="ctrl.avgRating >= 4" src="img/star.png" width="20" height="20">
+                <img ng-if="ctrl.avgRating >= 5" src="img/star.png" width="20" height="20">
+                <br>
+            </span>
+        </div>
+        <div class="row" ng-repeat="row in ctrl.ratings">
+            <div class="col-md-4 rating" ng-repeat="rating in row">
+                <div>
+                    <img ng-if="rating.rating >= 1" src="img/star.png" width="20" height="20">
+                    <img ng-if="rating.rating >= 2" src="img/star.png" width="20" height="20">
+                    <img ng-if="rating.rating >= 3" src="img/star.png" width="20" height="20">
+                    <img ng-if="rating.rating >= 4" src="img/star.png" width="20" height="20">
+                    <img ng-if="rating.rating >= 5" src="img/star.png" width="20" height="20">
+                    <span class="pull-right">
+                        <b>{{rating.username}}</b>, {{ctrl.formatter.format(rating.modified)}}
+                    </span>
+                </div>
+                <br>
+                <p>{{rating.comment}}</p>
+                <button ng-if="ctrl.admin" type="button" class="close" ng-click="ctrl.deleteRating(rating)">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+            </div>
+        </div>
     </div>
 
-    <h1>Hodnocení zpěvníku {{ctrl.songbook.name}}</h1>
-    <div class="meta" ng-repeat="rating in ctrl.ratings">
-        <img ng-if="rating.rating >= 1" src="img/star.png" width="20" height="20">
-        <img ng-if="rating.rating >= 2" src="img/star.png" width="20" height="20">
-        <img ng-if="rating.rating >= 3" src="img/star.png" width="20" height="20">
-        <img ng-if="rating.rating >= 4" src="img/star.png" width="20" height="20">
-        <img ng-if="rating.rating >= 5" src="img/star.png" width="20" height="20">
-        </br>
-        <span><b>Komentář: </b>{{rating.comment}}</br></span>
-        </br>
-    </div>
+    <!-- create ratig modal -->
+    <div class="modal fade" id="rating" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="tagLabel">Ohodnotit zpěvník {{ctrl.songbook.name}}</h4>
+                </div>
+                <form class="rating" role="form" ng-submit="ctrl.saveRating()">
+                    <div class="modal-body">
+                        <img ng-click="ctrl.newRating.rating = 1" ng-if="ctrl.newRating.rating >= 1" src="img/star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 2" ng-if="ctrl.newRating.rating >= 2" src="img/star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 3" ng-if="ctrl.newRating.rating >= 3" src="img/star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 4" ng-if="ctrl.newRating.rating >= 4" src="img/star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 5" ng-if="ctrl.newRating.rating >= 5" src="img/star.png" width="20" height="20">
 
+                        <img ng-click="ctrl.newRating.rating = 1" ng-if="ctrl.newRating.rating < 1" src="img/empty_star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 2" ng-if="ctrl.newRating.rating < 2" src="img/empty_star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 3" ng-if="ctrl.newRating.rating < 3" src="img/empty_star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 4" ng-if="ctrl.newRating.rating < 4" src="img/empty_star.png" width="20" height="20">
+                        <img ng-click="ctrl.newRating.rating = 5" ng-if="ctrl.newRating.rating < 5" src="img/empty_star.png" width="20" height="20">
+
+                        <div class="form-group">
+                            <label for="input-note">Komentář</label>
+                            <input type="text" required class="form-control" id="input-note" ng-model="ctrl.newRating.comment">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+                        <button type="submit" class="btn btn-primary">Odeslat</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

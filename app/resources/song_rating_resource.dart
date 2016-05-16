@@ -23,13 +23,12 @@ class SongRatingResource {
   /**
    * Reads all song ratings.
    */
-  Future<List<Rating>> readAllRating(int songId, [bool checkIfRated = false]) {
-    var params = checkIfRated
-    ? {'checkRated': checkIfRated}
-    : {};
-    return _api.get('songs/' + songId.toString() + "/rating", params: params).then((HttpResponse response) {
+  Future<List<Rating>> readAllRating(int songId) {
+    return _api.get('songs/' + songId.toString() + "/rating").then((HttpResponse response) {
       var ratings = response.data.map((data) {
-        return new Rating(id: data['id'], comment: data['comment'], rating: data['rating'], created: data['created'], modified: data['modified']);
+        return new Rating(id: data['id'], comment: data['comment'], rating: data['rating'],
+                        created: DateTime.parse(data['created']), modified: DateTime.parse(data['modified']),
+                        userId: data['user']['id'], username: data['user']['username']);
       });
 
       return new Future.value(ratings);
@@ -37,18 +36,9 @@ class SongRatingResource {
   }
 
   /**
-   * Reads song rating by id.
-   */
-  Future<Rating> readRating(int id, int ratingId) {
-    return _api.get('songs/' + id.toString()  + "/rating/" + ratingId.toString()).then((HttpResponse response) {
-      return new Rating(id: response.data['id'], comment: response.data['comment'], rating: response.data['rating'], created: response.data['created'], modified: response.data['modified']);
-    });
-  }
-
-  /**
    * Updates song rating by id.
    */
-  Future editRating(int id, Rating rating) {
+  Future updateRating(int id, Rating rating) {
     _normalize(rating);
     int ratingId = rating.id;
     return _api.put('songs/' + id.toString()  + "/rating/" + ratingId.toString()  , data: {
@@ -62,7 +52,7 @@ class SongRatingResource {
    * Deletes song rating by id.
    */
   Future deleteRating(int songId, Rating rating) {
-    return _api.put('songs/' + songId.toString()  + '/rating/' + rating.id.toString()).then((_){
+    return _api.delete('songs/' + songId.toString()  + '/rating/' + rating.id.toString()).then((_){
     });
   }
 

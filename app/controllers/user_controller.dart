@@ -4,14 +4,32 @@ part of app;
 class UserController {
   final UserResource _userResource;
   final MessageService _messageService;
+  final SessionService _sessionService;
+
+  var formatter = new DateFormat('d.M.yyyy H:m');
 
   List<User> users = [];
+  User user;
 
-  UserController(this._userResource, this._messageService) {
+  UserController(this._sessionService, this._userResource, this._messageService) {
+    querySelector('html').classes.add('wait');
+    if (_sessionService.session == null) {
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
+  }
+
+  _initialize() {
+    User currentUser = _sessionService.session.user;
+    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+
     _loadUsers();
   }
 
-  void toAdmin(int index) {
+    void toAdmin(int index) {
     users[index].role.slug = 'admin';
     _userResource.update(users[index]);
   }
@@ -26,6 +44,7 @@ class UserController {
       users.forEach((User user) {
         this.users.add(user);
       });
+      querySelector('html').classes.remove('wait');
     });
   }
 }

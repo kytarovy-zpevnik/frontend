@@ -1,0 +1,56 @@
+<div admin-songbooks>
+    <div ng-if="ctrl.loaded">
+        <h1>Nahrané zpěvníky</h1>
+        <table class="table table-striped">
+            <tbody>
+            <tr ng-repeat="songbook in ctrl.songbooks">
+                <td>{{songbook.id}}</td>
+                <td><a href="#/songbook/{{songbook.id}}/view">{{songbook.name}}</a></td>
+                <td>{{songbook.username}}</td>
+                <td>{{songbook.tagsStr}}<span ng-if="songbook.tagsStr != '' && songbook.privateTagsStr != ''">, </span><span class="text-success">{{songbook.privateTagsStr}}</span></td>
+                <td ng-if="!songbook.archived">
+                    <button class="btn btn-danger" ng-click="ctrl.delete(songbook)">Smazat</button>
+                </td>
+                <td ng-if="songbook.archived">
+                    <button class="btn btn-success" ng-click="ctrl.restore(songbook)">Obnovit</button>
+                </td>
+            </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th><a ng-click="ctrl.sortBy('id')">
+                        <span ng-if="ctrl.sort == 'id'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    #
+                </a></th>
+                <th><a ng-click="ctrl.sortBy('name')">
+                        <span ng-if="ctrl.sort == 'name'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Název
+                </a></th>
+                <th><a ng-click="ctrl.sortBy('owner')">
+                        <span ng-if="ctrl.sort == 'owner'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Vlastník
+                </a></th>
+                <th>Tagy</th>
+                <th>Akce</th>
+            </tr>
+            </thead>
+        </table>
+        <div class="centerButton">
+            <span ng-if="ctrl.songbooks.isEmpty">
+                Žádné zpěvníky k zobrazení.
+            </span>
+            <span ng-if="ctrl.existsNext && !ctrl.songbooks.isEmpty">
+                <button class="btn btn-default" ng-click="ctrl.loadSongbooks()">Načíst další</button>
+            </span>
+        </div>
+    </div>
+</div>

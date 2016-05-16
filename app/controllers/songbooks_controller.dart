@@ -3,40 +3,94 @@ part of app;
 @Controller(selector: '[songbooks]', publishAs: 'ctrl')
 class SongbooksController {
 
-  final SongbooksResource _songbookResource;
+  final SongbooksResource _songbooksResource;
   final MessageService _messageService;
   SessionService _sessionService;
   final UserResource _userResource;
 
   List songbooks = [];
-
-  List sharedSongbooks = [];
-
+  List visibleSongbooks = [];
   String _search = '';
-
   String get search => _search;
+  Filters filters;
+
+  bool loaded = false;
+
+  bool existsNext = true;
+  String sort = 'name';
+  bool revert = false;
 
   set search(String search) {
-    _songbookResource.readAll(search).then(_processSongbooks);
+    _search = search;
+    _filterSongbooks();
   }
 
-  SongbooksController(this._sessionService, this._songbookResource, this._messageService, this._userResource) {
-    _songbookResource.readAll().then(_processSongbooks);
-    var user = _sessionService.session.user;
-    _userResource.readAllSharedSongbooks(user.id).then(_processSharedSongbooks);
+  SongbooksController(this._sessionService, this._songbooksResource, this._messageService, this._userResource) {
+    querySelector('html').classes.add('wait');
+    if (_sessionService.session == null) {  // analogicky u dalších controllerů
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
   }
 
-  void _processSongbooks(List<Songbook> songbooks) {
+  _initialize(){
     this.songbooks.clear();
-    songbooks.forEach((Songbook songbook) {
-      this.songbooks.add(songbook);
+    this.visibleSongbooks.clear();
+    var user = _sessionService.session.user;
+    filters = new Filters();
+
+    loadSongbooks().then((_){
+      loaded = true;
+    });
+
+  }
+
+  Future loadSongbooks() {
+    querySelector('html').classes.add('wait');
+    return _songbooksResource.readAll(songbooks.length, sort, revert ? 'desc' : 'asc', filters: filters.filters).then((List<Songbook> songbooks) {
+      _processSongbooks(songbooks);
+      if(songbooks.length != 20)
+        existsNext = false;
+      querySelector('html').classes.remove('wait');
+      return new Future.value(null);
     });
   }
 
-  void _processSharedSongbooks(List<Songbook> songbooks) {
-    this.sharedSongbooks.clear();
+  void sortBy(String sort) {
+    if(this.sort == sort)
+      revert = !revert;
+    else {
+      this.sort = sort;
+      revert = false;
+    }
+    this.songbooks.clear();
+    this.visibleSongbooks.clear();
+    existsNext = true;
+    loadSongbooks();
+  }
+
+  void advancedSearch() {
+    this.songbooks.clear();
+    this.visibleSongbooks.clear();
+    existsNext = true;
+    loadSongbooks();
+  }
+
+  void _processSongbooks(List<Songbook> songbooks) {
     songbooks.forEach((Songbook songbook) {
-      this.sharedSongbooks.add(songbook);
+      this.songbooks.add(songbook);
+      this.visibleSongbooks.add(songbook);
+    });
+  }
+
+  _filterSongbooks(){
+    this.visibleSongbooks.clear();
+    this.songbooks.forEach((Songbook songbook){
+      if(songbook.contains(_search))
+        visibleSongbooks.add(songbook);
     });
   }
 

@@ -8,8 +8,8 @@ class Wish {
   String name = '';
   String interpret = '';
   String note = '';
-  String created = '';
-  String modified = '';
+  DateTime created;
+  DateTime modified;
 
   Wish({this.id, this.name, this.interpret, this.note, this.created, this.modified});
 }

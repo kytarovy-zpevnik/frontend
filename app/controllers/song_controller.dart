@@ -4,6 +4,7 @@ part of app;
 class SongController {
   final SongsResource _songsResource;
   final SongbooksResource _songbooksResource;
+  final UserResource _userResource;
   final MessageService _messageService;
   final SessionService _sessionService;
   final RouteProvider _routeProvider;
@@ -13,199 +14,159 @@ class SongController {
 
   User user;
 
-  bool create;
-
-  int tab = 0;
-
-  String agama;
-
-  bool import = false;
-
   List lyrics = [];
 
-  List items = [];
+  List allSongbooks = [];
 
-  List<ChordPosition> chpos = [];
+  int transposition = 0;
+
+  String targetUser = '';
 
   void computeLyrics() {
-    var offset = 0;
-
-    var sections = [];
-
     if (song != null) {
-      var first = true;
-      song.lyrics.split('\n\n').forEach((String section) {
-        if (first) {
-          first = false;
-        } else {
-          offset += 2; // count in delimiting \n\n
-        }
-        var rowOffset = section.indexOf('))');
-        var title = '';
 
-        if (section.indexOf('((') == 0 && rowOffset != -1) {
-          print(rowOffset);
-          title = section.substring(2, rowOffset) + ':';
-          rowOffset += 2;
-        } else {
-          rowOffset = 0;
-        }
-
-        first = true;
-        var lines = [];
-        section.substring(rowOffset).trim().split('\n').forEach((String line) {
-          if (first) {
-            first = false;
-          } else {
-            offset++;  // count in delimiting \n
-          }
-          var chars = [];
-          line.split('').forEach((String char) {
-            chars.add({
-                'offset': offset++,
-                'char': char
-            });
-          });
-          lines.add(chars);
-        });
-
-        sections.add({
-            'title': title,
-            'lines': lines
-        });
-      });
+      this.lyrics = song.computeLyrics();
     }
-
-    lyrics = sections;
   }
 
-  SongController(this._sessionService, this._songsResource, this._songbooksResource, this._messageService, this._routeProvider, this._router) {
-    import = _routeProvider.routeName == 'importSong';
-    create = !_routeProvider.parameters.containsKey('id') || import;
+  SongController(this._sessionService, this._songsResource, this._songbooksResource, this._userResource, this._messageService, this._routeProvider, this._router) {
 
-    User currentUser = _sessionService.session.user;
-    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
-    if (create) {
-      song = new Song('', '', '', '', '', '', false);
+    querySelector('html').classes.add('wait');
+    if (_sessionService.session == null) {  // analogicky u dalších controllerů
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
+  }
 
-      if (_routeProvider.parameters.containsKey('songbookId')) {
-        _songbooksResource.read(_routeProvider.parameters['songbookId']).then((Songbook songbook) {
-          song.songbooks.add(songbook);
+  _initialize(){
+    if(_sessionService.session != null) {
+      User currentUser = _sessionService.session.user;
+      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    }
+
+    _songsResource.read(_routeProvider.parameters['id'], old: (_routeProvider.routeName == "old")).then((Song song) {
+      this.song = song;
+      computeLyrics();
+      if(this.user != null){
+        _songbooksResource.readAll(0, null, null, justOwned: true).then((List<Songbook> songbooks) {
+          songbooks.forEach((Songbook songbook){
+            this.allSongbooks.add(songbook);
+          });
+          querySelector('html').classes.remove('wait');
         });
       }
+      else{
+        querySelector('html').classes.remove('wait');
+      }
 
-      _songbooksResource.readAll().then((List<Songbook> songbooks) {
-        songbooks.forEach((Songbook songbook) {
-          this.items.add({
-            'songbook': songbook,
-            'included': false
-          });
-        });
-      });
-
-    } else {
-      _songsResource.read(_routeProvider.parameters['id']).then((Song song) {
-        this.song = song;
-        computeLyrics();
-
-        _songbooksResource.readAll().then((List<Songbook> songbooks) {
-          songbooks.forEach((Songbook songbook) {
-            var included = false;
-
-            song.songbooks.forEach((Songbook songsongbook) {
-              if (songbook.id == songsongbook.id) {
-                included = true;
-              }
-            });
-
-            this.items.add({
-              'songbook': songbook,
-              'included': included
-            });
-          });
-        });
-      });
-    }
-  }
-
-  void export() {
-    _songsResource.export(_routeProvider.parameters['id']).then((String agama) {
-      this.agama = agama;
     });
   }
 
   void transpose(int transposition) {
-    transposition %= 12; // shift by 0-12 semitones
-    _songsResource.read(_routeProvider.parameters['id'], transposition).then((Song song) {
-      this.song = song;
-      computeLyrics();
+    this.transposition += transposition;
+    this.transposition %= 12;
+
+    String notePattern = 'C#|D#|F#|G#|C|D|E|F|G|A|B|H';
+    List<String> chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'B', 'H'];
+
+    this.song.chords.forEach((int k, String chord){
+
+      this.song.chords[k] = chord.replaceAllMapped(new RegExp(notePattern), (Match match){
+        int key = chromaticScale.indexOf(match.group(0));
+        key += transposition;
+
+        if(key >= chromaticScale.length)
+          key -= chromaticScale.length;
+        if(key < 0)
+          key += chromaticScale.length;
+
+        return chromaticScale[key];
+      });
     });
   }
 
-  void addToSongbook(int index) {
-    items[index]['included'] = true;
-    song.songbooks.add(items[index]['songbook']);
-    _songsResource.update(song).then((_){
-      _messageService.showSuccess("Přidána", "Písnička byla úspěšně přidána do zpěvníku.");
-      _router.go('songs.view', {'id': song.id});
+  void addTags(){
+    _songsResource.update(song, 'tags').then((_) {
+      _messageService.prepareSuccess('Uloženo.', 'Tagy byly k písni úspěšně přidány.');
+      _router.go('song.view', {'id': song.id});
     });
   }
 
-  void removeFromSongbook(int index) {
-    items[index]['included'] = false;
+  void addToSongbook(Songbook songbook) {
+    song.songbooks.add(songbook);
+  }
 
+  void removeFromSongbook(Songbook songbook) {
     var toRemove;
-    song.songbooks.forEach((songbook) {
-      if (songbook.id == items[index]['songbook'].id) {
-        toRemove = songbook;
+    song.songbooks.forEach((songsongbook) {
+      if (songsongbook.id == songbook.id) {
+        toRemove = songsongbook;
       }
     });
-
     song.songbooks.remove(toRemove);
-    _songsResource.update(song).then((_){
-      _messageService.showSuccess('Odebrána','Píseň byla úspěšně odebrána ze zpěvníku.');
+  }
+
+  void saveSongbooks(){
+    _songsResource.update(song, 'songbooks').then((_){
+      _messageService.showSuccess('Aktualizován','Seznam zpěvníků obsahujících tuto píseň byl úspěšně aktualizován.');
     });
   }
 
-  void save() {
-    if (create) {
-      if (import) {
-        _songsResource.import(song, agama).then((_) {
-          _messageService.prepareSuccess('Imortováno.', 'Nová píseň byla úspěšně naimportována.');
-          _router.go('song.view', {
-              'id': song.id
-          });
-        });
-      } else {
-        _songsResource.create(song).then((_) {
-          _messageService.prepareSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
-          _router.go('song.view', {
-              'id': song.id
-          });
-        });
+  void discardCopy(){
+    _songsResource.discardCopy(song).then((_){
+      song.copy = null;
+      song.old = false;
+      _messageService.prepareSuccess('Uloženo.', 'Nadále sledujete aktuální verzi písně.');
+      _router.go('song.view', {'id': song.id});
+    });
+  }
+
+  void share(){
+    _songsResource.shareSong(song.id, targetUser).then((_) {
+      _messageService.showSuccess('Uloženo.', 'Píseň byla úspěšně nasdílena.');
+    }).catchError((ApiError e) {
+      switch (e.error) {
+        case 'DUPLICATE_SHARING':
+          _messageService.showError('Opakované sdílení.', 'S tímto uživatelem píseň ' + song.title + ' již sdílíte.');
+          break;
+        case 'UNKNOWN_USER':
+          _messageService.showError('Neznámý uživatel.', 'Bohužel neznáme žádného uživatele, který by měl zadané uživatelské jméno.');
+          break;
       }
-    } else {
-      _songsResource.update(song).then((_) {
-        _messageService.prepareSuccess('Uloženo.', 'Píseň byla úspěšně uložena.');
-        _router.go('song.view', {'id': song.id});
+    });
+  }
+
+  void copySong() {
+    _songsResource.copySong(song).then((_) {
+      _messageService.prepareSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
+      _router.go('song.view', {'id': song.id});
+    });
+  }
+
+  void taking() {
+    if (song.taken) {
+      _songsResource.untakeSong(song).then((_) {
+        song.copy = null;
+        song.old = false;
+        _messageService.showSuccess('Zrušeno.', 'Píseň byla úspěšně odebrána ze seznamu převzatých.');
+        song.taken = false;
+      });
+    }
+    else {
+      _songsResource.takeSong(song).then((_) {
+        _messageService.showSuccess('Převzato.', 'Píseň byla úspěšně převzata.');
+        song.taken = true;
       });
     }
   }
 
-  void addChpos(ChordPosition chpos) {
-    this.chpos.add(chpos);
-  }
-
-  void hideChordEditors() {
-    this.chpos.forEach((chpos) {
-      chpos.hideChordEditor();
-    });
-  }
-
-  void takeSong() {
-    _songsResource.takeSong(song).then((_) {
-      _messageService.prepareSuccess('Vytvořeno.', 'Nová píseň byla úspěšně vytvořena.');
-      _router.go('song.view', {'id': song.id});
+  void delete(){
+    _songsResource.delete(song).then((_){
+      _messageService.prepareSuccess('Smazáno.', 'Píseň byla úspěšně smazána.');
+      _router.go('songs', {});
     });
   }
 

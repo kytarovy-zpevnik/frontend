@@ -5,40 +5,45 @@ part of app;
     templateUrl: 'html/templates/chord_position.html',
     publishAs: 'cmp',
     useShadowDom: false)
-class ChordPosition {
+class ChordPosition implements AttachAware {
   @NgOneWay('offset')
   int offset;
 
   @NgTwoWay('ctrl')
-  SongController ctrl;
+  SongEditController ctrl = null;
 
-  @NgOneWay('char')
-  String char;
+  @NgOneWay('text')
+  String text;
+
+  @NgOneWay('hypen')
+  bool hypen = true;
+
+  @NgOneWay('padding')
+  bool padding = true;
+
+  @NgOneWay('chord')
+  String chord = '';
 
   bool chordEditor = false;
 
   String input = '';
 
-  @NgOneWay('chord')
-  String chord = '';
+  int editorOffset;
 
-  @NgOneWay('editable')
-  bool editable = true;
-
-  @NgOneWay('hypen')
-  bool hypen = true;
-
-  SongController _songCtrl;
-
-  ChordPosition(this._songCtrl) {
-    _songCtrl.addChpos(this);
+  ChordPosition() {
   }
 
-  void showChordEditor() {
-    if (editable) {
-      _songCtrl.hideChordEditors();
+  void attach() {
+    if(ctrl != null)
+      ctrl.addChpos(this);
+  }
 
-      if (ctrl.song.chords.containsKey(offset.toString())) {
+  void showChordEditor(int index) {
+    if (ctrl != null) {
+      editorOffset = offset + index;
+      ctrl.hideChordEditors();
+
+      if (editorOffset == offset) {
         input = ctrl.song.chords[offset.toString()];
       }
       chordEditor = true;
@@ -46,16 +51,18 @@ class ChordPosition {
   }
 
   void setChord() {
-    if (input.isEmpty) {
-      if (ctrl.song.chords.containsKey(offset.toString())) {
-        ctrl.song.chords.remove(offset.toString());
+    if (ctrl != null) {
+      if (input.isEmpty) {
+        if (editorOffset == offset) {
+          ctrl.song.chords.remove(offset.toString());
+        }
+      } else {
+        ctrl.song.chords[editorOffset.toString()] = input;
       }
-    } else {
-      ctrl.song.chords[offset.toString()] = input;
-    }
 
-    chord = input;
-    chordEditor = false;
+      chordEditor = false;
+      ctrl.computeLyrics();
+    }
   }
 
   void hideChordEditor() {

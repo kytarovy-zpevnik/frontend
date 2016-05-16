@@ -1,5 +1,56 @@
 <div homepage>
     <h1>Úvodní stránka</h1>
     <p>Vítejte na projektu kytarového zpěvníku.</p>
-    <p>Tato aplikace je nyní ve vývojové verzi 0.3.0.</p>
+
+    <h3>Náhodný výběr <a href="#/public-songs">veřejných písní</a></h3>
+    <div class="row" ng-repeat="row in ctrl.songs">
+        <div class="col-md-3" ng-repeat="song in row">
+            <h4><a href="#/song/{{song.id}}/view">{{song.title}}</a></h4>
+                <span ng-if="song.author != null"><b>Autor</b>
+                {{song.author}}<br></span>
+                <span ng-if="song.album != null"><b>Album</b>
+                {{song.album}}<br></span>
+                <span ng-if="song.year != null"><b>Rok</b>
+                {{song.year}}<br></span>
+                <span ng-if="song.tagsStr != '' || song.privateTagsStr != ''"><b>Tagy:</b>
+                    {{song.tagsStr}}
+                    <span ng-if="song.tagsStr != '' && song.privateTagsStr != ''">, </span>
+                    <span class="text-success">{{song.privateTagsStr}}</span><br>
+                </span>
+                <span ng-if="song.username != null"><b>Vlastník:</b>
+                {{song.username}}<br></span>
+                <span><b>Průměr hodnocení:</b>
+                    <span ng-if="song.rating < 1">Zatím nehodnoceno</span>
+                    <img ng-if="song.rating >= 1" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 2" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 3" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 4" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 5" src="img/star.png" width="20" height="20">
+                    <br>
+                </span>
+        </div>
+    </div>
+
+    <h3>Náhodný výběr <a href="#/public-songbooks">veřejných zpěvníků</a></h3>
+    <div class="row" ng-repeat="row in ctrl.songbooks">
+        <div class="col-md-3" ng-repeat="songbook in row">
+            <h4><a href="#/songbook/{{songbook.id}}/view">{{songbook.name}}</a></h4>
+                <span ng-if="songbook.tagsStr != '' || songbook.privateTagsStr != ''"><b>Tagy:</b>
+                    {{songbook.tagsStr}}
+                    <span ng-if="songbook.tagsStr != '' && songbook.privateTagsStr != ''">, </span>
+                    <span class="text-success">{{songbook.privateTagsStr}}</span><br>
+                </span>
+                <span ng-if="songbook.username != null"><b>Vlastník:</b>
+                {{songbook.username}}<br></span>
+                <span><b>Průměr hodnocení:</b>
+                    <span ng-if="songbook.rating < 1">Zatím nehodnoceno</span>
+                    <img ng-if="songbook.rating >= 1" src="img/star.png" width="20" height="20">
+                    <img ng-if="songbook.rating >= 2" src="img/star.png" width="20" height="20">
+                    <img ng-if="songbook.rating >= 3" src="img/star.png" width="20" height="20">
+                    <img ng-if="songbook.rating >= 4" src="img/star.png" width="20" height="20">
+                    <img ng-if="songbook.rating >= 5" src="img/star.png" width="20" height="20">
+                    <br>
+                </span>
+        </div>
+    </div>
 </div>

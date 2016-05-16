@@ -10,7 +10,7 @@ class NotificationsResource {
   NotificationsResource(this._api);
 
   /**
-   * Returns all (or unread only) notifications for actually logged in user.
+   * Returns all (or unread only) notifications for currently logged user.
    */
   Future<List<Notification>> readAll([bool unreadOnly = false]) {
     var params = unreadOnly
@@ -18,7 +18,8 @@ class NotificationsResource {
       : {};
     return _api.get('notifications', params: params).then((HttpResponse response) {
       var notifications = response.data.map((data) {
-        return new Notification(data['id'], DateTime.parse(data['created']), data['read'], data['text'], data['target']);
+        return new Notification(data['id'], DateTime.parse(data['created']),
+                              data['read'], data['username'], data['action'], data['target']);
       });
       return new Future.value(notifications);
     });
@@ -29,6 +30,32 @@ class NotificationsResource {
    */
   Future updateAll(bool read) {
     return _api.put('notifications', data: {'read' : read}).then((_) {
+      return new Future.value();
+    });
+  }
+
+  /**
+   * Deletes all given notifications.
+   */
+  Future deleteAll(List notifications) {
+    var ids = [];
+    notifications.forEach((notification) {
+      ids.add({
+          'id': notification.id
+      });
+    });
+
+    return _api.delete('notifications', data: {
+        'notifications': ids
+    });
+
+  }
+
+  /**
+   * Marks given notification as read.
+   */
+  Future update(Notification notification, bool read) {
+    return _api.put('notifications/' + notification.id.toString(), data: {'read' : read}).then((_) {
       return new Future.value();
     });
   }

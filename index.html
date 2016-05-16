@@ -9,6 +9,9 @@
 
     <title>Kytarový zpěvník</title>
 
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-select.min.css" rel="stylesheet">
 
@@ -17,6 +20,9 @@
 
     <!-- build -->
     <link rel="stylesheet" href="css/screen.css" type="text/css">
+
+    <script src="js/web_components/webcomponents.min.js"></script>
+    <script src="js/web_components/dart_support.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -33,7 +39,17 @@
         <messages></messages>
         <ng-view></ng-view>
     </div>
+    <div class="push"></div>
 </div>
+<footer>
+    <hr>
+    <p>v1.0 |
+        <a href="#/guide">Uživatelská příručka</a></p>
+    <p>
+        <a href="mailto: george.mantlik(at)gmail.com">Jiří Mantlík</a>
+        &copy; 2015-2016
+    </p>
+</footer>
 
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>

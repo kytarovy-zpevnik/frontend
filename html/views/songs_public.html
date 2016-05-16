@@ -1,30 +1,120 @@
 <div public-songs>
-    <div class="pull-right">
-        <form class="form-inline" role="search">
-            <div class="form-group">
-                <input ng-model="ctrl.search" type="text" class="form-control" placeholder="Hledat písně">
-            </div>
-        </form>
-    </div>
+    <div ng-if="ctrl.loaded">
+        <div class="pull-right">
+            <form class="form-inline" role="search">
+                <div class="form-group">
+                    <input ng-model="ctrl.search" type="text" class="form-control" placeholder="Filtrovat písně">
+                </div>
+            </form>
+        </div>
 
-    <h1>Veřejné písně</h1>
-    <div class="row" ng-repeat="row in ctrl.songs">
-        <div class="col-md-3" ng-repeat="song in row">
-            <h3><a href="#/song/{{song.id}}/view">{{song.title}}</a></h3>
-                <span ng-if="song.author != null"><b>Autor</b>
-                {{song.author}}<br></span>
-                <span ng-if="song.originalAuthor != null"><b>Původní autor</b>
-                {{song.originalAuthor}}<br></span>
-                <span ng-if="song.album != null"><b>Album</b>
-                {{song.album}}<br></span>
-                <span ng-if="song.year != null"><b>Rok</b>
-                {{song.year}}<br></span>
-                <span ng-if="song.note != null"><b>Poznámka</b>
-                {{song.note}}<br></span>
-                <span ng-if="song.tagsStr != ''"><b>Tagy:</b>
-                {{song.tagsStr}}<br></span>
-                <span ng-if="song.username != null"><b>Vlastník:</b>
-                {{song.username}}<br></span>
+        <h1>Veřejné písně</h1>
+        <table class="table table-striped">
+            <tbody>
+            <tr ng-repeat="song in ctrl.visibleSongs">
+                <td><a href="#/song/{{song.id}}/view">{{song.title}}</a></td>
+                <td>{{song.author}}</td>
+                <td>{{song.album}}</td>
+                <td>{{song.year}}</td>
+                <td>{{song.username}}</td>
+                <td>{{song.tagsStr}}<span ng-if="song.tagsStr != '' && song.privateTagsStr != ''">, </span><span class="text-success">{{song.privateTagsStr}}</span></td>
+                <td>
+                    <span ng-if="song.rating < 1">Zatím nehodnoceno</span>
+                    <img ng-if="song.rating >= 1" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 2" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 3" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 4" src="img/star.png" width="20" height="20">
+                    <img ng-if="song.rating >= 5" src="img/star.png" width="20" height="20">
+                </td>
+            </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th class="col-md-2"><a ng-click="ctrl.sortBy('title')">
+                        <span ng-if="ctrl.sort == 'title'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Název
+                </a></th>
+                <th class="col-md-2"><a ng-click="ctrl.sortBy('author')">
+                        <span ng-if="ctrl.sort == 'author'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Autor
+                </a></th>
+                <th class="col-md-2"><a ng-click="ctrl.sortBy('album')">
+                        <span ng-if="ctrl.sort == 'album'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Album
+                </a></th>
+                <th class="col-md-1"><a ng-click="ctrl.sortBy('year')">
+                        <span ng-if="ctrl.sort == 'year'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Rok
+                </a></th>
+                <th class="col-md-1"><a ng-click="ctrl.sortBy('owner')">
+                        <span ng-if="ctrl.sort == 'owner'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Vlastník
+                </a></th>
+                <th class="col-md-2">Tagy</th>
+                <th class="col-md-2"><a ng-click="ctrl.sortBy('rating')">
+                    <span ng-if="ctrl.sort == 'rating'">
+                        <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                        <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                    </span>
+                    Průměrné hodnocení
+                </a></th>
+                <th class="col-md-1"></th>
+            </tr>
+            <tr>
+                <th class="col-md-2">
+                    <label for="input-title" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-title" ng-model="ctrl.filters.title">
+                </th>
+                <th class="col-md-2">
+                    <label for="input-author" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-author" ng-model="ctrl.filters.author">
+                </th>
+                <th class="col-md-2">
+                    <label for="input-album" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-album" ng-model="ctrl.filters.album">
+                </th>
+                <th class="col-md-1">
+                    <label for="input-year" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-year" ng-model="ctrl.filters.year">
+                </th>
+                <th class="col-md-1">
+                    <label for="input-owner" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-owner" ng-model="ctrl.filters.owner">
+                </th>
+                <th class="col-md-2">
+                    <label for="input-tag" class="sr-only"></label>
+                    <input type="text" class="form-control" id="input-tag" ng-model="ctrl.filters.tag">
+                </th>
+                <th class="col-md-2">
+                </th>
+                <th class="col-md-1">
+                    <button class="btn btn-default" ng-click="ctrl.advancedSearch()"><span class="glyphicon glyphicon-search"></span></button>
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <div class="centerButton">
+            <span ng-if="ctrl.songs.isEmpty">
+                Žádné písně k zobrazení.
+            </span>
+            <span ng-if="ctrl.existsNext && !ctrl.songs.isEmpty">
+                <button class="btn btn-default" ng-click="ctrl.loadSongs()">Načíst další</button>
+            </span>
         </div>
     </div>
 </div>

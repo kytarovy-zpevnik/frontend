@@ -1,10 +1,41 @@
 <div notifications>
+    <div class="pull-right">
+        <a ng-if="!ctrl.deleting" ng-click="ctrl.deleting = true" class="btn btn-default">Promazat notifikace</a>
+        <a ng-if="ctrl.deleting" ng-click="ctrl.deleteNotifications()" class="btn btn-default">Smazat označené</a>
+        <a ng-click="ctrl.readAllNotifications()" class="btn btn-default">Označit vše jako přečtené</a>
+    </div>
     <h1>Upozornění</h1>
-    <div class="row" ng-repeat="notification in ctrl.notifications">
-        <div class="notification">
-            <p><b>{{ctrl.formatter.format(notification.created)}}</b></p>
-            <p><span ng-if="notification.targetName.isNotEmpty" class="label label-primary">{{notification.targetName}}</span> {{notification.text}}</p>
-            <a ng-if="notification.targetType.isNotEmpty" href="#{{notification.url}}">Přejít na {{notification.targetType}}</a>
-        </div>
+    <div class="media notification" ng-repeat="notification in ctrl.notifications"
+         ng-style="{'background-color': (notification.read ? '#ffffff' : '#f8f8f8')}">
+        <a ng-if="!ctrl.deleting" href="#{{notification.url}}" ng-click="ctrl.readNotification(notification)">
+            <span class="media-left">
+                <span class="glyphicon {{notification.targetType}}"></span>
+            </span>
+            <span class="media-body">
+                <h4 class="media-heading"><div ng-bind-html="notification.text"></div></h4>
+                {{ctrl.formatter.format(notification.created)}}
+            </span>
+        </a>
+        <span ng-if="ctrl.deleting" class="linkReplacement">
+            <span class="media-left">
+                <span class="glyphicon {{notification.targetType}}"></span>
+            </span>
+            <span class="media-body">
+                <h4 class="media-heading"><div ng-bind-html="notification.text"></div></h4>
+                {{ctrl.formatter.format(notification.created)}}
+            </span>
+            <span class="media-right">
+                    <span ng-if="!ctrl.toDelete.contains(notification)">
+                        <button class="btn btn-default" ng-click="ctrl.toDelete.add(notification)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </span>
+                    <span ng-if="ctrl.toDelete.contains(notification)">
+                        <button class="btn btn-danger" ng-click="ctrl.toDelete.remove(notification)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </span>
+            </span>
+        </span>
     </div>
 </div>

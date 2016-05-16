@@ -1,14 +1,42 @@
-input#search-query {
-  width: 20em;
+* {
+  margin: 0;
+}
+html, body {
+  height: 100%;
 }
 
 div.content {
   margin-top: 80px;
 }
 
+div.container {
+  min-height: 100%;
+  height: auto !important; /* This line and the next line are not necessary unless you need IE6 support */
+  height: 100%;
+  margin: 0 auto -55px; /* the bottom margin is the negative value of the footer's height */
+}
+
+div.push, footer {
+  height: 55px; /* .push must be the same height as .footer */
+
+  hr {
+    margin: 5px auto;
+    border-width: 2px;
+  }
+
+  p {
+    margin: 0;
+    text-align: center;
+  }
+}
+
 form.songbook_rating, form.song_rating, form.wish, form.sign-in, form.register, form.reset-password, form.songbook, form.song div.form-group input {
   width: 400px;
   margin-bottom: 20px;
+}
+
+div.meta {
+  margin: 2em 0 2em 0;
 }
 
 div[songbook] {
@@ -22,6 +50,7 @@ div[songbook] {
   textarea {
     width: 100%;
     height: 30em;
+    resize: none;
   }
 
   textarea.comment {
@@ -34,16 +63,51 @@ div[songbook] {
     padding-left: 0em;
     margin-bottom: 0em;
   }
+
+  ul {
+    margin-top: 1em;
+  }
 }
 
-div[song] {
+div[song], div[song-edit] {
   p {
     padding-left: 6em;
     margin-bottom: 3em;
   }
 
+  a:hover {
+    text-decoration: none;
+  }
+
   div.meta {
-    margin: 2em 0 3.5em 0;
+    margin: 2em 0 2em 0;
+    width: 50%;
+    float: left;
+    padding-right: 10px;
+  }
+
+  div.central {
+    width: 60%;
+  }
+
+  #transpose {
+    margin: 1em 0 2em 0;
+  }
+
+  #transpose a {
+    font-weight: bold;
+  }
+
+  #transpose input {
+    width: 34px;
+    padding: 6px;
+    text-align: center;
+  }
+
+  #transpose input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 
   ul {
@@ -52,6 +116,14 @@ div[song] {
 
   div.tab-chords {
     margin-top: 3.5em;
+    width: 60%;
+    float: right;
+  }
+
+  div.lyrics {
+    margin-top: 3.5em;
+    width: 40%;
+    float: left;
   }
 
   form > div {
@@ -61,6 +133,7 @@ div[song] {
   textarea {
     width: 100%;
     height: 30em;
+    resize: none;
   }
 
   textarea.comment {
@@ -74,32 +147,81 @@ div[song] {
     margin-bottom: 0em;
   }
   section {
+    clear: left;
     position: relative;
     margin-bottom: 3em;
   }
 
   span.title {
     position: absolute;
-    top: 1.5em;
+    top: 0;
     left: 0;
     width: 6em;
     display: block;
     font-weight: bold;
     margin-bottom: 3em;
+
+    &.padded {
+      top: 1.5em;
+    }
   }
 
   // chord editor begin
 
-  span.offset {
+  span.lyrics-substr {
     float: left;
-    padding-top: 1.5em;
-  }
 
-  span.chord {
-    color: #3c763d;
-    font-weight: bold;
-    float: left;
-    margin-top: -1.5em;
+    &.padded {
+      padding-top: 1.5em;
+
+      span.editor {
+        top: 4.5em;
+      }
+    }
+
+    span.chord {
+      color: #3c763d;
+      font-weight: bold;
+      float: left;
+      margin-top: -1.5em;
+    }
+
+    span.text {
+      display: block;
+
+      position: relative;
+      z-index: 1;
+
+      &.hypen:before {
+        border-top: 2px solid #ccc;
+        content:"";
+        margin: 0 auto; // this centers the line to the full width specified
+        position: absolute; // positioning must be absolute here, and relative positioning must be applied to the parent
+        top: 0.7em; left: 0; right: 0; bottom: 0;
+        width: 95%;
+        z-index: -1;
+      }
+    }
+
+    span.char {
+      display: block;
+      float: left;
+      background: #fff;
+    }
+
+    span.editor {
+      font-size: 0.66em;
+      display: block;
+      position: absolute;
+      top: 3em;
+      width: 16.2em;
+      height: 6em;
+      padding: 1em;
+      background-color: #eee;
+      border: 1px solid #888;
+      font-weight: normal;
+      z-index: 99;
+    }
   }
 
   p.line {
@@ -107,53 +229,15 @@ div[song] {
     margin-bottom: 0.5em;
   }
 
-  span.editor {
-    font-size: 0.66em;
-    display: block;
-    position: absolute;
-    top: 4.5em;
-    width: 16.2em;
-    height: 6em;
-    padding: 1em;
-    background-color: #eee;
-    border: 1px solid #888;
-    font-weight: normal;
-    z-index: 99;
-  }
-
-  span.char {
-    display: block;
-
-    position: relative;
-    z-index: 1;
-
-    &.hypen:before {
-      border-top: 2px solid #ccc;
-      content:"";
-      margin: 0 auto; /* this centers the line to the full width specified */
-      position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
-      top: 50%; left: 0; right: 0; bottom: 0;
-      width: 95%;
-      z-index: -1;
-    }
-
-    span {
-      background: #fff;
-    }
-  }
-
-  &[edit] {
+  &[song-edit] {
     section {
-      font-size: 1.5em;
+      font-size: 1.3em;
     }
 
-    span.offset span.char:hover {
+    span.lyrics-substr span.char:hover {
       font-weight: bold;
       background-color: #ffff88;
       cursor: pointer;
-      span {
-        background-color: #ffff88;
-      }
     }
   }
 
@@ -172,6 +256,14 @@ div[song] {
   color: #31708f;
 }
 
+div.centerButton {
+  text-align: center;
+}
+
+th, th a, th a:hover {
+  color: inherit;
+}
+
 a {
   cursor: pointer;
 }
@@ -187,13 +279,48 @@ a {
 }
 
 div.notification {
-  margin: 18px;
-  background-color: #f8f8f8;
-  border: 1px solid #E7E7E7;
+  margin: 0px;
+  border-top: 2px solid #E7E7E7;
+}
+
+div.notification a, div.notification span.linkReplacement {
+  color: #333;
+  display: block;
   padding: 6px;
 }
 
-form.comment, div.comment {
+div.notification a:hover {
+  text-decoration: none;
+  background-color: #f8f8f8;
+}
+
+.wait {
+  cursor: wait !important;
+}
+
+.navbar-brand {
+  padding: 0px 15px;
+}
+
+div.smaller-modal {
+  width: 300px;
+}
+
+div.smaller-modal  li  a {
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+  display: block;
+}
+div.smaller-modal li a:hover {
+  color: #262626;
+  background-color: #f5f5f5;
+}
+
+form.comment, div.comment, div.rating {
   margin: 18px;
   background-color: #f8f8f8;
   border: 1px solid #E7E7E7;

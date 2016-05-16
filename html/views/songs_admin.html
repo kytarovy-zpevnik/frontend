@@ -1,0 +1,80 @@
+<div admin-songs>
+    <div ng-if="ctrl.loaded">
+        <h1>Nahrané písně</h1>
+        <table class="table table-striped">
+            <tbody>
+            <tr ng-repeat="song in ctrl.songs">
+                <td>{{song.id}}</td>
+                <td><a href="#/song/{{song.id}}/view">{{song.title}}</a></td>
+                <td>{{song.author}}</td>
+                <td>{{song.album}}</td>
+                <td>{{song.year}}</td>
+                <td>{{song.username}}</td>
+                <td>{{song.tagsStr}}<span ng-if="song.tagsStr != '' && song.privateTagsStr != ''">, </span><span class="text-success">{{song.privateTagsStr}}</span></td>
+                <td ng-if="!song.archived">
+                    <button class="btn btn-danger" ng-click="ctrl.delete(song)">Smazat</button>
+                </td>
+                <td ng-if="song.archived">
+                    <button class="btn btn-success" ng-click="ctrl.restore(song)">Obnovit</button>
+                </td>
+            </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th class="col-md-1"><a ng-click="ctrl.sortBy('id')">
+                        <span ng-if="ctrl.sort == 'id'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    #
+                </a></th>
+                <th class="col-md-2"><a ng-click="ctrl.sortBy('title')">
+                        <span ng-if="ctrl.sort == 'title'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Název
+                </a></th>
+                <th class="col-md-2"><a ng-click="ctrl.sortBy('author')">
+                        <span ng-if="ctrl.sort == 'author'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Autor
+                </a></th>
+                <th class="col-md-2"><a ng-click="ctrl.sortBy('album')">
+                        <span ng-if="ctrl.sort == 'album'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Album
+                </a></th>
+                <th class="col-md-1"><a ng-click="ctrl.sortBy('year')">
+                        <span ng-if="ctrl.sort == 'year'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Rok
+                </a></th>
+                <th class="col-md-1"><a ng-click="ctrl.sortBy('owner')">
+                        <span ng-if="ctrl.sort == 'owner'">
+                            <b ng-if="!ctrl.revert" class="glyphicon glyphicon-triangle-top"></b>
+                            <b ng-if="ctrl.revert" class="glyphicon glyphicon-triangle-bottom"></b>
+                        </span>
+                    Vlastník
+                </a></th>
+                <th class="col-md-2">Tagy</th>
+                <th class="col-md-1">Akce</th>
+            </tr>
+            </thead>
+        </table>
+        <div class="centerButton">
+            <span ng-if="ctrl.songs.isEmpty">
+                Žádné písně k zobrazení.
+            </span>
+            <span ng-if="ctrl.existsNext && !ctrl.songs.isEmpty">
+                <button class="btn btn-default" ng-click="ctrl.loadSongs()">Načíst další</button>
+            </span>
+        </div>
+    </div>
+</div>

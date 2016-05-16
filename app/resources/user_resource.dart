@@ -28,7 +28,7 @@ class UserResource {
     return _api.get('users').then((HttpResponse response) {
       var users = response.data.map((data) {
         var role = new Role(data['role']['id'], data['role']['slug'], data['role']['name']);
-        var user = new User(data['id'], data['username'], data['email'], role, data['lastLogin']);
+        var user = new User(data['id'], data['username'], data['email'], role, DateTime.parse(data['lastLogin']));
         return user;
       });
 
@@ -62,6 +62,7 @@ class UserResource {
     });
   }
 
+<<<<<<< HEAD
   /**
    * Reads all shared songbooks.
    */
@@ -92,6 +93,8 @@ class UserResource {
     });
   }
 
+=======
+>>>>>>> development
 }
 
 

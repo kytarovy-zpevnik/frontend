@@ -12,16 +12,13 @@ class BarComponent {
   final SessionService _sessionService;
   final MessageService _messageService;
   final Router _router;
-  final NotificationsResource _notificationsResource;
+  final NotificationService _notificationService;
 
-  bool unread = 0;
-  List<Notification> notifications = [];
+  BarComponent(this._sessionService, this._messageService, this._router, this._notificationService);
 
-  BarComponent(this._sessionService, this._messageService, this._router, this._notificationsResource) {
-    _loadNotifications().then((_) {
-      unread = notifications.length;
-    });
-  }
+  List<Notification> get notifications => _notificationService.unread;
+
+  int get unread => _notificationService.unread.length;
 
   bool get loggedIn => _sessionService.session != null;
 
@@ -29,20 +26,8 @@ class BarComponent {
 
   String get username => _sessionService.session.user.username;
 
-  void readNotifications() {
-    _notificationsResource.updateAll(true).then((_) {
-      unread = 0;
-    });
-  }
-
-  Future _loadNotifications() {
-    return _notificationsResource.readAll(true).then((notifications) {
-      this.notifications.clear();
-      notifications.forEach((notification) {
-        this.notifications.add(notification);
-      });
-      return new Future.value();
-    });
+  void readNotification(Notification notification){
+    _notificationService.readNotification(notification);
   }
 
   void signOut() {

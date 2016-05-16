@@ -6,20 +6,45 @@ class SongbookCommentsController {
   SongbookCommentsResource _commentsResource;
   SessionService _sessionService;
   MessageService _messageService;
-  Router _router;
   RouteProvider _routeProvider;
 
   List comments = [];
   User user;
   Comment comment;
-  Comment editComment;
   int songbookId;
-  int editId;
 
-  var formatter = new DateFormat('d. M. yyyy H:m');
+  var formatter = new DateFormat('d.M.yyyy HH:mm');
 
-  SongbookCommentsController(this._router, this._messageService, this._commentsResource, this._sessionService, this._routeProvider) {
-    refresh();
+  SongbookCommentsController(this._messageService, this._commentsResource, this._sessionService, this._routeProvider) {
+    querySelector('html').classes.add('wait');
+    if (_sessionService.session == null) {  // analogicky u dalších controllerů
+      _sessionService.initialized.then((_) {
+        _initialize();
+      });
+    } else {
+      _initialize();
+    }
+  }
+
+  _initialize(){
+    if(_sessionService.session != null) {
+      User currentUser = _sessionService.session.user;
+      this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
+    }
+
+    songbookId = _routeProvider.parameters['id'];
+    loadComments();
+  }
+
+  Future loadComments() {
+    querySelector('html').classes.add('wait');
+    return _commentsResource.readAllComments(songbookId).then((List<Comment> comments) {
+      _processComments(comments);
+      comment = new Comment();
+      comment.id = -1;
+      querySelector('html').classes.remove('wait');
+      return new Future.value(null);
+    });
   }
 
   void _processComments(List<Comment> comments) {
@@ -30,44 +55,29 @@ class SongbookCommentsController {
   }
 
   void save() {
-    _commentsResource.createComment(songbookId, this.comment).then((_) {
-      _messageService.showSuccess('Vytvořeno.', 'Nový komentář byla úspěšně přidán.');
-      refresh();
-      _router.go('songbook.view', {'id': this.songbookId});
+    if(this.comment.id == -1) {
+      _commentsResource.createComment(songbookId, comment).then((_) {
+        _messageService.showSuccess('Vytvořeno.', 'Nový komentář byl úspěšně přidán.');
+        loadComments();
+      });
+    }
+    else {
+      _commentsResource.updateComment(songbookId, comment).then((_) {
+        _messageService.showSuccess('Upraveno.', 'Komentář byl úspěšně upraven.');
+        loadComments();
+      });
+    }
+  }
+
+  void delete(Comment comment) {
+    _commentsResource.deleteComment(songbookId, comment.id).then((_) {
+      _messageService.showSuccess('Odstraněno.', 'Komentář byl úspěšně odebrán.');
+      comments.remove(comment);
     });
   }
 
-  void delete(int id) {
-    _commentsResource.deleteComment(songbookId, id).then((_) {
-      _messageService.showSuccess('Odstraněno.', 'Komentář byla úspěšně odebrán.');
-      refresh();
-      _router.go('songbook.view', {'id': this.songbookId});
-    });
-  }
-
-  void commentEdit() {
-    _commentsResource.editComment(songbookId, editComment).then((_) {
-      _messageService.showSuccess('Změněno.', 'Komentář byl úspěšně změněn.');
-      refresh();
-      _router.go('song.view', {'id': this.songbookId});
-    });
-  }
-
-  void prepareEdit(int id) {
-    this.editId = id;
-    _commentsResource.readComment(songbookId, editId).then((Comment comment){
-      this.editComment = comment;
-    });
-  }
-
-  void refresh() {
-    User currentUser = null;
-    currentUser = _sessionService.session.user;
-    this.user = new User(currentUser.id, currentUser.username, currentUser.email, currentUser.role, currentUser.lastLogin);
-    this.comment = new Comment();
-    this.editComment = new Comment();
-    songbookId = _routeProvider.parameters['id'];
-    editId = 0;
-    _commentsResource.readAllComments(songbookId).then(_processComments);
+  void prepareEdit(Comment comment) {
+    this.comment.id = comment.id;
+    this.comment.comment = comment.comment;
   }
 }

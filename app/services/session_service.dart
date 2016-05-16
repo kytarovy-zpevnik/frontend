@@ -15,11 +15,30 @@ class SessionService {
       _sessionResource.get(_sessionToken.sessionToken).then((Session session) {
         _session = session;
         _completer.complete();
-      });
+      }).catchError((ApiError error) {
+        if (error.code == 400)
+          _completer.complete();
+        });
+    }
+    else {
+      _completer.complete();
     }
   }
 
   Session get session => _session;
+
+  Future checkSession() {
+    _session = null;
+    if (_sessionToken.sessionToken != null) {
+      return _sessionResource.get(_sessionToken.sessionToken).then((Session session) {
+        _session = session;
+        return new Future.value();
+      }).catchError((ApiError error) {
+        return new Future.value();
+      });
+    }
+    return new Future.value();
+  }
 
   /**
    * Establishes new session.
