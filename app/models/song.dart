@@ -94,7 +94,7 @@ class Song {
        {this.originalAuthor, this.note, this.username, this.id, lyrics, this.chords, this.songbooks,
        tags, this.archived, this.rating, this.taken, this.copy, this.numOfRating, this.old, this.posInSongbook}) {
     this.tags = tags;
-    this._lyrics = lyrics;
+    if (lyrics != null) this._lyrics = lyrics;
     if (chords == null) chords = {};
     if (songbooks == null) songbooks = [];
   }
@@ -139,8 +139,8 @@ class Song {
 
     var sections = [];
 
-    if(!lyrics.isEmpty) {
-      this.lyrics.split('\n\n').forEach((String section) {
+    if(!_lyrics.isEmpty) {
+      this._lyrics.split('\n\n').forEach((String section) {
         if (!sections.isEmpty)
           offset += 2;
         // count in delimiting \n\n
