@@ -1,108 +1,109 @@
 <div song-edit>
-    <div class="btn-group pull-right">
-        <span ng-if="ctrl.create">
-            <span ng-if="ctrl.createInSongbook != null">
-                <a href="#/songbook/{{ctrl.createInSongbook}}/view" class="btn btn-default">Zpět</a>
+    <div ng-if="ctrl.song != null">
+        <div class="btn-group pull-right">
+            <span ng-if="ctrl.create">
+                <span ng-if="ctrl.createInSongbook != null">
+                    <a href="#/songbook/{{ctrl.createInSongbook}}/view" class="btn btn-default">Zpět</a>
+                </span>
+                <span ng-if="ctrl.createInSongbook == null">
+                    <a href="#/songs" class="btn btn-default">Zpět</a>
+                </span>
             </span>
-            <span ng-if="ctrl.createInSongbook == null">
-                <a href="#/songs" class="btn btn-default">Zpět</a>
-            </span>
-        </span>
-        <span ng-if="!ctrl.create"><a href="#/song/{{ctrl.song.id}}/view" class="btn btn-default">Zpět</a></span>
-    </div>
+            <span ng-if="!ctrl.create"><a href="#/song/{{ctrl.song.id}}/view" class="btn btn-default">Zpět</a></span>
+        </div>
 
-    <h1>
-        <span ng-if="ctrl.create">Nová píseň</span>
-        <span ng-if="!ctrl.create">Editace písně</span>
-        <span ng-if="ctrl.song.title != ''" class="text-muted"> {{ctrl.song.title}}</span>
-    </h1>
+        <h1>
+            <span ng-if="ctrl.create">Nová píseň</span>
+            <span ng-if="!ctrl.create">Editace písně</span>
+            <span ng-if="ctrl.song.title != ''" class="text-muted"> {{ctrl.song.title}}</span>
+        </h1>
 
-    <ul class="nav nav-tabs" role="tablist">
-        <li ng-class="{active: ctrl.tab == 0}"><a ng-click="ctrl.tab = 0" role="tab">Informace</a></li>
-        <li ng-class="{active: ctrl.tab == 1}"><a ng-click="ctrl.tab = 1" role="tab">Obsah</a></li>
-    </ul>
+        <ul class="nav nav-tabs" role="tablist">
+            <li ng-class="{active: ctrl.tab == 0}"><a ng-click="ctrl.tab = 0" role="tab">Informace</a></li>
+            <li ng-class="{active: ctrl.tab == 1}"><a ng-click="ctrl.tab = 1" role="tab">Obsah</a></li>
+        </ul>
 
-    <form class="song" role="form" ng-submit="ctrl.save()">
-        <div ng-if="ctrl.tab == 0">
-            <div class="form-group">
-                <label for="input-title">Název</label>
-                <input type="text" required class="form-control" id="input-title" ng-model="ctrl.song.title">
-            </div>
-            <div class="form-group">
-                <label for="input-album">Album</label>
-                <input type="text" class="form-control" id="input-album" ng-model="ctrl.song.album">
-            </div>
-            <div class="form-group">
-                <label for="input-author">Autor</label>
-                <input type="text" class="form-control" id="input-author" ng-model="ctrl.song.author">
-            </div>
-            <div class="form-group">
-                <label for="input-originalAuthor">Původní autor</label>
-                <input type="text" class="form-control" id="input-originalAuthor" ng-model="ctrl.song.originalAuthor">
-            </div>
-            <div class="form-group">
-                <label for="input-year">Rok</label>
-                <input type="text" class="form-control" id="input-year" ng-model="ctrl.song.year">
-            </div>
-            <div class="form-group">
-                <label for="input-note">Poznámka</label>
-                <input type="text" class="form-control" id="input-note" ng-model="ctrl.song.note">
-            </div>
-            <div class="form-group">
-                <label for="input-tags">Veřejné tagy (oddělené čárkami)</label>
-                <input type="text" class="form-control" id="input-tags" ng-model="ctrl.song.tagsStr">
-            </div>
-            <div class="form-group">
-                <label for="input-priv-tags">Soukromé tagy (oddělené čárkami)</label>
-                <input type="text" class="form-control" id="input-priv-tags" ng-model="ctrl.song.privateTagsStr">
+        <form class="song" role="form" ng-submit="ctrl.save()">
+            <div ng-if="ctrl.tab == 0">
+                <div class="form-group">
+                    <label for="input-title">Název</label>
+                    <input type="text" required class="form-control" id="input-title" ng-model="ctrl.song.title">
+                </div>
+                <div class="form-group">
+                    <label for="input-album">Album</label>
+                    <input type="text" class="form-control" id="input-album" ng-model="ctrl.song.album">
+                </div>
+                <div class="form-group">
+                    <label for="input-author">Autor</label>
+                    <input type="text" class="form-control" id="input-author" ng-model="ctrl.song.author">
+                </div>
+                <div class="form-group">
+                    <label for="input-originalAuthor">Původní autor</label>
+                    <input type="text" class="form-control" id="input-originalAuthor" ng-model="ctrl.song.originalAuthor">
+                </div>
+                <div class="form-group">
+                    <label for="input-year">Rok</label>
+                    <input type="text" class="form-control" id="input-year" ng-model="ctrl.song.year">
+                </div>
+                <div class="form-group">
+                    <label for="input-note">Poznámka</label>
+                    <input type="text" class="form-control" id="input-note" ng-model="ctrl.song.note">
+                </div>
+                <div class="form-group">
+                    <label for="input-tags">Veřejné tagy (oddělené čárkami)</label>
+                    <input type="text" class="form-control" id="input-tags" ng-model="ctrl.song.tagsStr">
+                </div>
+                <div class="form-group">
+                    <label for="input-priv-tags">Soukromé tagy (oddělené čárkami)</label>
+                    <input type="text" class="form-control" id="input-priv-tags" ng-model="ctrl.song.privateTagsStr">
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="input-public" ng-model="ctrl.song.public">Veřejná píseň
+                    </label>
+                </div>
             </div>
 
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" id="input-public" ng-model="ctrl.song.public">Veřejná píseň
+            <div ng-if="ctrl.tab == 1" class="clearfix">
+                <strong>Formát obsahu:</strong>
+                <label class="radio-inline">
+                    <input type="radio" ng-model="ctrl.radio" value="0" ng-change="ctrl.computeLyrics()"><strong> Text a akordy zvlášť </strong>
                 </label>
-            </div>
-        </div>
+                <label class="radio-inline">
+                    <input type="radio" ng-model="ctrl.radio" value="1" ng-change="ctrl.export('agama')"><strong> Agama </strong>
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" ng-model="ctrl.radio" value="2" ng-change="ctrl.export('text')"><strong> Text s akordy v [] </strong>
+                </label>
+                <div ng-if="ctrl.radio == '0'">
+                    <div class="form-group lyrics">
+                        <textarea type="text" required class="form-control monospaced" id="input-lyrics" ng-model="ctrl.songLyrics"></textarea>
+                    </div>
+                    <div class="tab-chords">
+                        <section ng-repeat="section in ctrl.lyrics">
+                            <span class="title{{section['padding'] ? ' padded' : ''}}">{{section['title']}}&nbsp;</span>
 
-        <div ng-if="ctrl.tab == 1" class="clearfix">
-            <strong>Formát obsahu:</strong>
-            <label class="radio-inline">
-                <input type="radio" ng-model="ctrl.radio" value="0" ng-change="ctrl.computeLyrics()"><strong> Text a akordy zvlášť </strong>
-            </label>
-            <label class="radio-inline">
-                <input type="radio" ng-model="ctrl.radio" value="1" ng-change="ctrl.export('agama')"><strong> Agama </strong>
-            </label>
-            <label class="radio-inline">
-                <input type="radio" ng-model="ctrl.radio" value="2" ng-change="ctrl.export('text')"><strong> Text s akordy v [] </strong>
-            </label>
-            <div ng-if="ctrl.radio == '0'">
-                <div class="form-group lyrics">
-                    <textarea type="text" required class="form-control monospaced" id="input-lyrics" ng-model="ctrl.songLyrics"></textarea>
+                            <p ng-repeat="line in section['lines']" class="line">
+                                <chpos ng-repeat="substring in line" ctrl="ctrl" offset="substring['offset']" text="substring['text']" hypen="substring['hypen']" padding="substring['isChord']" chord="ctrl.song.chords[substring['offset'].toString()]"></chpos>
+                            </p>
+                        </section>
+                    </div>
                 </div>
-                <div class="tab-chords">
-                    <section ng-repeat="section in ctrl.lyrics">
-                        <span class="title{{section['padding'] ? ' padded' : ''}}">{{section['title']}}&nbsp;</span>
-
-                        <p ng-repeat="line in section['lines']" class="line">
-                            <chpos ng-repeat="substring in line" ctrl="ctrl" offset="substring['offset']" text="substring['text']" hypen="substring['hypen']" padding="substring['isChord']" chord="ctrl.song.chords[substring['offset'].toString()]"></chpos>
-                        </p>
-                    </section>
+                <div ng-if="ctrl.radio == '1'">
+                    <div class="form-group lyrics">
+                        <textarea type="text" required class="form-control monospaced" id="input-agama" ng-model="ctrl.agama"></textarea>
+                    </div>
                 </div>
-            </div>
-            <div ng-if="ctrl.radio == '1'">
-                <div class="form-group lyrics">
-                    <textarea type="text" required class="form-control monospaced" id="input-agama" ng-model="ctrl.agama"></textarea>
+                <div ng-if="ctrl.radio == '2'">
+                    <div class="form-group lyrics">
+                        <textarea type="text" class="form-control monospaced" id="input-txt" ng-model="ctrl.textExport"></textarea>
+                    </div>
                 </div>
             </div>
-            <div ng-if="ctrl.radio == '2'">
-                <div class="form-group lyrics">
-                    <textarea type="text" class="form-control monospaced" id="input-txt" ng-model="ctrl.textExport"></textarea>
-                </div>
-            </div>
-        </div>
 
-        <button type="submit" class="btn btn-success">Uložit</button>
-    </form>
-
+            <button type="submit" class="btn btn-success">Uložit</button>
+        </form>
+    </div>
 </div>
 

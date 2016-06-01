@@ -21,33 +21,7 @@ class Song {
   int copy = null;
   bool old = false;
 
-  String _lyrics = '';
-  String get lyrics => _lyrics;
-
-  set lyrics(String text) {
-    int lenDiff = text.length - _lyrics.length;
-    int offset = _findDiff(text, _lyrics);
-
-    List<String> keys = chords.keys.toList();
-    keys.sort((int a, int b){
-      if (int.parse(a) > int.parse(b))
-        return -lenDiff;
-      if (int.parse(b) > int.parse(a))
-        return lenDiff;
-      return 0;
-    });
-    keys.forEach((String pos){
-      int position = int.parse(pos);
-      if(position < offset)
-        return;
-      if(lenDiff > 0 || position >= offset - lenDiff) {
-        chords[(position + lenDiff).toString()] = chords[position.toString()];
-      }
-      chords.remove(position.toString());
-    });
-
-    _lyrics = text;
-  }
+  String lyrics = '';
 
   Map<String, String> chords;
 
@@ -94,7 +68,7 @@ class Song {
        {this.originalAuthor, this.note, this.username, this.id, lyrics, this.chords, this.songbooks,
        tags, this.archived, this.rating, this.taken, this.copy, this.numOfRating, this.old, this.posInSongbook}) {
     this.tags = tags;
-    if (lyrics != null) this._lyrics = lyrics;
+    if (lyrics != null) this.lyrics = lyrics;
     if (chords == null) chords = {};
     if (songbooks == null) songbooks = [];
   }
@@ -139,8 +113,8 @@ class Song {
 
     var sections = [];
 
-    if(!_lyrics.isEmpty) {
-      this._lyrics.split('\n\n').forEach((String section) {
+    if(!lyrics.isEmpty) {
+      this.lyrics.split('\n\n').forEach((String section) {
         if (!sections.isEmpty)
           offset += 2;
         // count in delimiting \n\n
